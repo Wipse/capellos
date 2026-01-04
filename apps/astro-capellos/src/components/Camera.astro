@@ -1,0 +1,29 @@
+---
+import CameraItem from './CameraItem.astro';
+import { getAllClothing } from '../queries';
+
+const clothing = await getAllClothing();
+
+---
+<section class="relative">
+    <img
+        src="../../public/images/camera.png"
+        alt="Capellos Camera"
+        class="relative w-full h-full object-contain z-10 pointer-events-none"
+    />
+
+    <!-- Camera Items Carousel -->
+    <div class="absolute top-52 left-20 w-[530px] h-[400px] z-0 overflow-hidden bg-red-500 rounded-sm">
+        <div class="h-full relative">
+            <div class="relative flex h-full transition-transform duration-500 ease-in-out">
+                <!-- Product Cards -->
+                {clothing.map((product) => (
+                    <CameraItem product={product} />
+                ))}
+                <div class="absolute top-6 left-4 text-white bg-black rounded-sm pb-0.5 px-2 text-2xl z-10">
+                    <span style="font-family: var(--font-family-micro);"> 1/2 </span>
+                </div>
+            </div> 
+        </div>
+    </div>
+</section>

@@ -1,0 +1,1 @@
+export { getAllClothing } from './clothing'
