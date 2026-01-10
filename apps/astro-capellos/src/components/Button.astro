@@ -1,19 +1,31 @@
 ---
-// Click button, get confetti!
-// Styled by Tailwind :)
+// Button component with hover effect
+
+interface Props {
+  addedClasses?: string
+}
+
+const {addedClasses = ''} = Astro.props
 ---
 
 <button
-	class="appearance-none py-2 px-4 bg-purple-500 text-white font-semibold rounded-lg shadow-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-75"
+  class={`
+    relative px-8 py-2 rounded-md bg-purple-200 text-capellos-purple z-10 border-2 border-purple-400
+    overflow-hidden group
+    active:scale-98 transition-transform cursor-pointer
+    ${addedClasses}
+  `}
 >
-	<slot />
+  <!-- Background circle that grows on hover -->
+  <span
+    class="absolute -right-full top-1/2 -translate-y-1/2
+      w-full aspect-square rounded-full bg-purple-400 -z-10
+      transition-all duration-700 ease-in-out
+      group-hover:right-0 group-hover:scale-150"
+  >
+  </span>
+
+  <span class="relative z-10 transition-colors duration-500 group-hover:text-white">
+    <slot />
+  </span>
 </button>
-
-<script>
-	import confetti from 'canvas-confetti';
-	const button = document.body.querySelector('button');
-
-	if (button) {
-		button.addEventListener('click', () => confetti());
-	}
-</script>

@@ -1,0 +1,15 @@
+---
+// IMAGE: Simple image component with orientation support
+
+interface Props {
+  src: string
+  alt?: string
+  className?: string
+}
+
+const {src, alt, className} = Astro.props
+---
+
+<div class={`shadow-2xl ${className || ''}`}>
+  <img src={src} alt={alt || ''} class="w-full h-full object-cover rounded-2xl" loading="lazy" />
+</div>

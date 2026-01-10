@@ -1,0 +1,102 @@
+---
+import MainLayout from '../../layouts/main.astro'
+import ShopHero from '../../components/sections/ShopHero.astro'
+import TextImage from '../../components/sections/TextImage.astro'
+---
+
+<MainLayout title="Prints | Capellos">
+  <ShopHero title="Prints" />
+  <section class="container mx-auto py-section-md px-4">
+    <div class="grid grid-cols-12 auto-rows-[80px] gap-x-4 gap-y-6">
+      <!-- Print 1 - Top Left -->
+      <article class="col-span-3 col-start-2 row-start-1 row-span-4 group cursor-pointer">
+        <div class="aspect-square bg-gray-100 overflow-hidden mb-3">
+          <img
+            src="/images/frutsel.png"
+            alt="Print 1"
+            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+        </div>
+        <h3 class="font-medium text-lg">Print Title</h3>
+        <p class="text-gray-600">€25.00</p>
+      </article>
+
+      <!-- Print 2 - Top Right -->
+      <article class="col-span-3 col-start-8 row-start-2 row-span-4 group cursor-pointer">
+        <div class="aspect-square bg-gray-100 overflow-hidden mb-3">
+          <img
+            src="/images/frutsel.png"
+            alt="Print 2"
+            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+        </div>
+        <h3 class="font-medium text-lg">Print Title</h3>
+        <p class="text-gray-600">€25.00</p>
+      </article>
+
+      <!-- Print 3 - Middle Center -->
+      <article class="col-span-3 col-start-4 row-start-6 row-span-4 group cursor-pointer">
+        <div class="aspect-square bg-gray-100 overflow-hidden mb-3">
+          <img
+            src="/images/frutsel.png"
+            alt="Print 3"
+            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+        </div>
+        <h3 class="font-medium text-lg">Print Title</h3>
+        <p class="text-gray-600">€25.00</p>
+      </article>
+
+      <!-- Print 4 - Bottom Left -->
+      <article class="col-span-3 col-start-1 row-start-10 row-span-4 group cursor-pointer">
+        <div class="aspect-square bg-gray-100 overflow-hidden mb-3">
+          <img
+            src="/images/frutsel.png"
+            alt="Print 4"
+            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+        </div>
+        <h3 class="font-medium text-lg">Print Title</h3>
+        <p class="text-gray-600">€25.00</p>
+      </article>
+
+      <!-- Print 5 - Bottom Center -->
+      <article class="col-span-3 col-start-6 row-start-11 row-span-4 group cursor-pointer">
+        <div class="aspect-square bg-gray-100 overflow-hidden mb-3">
+          <img
+            src="/images/frutsel.png"
+            alt="Print 5"
+            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+        </div>
+        <h3 class="font-medium text-lg">Print Title</h3>
+        <p class="text-gray-600">€25.00</p>
+      </article>
+
+      <!-- Print 6 - Bottom Right -->
+      <article class="col-span-3 col-start-10 row-start-13 row-span-4 group cursor-pointer">
+        <div class="aspect-square bg-gray-100 overflow-hidden mb-3">
+          <img
+            src="/images/frutsel.png"
+            alt="Print 6"
+            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+        </div>
+        <h3 class="font-medium text-lg">Print Title</h3>
+        <p class="text-gray-600">€25.00</p>
+      </article>
+    </div>
+  </section>
+
+  <TextImage
+    title="Toch niet helemaal jouw smaakouw smaakouw smaakouw smaakouw smaak?"
+    text="No Problemo, dien dan een verzoek in!!No Problemo, dien dan een verzoek in!!No Problemo, dien dan een verzoek in!!No Problemo, dien dan een verzoek in!!No Problemo, dien dan een verzoek in!!"
+    image={{
+      front: '/images/frutsel.png',
+      back: '/images/frutsel.png',
+      layout: 'mixed',
+      frontOrientation: 'vertical',
+    }}
+    hasLeftImage={true}
+  />
+</MainLayout>

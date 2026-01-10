@@ -1,0 +1,56 @@
+---
+import Image from './Image.astro'
+
+type Props = {
+  images: {
+    front: string
+    back: string
+  }
+  alts?: {
+    front: string
+    back: string
+  }
+  layout: 'both-horizontal' | 'both-vertical' | 'mixed'
+  frontOrientation?: 'horizontal' | 'vertical'
+  alignment?: 'left' | 'right' | 'center'
+}
+
+const {images, alts, layout, frontOrientation, alignment = 'right'} = Astro.props
+
+// Alignment classes for correct positioning of the images
+const alignmentClasses = {
+  topImage: alignment === 'right' ? 'left-12 rotate-[-5deg]' : 'rotate-[5deg] right-12',
+  bottomImage: alignment === 'right' ? 'rotate-[8deg]' : 'rotate-[-8deg]',
+}
+---
+
+<!-- TODO: Responsitivity and scrollanimations  -->
+<div class="relative h-[75vh]">
+  <!-- Back image -->
+  <Image
+    src={images.back}
+    alt={alts?.back || ''}
+    className={`
+      ${alignment === 'right' ? 'absolute top-0 rotate-[-5deg]' : 'absolute top-0 rotate-[5deg]'}
+      ${layout === 'both-horizontal' ? `aspect-4/3 w-[60vh] ` : ''}
+      ${layout === 'both-vertical' ? `aspect-3/4 h-[60vh] ` : ''}
+      ${layout === 'mixed' && frontOrientation === 'horizontal' ? `aspect-4/3 w-[60vh] ` : ''}
+      ${layout === 'mixed' && frontOrientation === 'vertical' ? `aspect-3/4 h-[60vh] ` : ''}
+      ${alignmentClasses.topImage}
+    `}
+  />
+
+  <!-- Front image -->
+  <Image
+    src={images.front}
+    alt={alts?.front || ''}
+    className={`
+      ${alignment === 'right' ? 'absolute bottom-0 right-0' : 'absolute bottom-0'}
+      ${layout === 'both-horizontal' ? `aspect-4/3 w-[50vh] ` : ''}
+      ${layout === 'both-vertical' ? `aspect-3/4 h-[50vh] ` : ''}
+      ${layout === 'mixed' && frontOrientation === 'horizontal' ? `aspect-3/4 h-[50vh] ` : ''}
+      ${layout === 'mixed' && frontOrientation === 'vertical' ? `aspect-4/3 w-[50vh] ` : ''}
+      ${alignmentClasses.bottomImage}
+    `}
+  />
+</div>

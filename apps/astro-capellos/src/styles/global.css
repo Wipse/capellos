@@ -7,7 +7,101 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'RockSalt';
+    src: url('/fonts/RockSalt-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 @theme{
     --color-hero-bg: #E3EDE8;
+    --color-capellos-purple: #3D245F;
+
     --font-family-micro: 'Micro5', monospace;
+    --font-family-rock-salt: 'RockSalt', monospace;
+    
+     /* Spacing - Section spacing (fluid responsive) */
+  --spacing-section-sm: clamp(1.5rem, 1.24rem + 2.26vw, 2.5rem);
+  --spacing-section-md: clamp(2.5rem, 1.85rem + 5.65vw, 5rem);
+  --spacing-section-lg: clamp(5rem, 3.69rem + 11.30vw, 10rem);
+  --spacing-section-xl: clamp(7.5rem, 5.54rem + 16.96vw, 15rem);
+
+  /* Spacing - Header heights (fixed) */
+  --spacing-header-mobile: 4rem;
+  --spacing-header-desktop: 4.5rem;
+
+  /* Spacing - Grid and layout */
+  --spacing-grid-gutter: clamp(1.5rem, 1.24rem + 2.26vw, 2.5rem);
+  --spacing-container-offset: calc(((100vw - min(1384px, 100vw)) / 2) + 1rem);
+  --spacing-outer-offset: calc(((100vw - min(2560px, 100vw)) / 2) + 1rem);
+  --spacing-outer: 160rem;
 }
+
+@layer utilities {
+    /* Section Spacing */
+  .p-section-sm { padding: var(--spacing-section-sm); }
+  .py-section-sm { padding-top: var(--spacing-section-sm); padding-bottom: var(--spacing-section-sm); }
+  .px-section-sm { padding-left: var(--spacing-section-sm); padding-right: var(--spacing-section-sm); }
+  .pt-section-sm { padding-top: var(--spacing-section-sm); }
+  .pb-section-sm { padding-bottom: var(--spacing-section-sm); }
+  .pl-section-sm { padding-left: var(--spacing-section-sm); }
+  .pr-section-sm { padding-right: var(--spacing-section-sm); }
+  .m-section-sm { margin: var(--spacing-section-sm); }
+  .my-section-sm { margin-top: var(--spacing-section-sm); margin-bottom: var(--spacing-section-sm); }
+  .mx-section-sm { margin-left: var(--spacing-section-sm); margin-right: var(--spacing-section-sm); }
+  .mt-section-sm { margin-top: var(--spacing-section-sm); }
+  .mb-section-sm { margin-bottom: var(--spacing-section-sm); }
+  .ml-section-sm { margin-left: var(--spacing-section-sm); }
+  .mr-section-sm { margin-right: var(--spacing-section-sm); }
+  .gap-section-sm { gap: var(--spacing-section-sm); }
+
+  .p-section-md { padding: var(--spacing-section-md); }
+  .py-section-md { padding-top: var(--spacing-section-md); padding-bottom: var(--spacing-section-md); }
+  .px-section-md { padding-left: var(--spacing-section-md); padding-right: var(--spacing-section-md); }
+  .pt-section-md { padding-top: var(--spacing-section-md); }
+  .pb-section-md { padding-bottom: var(--spacing-section-md); }
+  .pl-section-md { padding-left: var(--spacing-section-md); }
+  .pr-section-md { padding-right: var(--spacing-section-md); }
+  .m-section-md { margin: var(--spacing-section-md); }
+  .my-section-md { margin-top: var(--spacing-section-md); margin-bottom: var(--spacing-section-md); }
+  .mx-section-md { margin-left: var(--spacing-section-md); margin-right: var(--spacing-section-md); }
+  .mt-section-md { margin-top: var(--spacing-section-md); }
+  .mb-section-md { margin-bottom: var(--spacing-section-md); }
+  .ml-section-md { margin-left: var(--spacing-section-md); }
+  .mr-section-md { margin-right: var(--spacing-section-md); }
+  .gap-section-md { gap: var(--spacing-section-md); }
+
+  .p-section-lg { padding: var(--spacing-section-lg); }
+  .py-section-lg { padding-top: var(--spacing-section-lg); padding-bottom: var(--spacing-section-lg); }
+  .px-section-lg { padding-left: var(--spacing-section-lg); padding-right: var(--spacing-section-lg); }
+  .pt-section-lg { padding-top: var(--spacing-section-lg); }
+  .pb-section-lg { padding-bottom: var(--spacing-section-lg); }
+  .pl-section-lg { padding-left: var(--spacing-section-lg); }
+  .pr-section-lg { padding-right: var(--spacing-section-lg); }
+  .m-section-lg { margin: var(--spacing-section-lg); }
+  .my-section-lg { margin-top: var(--spacing-section-lg); margin-bottom: var(--spacing-section-lg); }
+  .mx-section-lg { margin-left: var(--spacing-section-lg); margin-right: var(--spacing-section-lg); }
+  .mt-section-lg { margin-top: var(--spacing-section-lg); }
+  .mb-section-lg { margin-bottom: var(--spacing-section-lg); }
+  .ml-section-lg { margin-left: var(--spacing-section-lg); }
+  .mr-section-lg { margin-right: var(--spacing-section-lg); }
+  .gap-section-lg { gap: var(--spacing-section-lg); }
+
+  .p-section-xl { padding: var(--spacing-section-xl); }
+  .py-section-xl { padding-top: var(--spacing-section-xl); padding-bottom: var(--spacing-section-xl); }
+  .px-section-xl { padding-left: var(--spacing-section-xl); padding-right: var(--spacing-section-xl); }
+  .pt-section-xl { padding-top: var(--spacing-section-xl); }
+  .pb-section-xl { padding-bottom: var(--spacing-section-xl); }
+  .pl-section-xl { padding-left: var(--spacing-section-xl); }
+  .pr-section-xl { padding-right: var(--spacing-section-xl); }
+  .m-section-xl { margin: var(--spacing-section-xl); }
+  .my-section-xl { margin-top: var(--spacing-section-xl); margin-bottom: var(--spacing-section-xl); }
+  .mx-section-xl { margin-left: var(--spacing-section-xl); margin-right: var(--spacing-section-xl); }
+  .mt-section-xl { margin-top: var(--spacing-section-xl); }
+  .mb-section-xl { margin-bottom: var(--spacing-section-xl); }
+  .ml-section-xl { margin-left: var(--spacing-section-xl); }
+  .mr-section-xl { margin-right: var(--spacing-section-xl); }
+  .gap-section-xl { gap: var(--spacing-section-xl); }
+}
+

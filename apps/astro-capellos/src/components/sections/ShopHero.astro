@@ -1,0 +1,16 @@
+---
+interface Props {
+    title: string;
+}
+
+const { title = 'Prints' } = Astro.props;
+---
+
+<section>
+    <div class="relative w-full h-[40vh] flex items-center justify-center bg-red-500 overflow-hidden">
+        <img src="../../public/images/printshero.png" alt="Prints" class="w-full h-full object-fill" />
+        <div class="absolute bottom-0 left-0 flex items-center justify-center bg-capellos-purple pr-10 py-6 pl-24 rounded-tr-3xl"> 
+            <h1 class="text-white text-4xl font-bold font-family-rock-salt">{title}</h1>
+        </div>
+    </div>
+</section>
