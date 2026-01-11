@@ -3,16 +3,6 @@ import {imageConfig} from 'astro:assets'
 import ImageComposition from '../ImageComposition.astro'
 import Button from '../Button.astro'
 
-/* Requirements:
-
-- [ ] Ability to change text
-- [ ] The section should have a background color
-- [ ] The text should be a heading and a paragraph
-- [ ] Ability to change side of the image (left or right)
-- [ ] Changeable Section spacing
-- [ ] Ability to add an carousel
-*/
-
 interface Props {
   title: string
   text: string
@@ -24,13 +14,13 @@ interface Props {
   }
   backgroundColor?: string
   hasLeftImage?: boolean
-  sectionSpacing?: 'sm' | 'md' | 'lg'
+  sectionPadding?: 'sm' | 'md' | 'lg'
 }
 
-const {title, text, image, backgroundColor, hasLeftImage, sectionSpacing = 'md'} = Astro.props
+const {title, text, image, backgroundColor, hasLeftImage, sectionPadding = 'md'} = Astro.props
 ---
 
-<section class={`py-section-${sectionSpacing} ${backgroundColor || 'bg-capellos-purple'}`}>
+<section class={`py-section-${sectionPadding} ${backgroundColor || 'bg-capellos-purple'}`}>
   <div class="container mx-auto">
     <div class="grid grid-cols-12 gap-8 items-center">
       <!-- Text -->

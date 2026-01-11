@@ -1,1 +1,1 @@
-export { getAllClothing } from './clothing'
+export { getAllClothing } from './products'

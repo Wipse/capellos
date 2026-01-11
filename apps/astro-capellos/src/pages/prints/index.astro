@@ -2,10 +2,20 @@
 import MainLayout from '../../layouts/main.astro'
 import ShopHero from '../../components/sections/ShopHero.astro'
 import TextImage from '../../components/sections/TextImage.astro'
+
+import {getPageContent} from '../../queries/pages'
+
+const page = await getPageContent('prints')
+
+if (!page) {
+  throw new Error('Oeps, er is iets misgegaan bij het ophalen van de pagina content')
+}
+
+const textImage = page.sections[0]
 ---
 
 <MainLayout title="Prints | Capellos">
-  <ShopHero title="Prints" />
+  <ShopHero title={page.title} />
   <section class="container mx-auto py-section-md px-4">
     <div class="grid grid-cols-12 auto-rows-[80px] gap-x-4 gap-y-6">
       <!-- Print 1 - Top Left -->
@@ -89,14 +99,16 @@ import TextImage from '../../components/sections/TextImage.astro'
   </section>
 
   <TextImage
-    title="Toch niet helemaal jouw smaakouw smaakouw smaakouw smaakouw smaak?"
-    text="No Problemo, dien dan een verzoek in!!No Problemo, dien dan een verzoek in!!No Problemo, dien dan een verzoek in!!No Problemo, dien dan een verzoek in!!No Problemo, dien dan een verzoek in!!"
+    title={textImage.title}
+    text={textImage.text}
     image={{
-      front: '/images/frutsel.png',
-      back: '/images/frutsel.png',
-      layout: 'mixed',
-      frontOrientation: 'vertical',
+      front: textImage.image.front,
+      back: textImage.image.back,
+      layout: textImage.image.layout,
+      frontOrientation: textImage.image.frontOrientation,
     }}
-    hasLeftImage={true}
+    hasLeftImage={textImage.hasLeftImage}
+    backgroundColor={textImage.backgroundColor}
+    sectionPadding={textImage.sectionPadding}
   />
 </MainLayout>

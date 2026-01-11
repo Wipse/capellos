@@ -1,4 +1,4 @@
 /**
  * Centrale exports voor alle types
  */
-export type { Clothing } from './clothing'
+export type { Clothing, Accessory, Print } from './products'

@@ -1,5 +1,5 @@
 import { sanityClient } from 'sanity:client'
-import type { Clothing } from '../types/clothing'
+import type { Clothing } from '../types/products'
 
 /**
  * Haal alle kleding op
