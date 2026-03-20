@@ -55,4 +55,13 @@ export const pageTemplates: Template[] = [
       slug: { current: 'aanvragen' },
     },
   },
+  {
+    id: 'mainHeroSettings',
+    title: 'Beginscherm Instellingen',
+    schemaType: 'mainHeroSettings',
+    value: {
+      textColor: {_type: 'color', hex: '#FFDF94'},
+      backgroundColor: {_type: 'color', hex: '#D83A45'},
+    },
+  },
 ]

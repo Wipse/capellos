@@ -1,4 +1,4 @@
-// schemaTypes/sections/textImageSection.ts
+// schemaTypes/pages/sections/textImageSection.ts
 import {defineField, defineType} from 'sanity'
 
 export const textImageType = defineType({

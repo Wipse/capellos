@@ -17,11 +17,15 @@ const navItems = [
 ---
 
 <section
-  class="relative flex min-h-dvh items-center justify-center overflow-hidden px-4 py-10"
+  id="main-hero"
+  class="fixed inset-0 z-10 flex min-h-dvh items-center justify-center overflow-hidden px-4 py-10"
   style={`background-color: ${backgroundColor}; --hero-text: ${textColor}; --hero-background: ${backgroundColor};`}
 >
-  <!-- Background Image -->
-  <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+  <div
+    id="hero-bg-layer"
+    class="pointer-events-none absolute inset-0 overflow-hidden"
+    aria-hidden="true"
+  >
     <img
       src="/images/frutsel-zw.jpg"
       alt=""
@@ -29,12 +33,10 @@ const navItems = [
     />
   </div>
 
-  <!-- Inner Container -->
   <div
     id="hero-inner"
-    class="relative z-10 flex w-full max-w-[min(92vw,56rem)] flex-col items-center"
+    class="relative z-10 flex w-full max-w-[min(92vw,56rem)] flex-col items-center will-change-transform"
   >
-    <!-- Logo -->
     <div
       id="hero-logo-wrap"
       class="hero-anim-start relative aspect-859/286 w-full max-w-[min(92vw,52rem)]"
@@ -43,18 +45,17 @@ const navItems = [
       <Logo color={textColor} addedClasses="absolute inset-0 top-1 left-0.5 h-full w-full" />
     </div>
 
-    <!-- Navigation -->
     <nav
       id="hero-nav"
       class="hero-anim-start mt-2 w-full max-w-3xl sm:mt-4"
       aria-label="Hoofdnavigatie"
     >
       <ul
-        class="flex flex-col gap-4 md:gap-0 md:flex-row flex-nowrap items-center justify-center md:[&>li+li]:border-l md:[&>li+li]:border-solid md:[&>li+li]:border-(--hero-text)"
+        class="flex flex-col gap-4 md:flex-row md:flex-nowrap md:gap-0 items-center justify-center md:[&>li+li]:border-l md:[&>li+li]:border-solid md:[&>li+li]:border-(--hero-text)"
       >
         {
           navItems.map(({href, label}) => (
-            <li class="md:px-6 first:pl-0 last:pr-0 sm:px-10">
+            <li class="md:px-6 md:first:pl-0 md:last:pr-0 sm:px-10">
               <a
                 data-hero-nav-item
                 href={href}
@@ -73,10 +74,42 @@ const navItems = [
       </ul>
     </nav>
   </div>
+
+  <div
+    id="hero-scroll-hint"
+    class="scroll-hint pointer-events-none absolute bottom-5 left-1/2 z-20 -translate-x-1/2 md:bottom-10"
+    aria-hidden="true"
+  >
+    <div class="scroll-hint__bounce">
+      <span class="font-family-rock-salt text-sm tracking-wide text-white/80 md:text-base">
+        Scroll
+      </span>
+      <svg
+        class="h-7 w-7 text-(--hero-text)"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="m6 9 6 6 6-6"></path>
+      </svg>
+    </div>
+  </div>
 </section>
 
 <script>
   import {scheduleHeroIntro} from '../../lib/animations/heroIntro'
+  import {initHeroScrollHint, initMainHeroScroll} from '../../lib/animations/mainHeroScroll'
 
-  scheduleHeroIntro()
+  async function boot() {
+    await scheduleHeroIntro()
+    document.getElementById('hero-scroll-hint')?.classList.add('scroll-hint--ready')
+    initMainHeroScroll()
+    initHeroScrollHint()
+  }
+
+  void boot()
 </script>

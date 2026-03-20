@@ -1,19 +1,18 @@
 import gsap from 'gsap'
 
 /**
- * GSAP intro for the under-construction / hero section:
- * logo fade-in, pause, logo moves up, nav reveals from above.
+ * GSAP intro for the main hero: logo fade-in, pause, logo moves up, nav reveals.
  * Skipped when prefers-reduced-motion is set.
  */
-export function runHeroIntro() {
+export function runHeroIntro(): Promise<void> {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
-  if (reducedMotion.matches) return
+  if (reducedMotion.matches) return Promise.resolve()
 
   const logoWrap = document.getElementById('hero-logo-wrap')
   const nav = document.getElementById('hero-nav')
   const navLinks = document.querySelectorAll<HTMLElement>('[data-hero-nav-item]')
 
-  if (!logoWrap || !nav) return
+  if (!logoWrap || !nav) return Promise.resolve()
 
   gsap.set(logoWrap, {autoAlpha: 0, y: 36})
   gsap.set(nav, {autoAlpha: 0, y: -28})
@@ -60,12 +59,21 @@ export function runHeroIntro() {
     },
     '<0.08',
   )
+
+  return new Promise((resolve) => {
+    tl.eventCallback('onComplete', () => resolve())
+  })
 }
 
-export function scheduleHeroIntro() {
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', runHeroIntro, {once: true})
-  } else {
-    runHeroIntro()
-  }
+export function scheduleHeroIntro(): Promise<void> {
+  return new Promise((resolve) => {
+    const run = () => {
+      void runHeroIntro().then(resolve)
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', run, {once: true})
+    } else {
+      run()
+    }
+  })
 }
