@@ -1,16 +1,50 @@
 ---
+import Image from '../Image.astro'
+
 interface Props {
-    title: string;
+  title: string
 }
 
-const { title = 'Prints' } = Astro.props;
+const {title = 'Prints'} = Astro.props
 ---
 
-<section>
-    <div class="relative w-full h-[40vh] flex items-center justify-center bg-red-500 overflow-hidden">
-        <img src="../../public/images/printshero.png" alt="Prints" class="w-full h-full object-fill" />
-        <div class="absolute bottom-0 left-0 flex items-center justify-center bg-capellos-purple pr-10 py-6 pl-24 rounded-tr-3xl"> 
-            <h1 class="text-white text-4xl font-bold font-family-rock-salt">{title}</h1>
-        </div>
+<section class="pt-section-lg bg-capellos-blue overflow-hidden">
+  <div class="mx-auto text-white container relative pb-section-xl">
+    <h1 class="text-5xl font-bold font-family-rock-salt">
+      {title}
+    </h1>
+    <div class="text-xl mt-4">
+      <a class="opacity-50 hover:opacity-100 transition-opacity duration-300" href="/">Home</a>
+      <span class="opacity-50">/</span>
+      <span> Prints </span>
     </div>
+    <div class="absolute -bottom-7 right-150">
+      <Image
+        src="/images/frutsel.png"
+        alt="Prints Hero"
+        className="h-92 w-64 rounded-lg object-cover rotate-[-8deg]"
+      />
+    </div>
+    <div class="absolute -bottom-7 right-100">
+      <Image
+        src="/images/frutsel.png"
+        alt="Prints Hero"
+        className="h-92 w-64 rounded-lg object-cover rotate-[-8deg]"
+      />
+    </div>
+    <div class="absolute -bottom-7 right-50">
+      <Image
+        src="/images/frutsel.png"
+        alt="Prints Hero"
+        className="h-92 w-64 rounded-lg object-cover rotate-[-8deg]"
+      />
+    </div>
+    <div class="absolute -bottom-7 right-0">
+      <Image
+        src="/images/frutsel.png"
+        alt="Prints Hero"
+        className="h-92 w-64 rounded-lg object-cover rotate-[-8deg]"
+      />
+    </div>
+  </div>
 </section>

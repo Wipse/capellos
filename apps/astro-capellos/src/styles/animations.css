@@ -1,0 +1,31 @@
+@keyframes bg-drift {
+  0% {
+    transform: scale(1.22) translate(3.5%, 2.5%);
+  }
+  100% {
+    transform: scale(1.22) translate(-3.5%, -2.5%);
+  }
+}
+
+.bg-drift {
+  transform-origin: center center;
+  animation: bg-drift 22s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.hero-anim-start {
+  opacity: 0;
+  visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bg-drift {
+    animation: none;
+    transform: scale(1.18);
+  }
+
+  .hero-anim-start {
+    opacity: 1;
+    visibility: visible;
+  }
+}

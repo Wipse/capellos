@@ -1,19 +1,82 @@
 ---
-import Camera from '../Camera.astro';
+import Logo from '../Logo.astro'
 
+interface Props {
+  textColor?: string
+  backgroundColor?: string
+}
+
+const {textColor, backgroundColor} = Astro.props
+
+const navItems = [
+  {href: '/', label: 'Shop'},
+  {href: '/prints', label: 'Gepersonaliseerde Items'},
+  {href: '#', label: 'Over Capellos'},
+  {href: '#', label: 'Contact'},
+] as const
 ---
 
-<section class="h-screen bg-hero-bg ">
-  <div class="mx-auto container grid grid-cols-12">
-    <div class="col-span-6 col-start-4">
-        <img 
-            src="../../public/images/herotitle.png" 
-            alt="Capellos Logo" 
-            class="mt-16 object-contain"
-        />
+<section
+  class="relative flex min-h-dvh items-center justify-center overflow-hidden px-4 py-10"
+  style={`background-color: ${backgroundColor}; --hero-text: ${textColor}; --hero-background: ${backgroundColor};`}
+>
+  <!-- Background Image -->
+  <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+    <img
+      src="/images/frutsel-zw.jpg"
+      alt=""
+      class="bg-drift h-full w-full object-cover opacity-10"
+    />
+  </div>
+
+  <!-- Inner Container -->
+  <div
+    id="hero-inner"
+    class="relative z-10 flex w-full max-w-[min(92vw,56rem)] flex-col items-center"
+  >
+    <!-- Logo -->
+    <div
+      id="hero-logo-wrap"
+      class="hero-anim-start relative aspect-859/286 w-full max-w-[min(92vw,52rem)]"
+    >
+      <Logo color="#FFFFFF" addedClasses="absolute inset-0 h-full w-full" />
+      <Logo color={textColor} addedClasses="absolute inset-0 top-1 left-0.5 h-full w-full" />
     </div>
-    <div class="col-span-10 col-start-2">
-        <Camera />
-    </div>
+
+    <!-- Navigation -->
+    <nav
+      id="hero-nav"
+      class="hero-anim-start mt-2 w-full max-w-3xl sm:mt-4"
+      aria-label="Hoofdnavigatie"
+    >
+      <ul
+        class="flex flex-col gap-4 md:gap-0 md:flex-row flex-nowrap items-center justify-center md:[&>li+li]:border-l md:[&>li+li]:border-solid md:[&>li+li]:border-(--hero-text)"
+      >
+        {
+          navItems.map(({href, label}) => (
+            <li class="md:px-6 first:pl-0 last:pr-0 sm:px-10">
+              <a
+                data-hero-nav-item
+                href={href}
+                class:list={[
+                  'relative inline-block pb-1 text-xl font-semibold text-white',
+                  "after:pointer-events-none after:absolute after:bottom-0 after:left-0 after:block after:h-0.5 after:w-full after:content-['']",
+                  'after:origin-left after:scale-x-0 after:bg-(--hero-text) after:transition-transform after:duration-300 after:ease-out',
+                  'hover:after:scale-x-100 focus-visible:after:scale-x-100 focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-white/90 focus-visible:ring-offset-2 focus-visible:ring-offset-(--hero-background)',
+                ]}
+              >
+                {label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
   </div>
 </section>
+
+<script>
+  import {scheduleHeroIntro} from '../../lib/animations/heroIntro'
+
+  scheduleHeroIntro()
+</script>
