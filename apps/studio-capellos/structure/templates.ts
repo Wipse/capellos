@@ -61,6 +61,7 @@ export const pageTemplates: Template[] = [
     schemaType: 'mainHeroSettings',
     value: {
       textColor: {_type: 'color', hex: '#FFDF94'},
+      navigationTextColor: {_type: 'color', hex: '#FFFFFF'},
       backgroundColor: {_type: 'color', hex: '#D83A45'},
     },
   },

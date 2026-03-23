@@ -5,6 +5,7 @@ import {colorInput} from '@sanity/color-input'
 import {schemaTypes} from './schemaTypes'
 import {structure} from './structure'
 import {pageTemplates} from './structure/templates'
+import {presentationTool} from 'sanity/presentation'
 
 export default defineConfig({
   name: 'default',
@@ -13,7 +14,22 @@ export default defineConfig({
   projectId: '26834z8k',
   dataset: 'production',
 
-  plugins: [structureTool({structure}), visionTool(), colorInput()],
+  plugins: [
+    presentationTool({
+      previewUrl: {
+        origin: process.env.SANITY_STUDIO_URL,
+        preview: '/',
+        previewMode: {
+          enable: '/preview/enable',
+          disable: '/preview/disable',
+        },
+      },
+    }),
+    structureTool({
+      structure
+    }), 
+    visionTool(), 
+    colorInput()],
 
   schema: {
     types: schemaTypes,

@@ -4,12 +4,14 @@ import {sanityClient} from 'sanity:client'
 
 export interface MainHeroSettings {
   textColorHex: string
+  navigationTextColorHex: string
   backgroundColorHex: string
 }
 
 // ——— Defaults ———
 
 const DEFAULT_HERO_TEXT = '#FFDF94'
+const DEFAULT_HERO_NAV_TEXT = '#FFFFFF'
 const DEFAULT_HERO_BG = '#D83A45'
 
 // ——— Main hero (singleton `mainHeroSettings`) ———
@@ -19,17 +21,23 @@ const mainHeroSettingsGroq = `*[
   && _type == "mainHeroSettings"
 ][0]{
   "textColorHex": coalesce(textColor.hex, textColor, $defaultText),
+  "navigationTextColorHex": coalesce(navigationTextColor.hex, navigationTextColor, $defaultNavText),
   "backgroundColorHex": coalesce(backgroundColor.hex, backgroundColor, $defaultBg)
 }`
 
 export async function getMainHeroSettings(): Promise<MainHeroSettings> {
   const row = await sanityClient.fetch<Partial<MainHeroSettings> | null>(
     mainHeroSettingsGroq,
-    {defaultText: DEFAULT_HERO_TEXT, defaultBg: DEFAULT_HERO_BG},
+    {
+      defaultText: DEFAULT_HERO_TEXT,
+      defaultNavText: DEFAULT_HERO_NAV_TEXT,
+      defaultBg: DEFAULT_HERO_BG,
+    },
   )
 
   return {
     textColorHex: row?.textColorHex ?? DEFAULT_HERO_TEXT,
+    navigationTextColorHex: row?.navigationTextColorHex ?? DEFAULT_HERO_NAV_TEXT,
     backgroundColorHex: row?.backgroundColorHex ?? DEFAULT_HERO_BG,
   }
 }

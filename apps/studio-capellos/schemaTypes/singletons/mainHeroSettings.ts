@@ -10,8 +10,9 @@ export const mainHeroSettingsType = defineType({
   fields: [
     defineField({
       name: 'textColor',
-      title: 'Tekst- en Accentkleur',
-      description: 'Tekst- en Accentkleur voor het beginscherm, zoals het Logo en de Navigatie.',
+      title: 'Logo- & accentkleur',
+      description:
+        'Kleur voor het voorste logo, navigatie-onderstreping en scroll-pijl (CSS: --hero-text).',
       type: 'color',
       options: {
         disableAlpha: true,
@@ -23,6 +24,24 @@ export const mainHeroSettingsType = defineType({
           '#E3EDE8',
           '#FFFFFF',
           '#000000',
+        ],
+      },
+    }),
+    defineField({
+      name: 'navigationTextColor',
+      title: 'Navigatietekstkleur',
+      description: 'Kleur van de menulinks in de hero (en het woord “Scroll” eronder).',
+      type: 'color',
+      options: {
+        disableAlpha: true,
+        colorList: [
+          '#FFFFFF',
+          '#FFDF94',
+          '#E3EDE8',
+          '#000000',
+          '#3D245F',
+          '#3251A6',
+          '#D83A45',
         ],
       },
     }),

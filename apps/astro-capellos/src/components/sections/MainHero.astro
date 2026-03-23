@@ -3,10 +3,12 @@ import Logo from '../Logo.astro'
 
 interface Props {
   textColor?: string
+  /** Menulinks + “Scroll” label */
+  navigationTextColor?: string
   backgroundColor?: string
 }
 
-const {textColor, backgroundColor} = Astro.props
+const {textColor, navigationTextColor, backgroundColor} = Astro.props
 
 const navItems = [
   {href: '/', label: 'Shop'},
@@ -19,7 +21,7 @@ const navItems = [
 <section
   id="main-hero"
   class="fixed inset-0 z-10 flex min-h-dvh items-center justify-center overflow-hidden px-4 py-10"
-  style={`background-color: ${backgroundColor}; --hero-text: ${textColor}; --hero-background: ${backgroundColor};`}
+  style={`background-color: ${backgroundColor}; --hero-text: ${textColor}; --hero-nav-text: ${navigationTextColor}; --hero-background: ${backgroundColor};`}
 >
   <div
     id="hero-bg-layer"
@@ -60,10 +62,10 @@ const navItems = [
                 data-hero-nav-item
                 href={href}
                 class:list={[
-                  'relative inline-block pb-1 text-xl font-semibold text-white',
+                  'relative inline-block pb-1 text-xl font-heading font-semibold text-(--hero-nav-text)',
                   "after:pointer-events-none after:absolute after:bottom-0 after:left-0 after:block after:h-0.5 after:w-full after:content-['']",
                   'after:origin-left after:scale-x-0 after:bg-(--hero-text) after:transition-transform after:duration-300 after:ease-out',
-                  'hover:after:scale-x-100 focus-visible:after:scale-x-100 focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-white/90 focus-visible:ring-offset-2 focus-visible:ring-offset-(--hero-background)',
+                  'hover:after:scale-x-100 focus-visible:after:scale-x-100 focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-(--hero-nav-text)/90 focus-visible:ring-offset-2 focus-visible:ring-offset-(--hero-background)',
                 ]}
               >
                 {label}
@@ -81,7 +83,7 @@ const navItems = [
     aria-hidden="true"
   >
     <div class="scroll-hint__bounce">
-      <span class="font-family-rock-salt text-sm tracking-wide text-white/80 md:text-base">
+      <span class="font-heading text-sm tracking-wide text-(--hero-nav-text)/80 md:text-base">
         Scroll
       </span>
       <svg

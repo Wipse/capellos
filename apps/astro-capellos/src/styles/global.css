@@ -2,23 +2,63 @@
 @import "./animations.css";
 
 @font-face {
-    font-family: 'Micro5';
-    src: url('/fonts/micro.5.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
+  font-family: 'Micro5';
+  src: url('/fonts/micro.5.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'RockSalt';
-    src: url('/fonts/RockSalt-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
+  font-family: 'RockSalt';
+  src: url('/fonts/RockSalt-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
-@theme{
+@font-face {
+  font-family: 'Jua';
+  src: url('/fonts/Jua-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ITC Benguiat Gothic';
+  src: url('/fonts/ITC%20Benguiat%20Gothic/ITC%20Benguiat%20Gothic%20Std%20Light.otf')
+    format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ITC Benguiat Gothic';
+  src: url('/fonts/ITC%20Benguiat%20Gothic/ITC%20Benguiat%20Gothic%20Std%20Medium.otf')
+    format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ITC Benguiat Gothic';
+  src: url('/fonts/ITC%20Benguiat%20Gothic/ITC%20Benguiat%20Gothic%20Std%20Bold.otf')
+    format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
     --color-hero-bg: #E3EDE8;
     --color-capellos-purple: #3D245F;
     --color-capellos-blue: #3251A6;
+
+    --font-heading: 'Jua', ui-sans-serif, system-ui, sans-serif;
+    --font-body: 'ITC Benguiat Gothic', Georgia, 'Times New Roman', serif;
 
     --font-family-micro: 'Micro5', monospace;
     --font-family-rock-salt: 'RockSalt', monospace;
@@ -38,6 +78,16 @@
   --spacing-container-offset: calc(((100vw - min(1384px, 100vw)) / 2) + 1rem);
   --spacing-outer-offset: calc(((100vw - min(2560px, 100vw)) / 2) + 1rem);
   --spacing-outer: 160rem;
+}
+
+@layer base {
+  body {
+    @apply font-body antialiased;
+  }
+
+  :where(h1, h2, h3, h4, h5, h6) {
+    @apply font-heading;
+  }
 }
 
 @layer utilities {
