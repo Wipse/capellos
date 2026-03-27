@@ -3,7 +3,7 @@ import Logo from '../Logo.astro'
 
 interface Props {
   textColor?: string
-  /** Menulinks + “Scroll” label */
+  /** Menulinks + "Scroll" label */
   navigationTextColor?: string
   backgroundColor?: string
 }
@@ -18,9 +18,40 @@ const navItems = [
 ] as const
 ---
 
+<!-- Hidden SVG – defines the animated clip-path that gives the hero its organic bottom edge -->
+<svg
+  width="0"
+  height="0"
+  style="position:absolute;pointer-events:none;overflow:hidden"
+  aria-hidden="true"
+  focusable="false"
+>
+  <defs>
+    <clipPath id="heroClip" clipPathUnits="objectBoundingBox">
+      <path
+        d="M0,0 L1,0 L1,0.88 C0.92,0.93 0.82,0.96 0.70,0.92 C0.58,0.88 0.52,0.82 0.40,0.85 C0.28,0.88 0.16,0.94 0,0.88 Z"
+      >
+        <animate
+          attributeName="d"
+          dur="9s"
+          repeatCount="indefinite"
+          calcMode="spline"
+          keyTimes="0;0.5;1"
+          keySplines=".4 0 .2 1;.4 0 .2 1"
+          values="
+            M0,0 L1,0 L1,0.88 C0.92,0.93 0.82,0.96 0.70,0.92 C0.58,0.88 0.52,0.82 0.40,0.85 C0.28,0.88 0.16,0.94 0,0.88 Z;
+            M0,0 L1,0 L1,0.93 C0.92,0.88 0.82,0.84 0.71,0.88 C0.59,0.92 0.53,0.97 0.40,0.94 C0.27,0.91 0.15,0.88 0,0.93 Z;
+            M0,0 L1,0 L1,0.88 C0.92,0.93 0.82,0.96 0.70,0.92 C0.58,0.88 0.52,0.82 0.40,0.85 C0.28,0.88 0.16,0.94 0,0.88 Z
+          "
+        />
+      </path>
+    </clipPath>
+  </defs>
+</svg>
+
 <section
   id="main-hero"
-  class="fixed inset-0 z-10 flex min-h-dvh items-center justify-center overflow-hidden px-4 py-10"
+  class="relative flex h-[88dvh] min-h-[88svh] items-center justify-center px-4 py-10"
   style={`background-color: ${backgroundColor}; --hero-text: ${textColor}; --hero-nav-text: ${navigationTextColor}; --hero-background: ${backgroundColor};`}
 >
   <div
@@ -76,31 +107,55 @@ const navItems = [
       </ul>
     </nav>
   </div>
-
-  <div
-    id="hero-scroll-hint"
-    class="scroll-hint pointer-events-none absolute bottom-5 left-1/2 z-20 -translate-x-1/2 md:bottom-10"
-    aria-hidden="true"
-  >
-    <div class="scroll-hint__bounce">
-      <span class="font-heading text-sm tracking-wide text-(--hero-nav-text)/80 md:text-base">
-        Scroll
-      </span>
-      <svg
-        class="h-7 w-7 text-(--hero-text)"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        aria-hidden="true"
-      >
-        <path d="m6 9 6 6 6-6"></path>
-      </svg>
-    </div>
-  </div>
 </section>
+
+<!-- Sits outside the clipped section so it isn't cut off -->
+<div
+  id="hero-scroll-hint"
+  class="scroll-hint pointer-events-none fixed bottom-5 left-1/2 z-20 -translate-x-1/2 md:bottom-10"
+  style={`--hero-nav-text: ${navigationTextColor}; --hero-text: ${textColor};`}
+  aria-hidden="true"
+>
+  <div class="scroll-hint__bounce">
+    <span class="font-heading text-sm tracking-wide text-(--hero-nav-text)/80 md:text-base">
+      Scroll
+    </span>
+    <svg
+      class="h-7 w-7 text-(--hero-text)"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <path d="m6 9 6 6 6-6"></path>
+    </svg>
+  </div>
+</div>
+
+<style>
+  #main-hero {
+    clip-path: url(#heroClip);
+  }
+
+  #hero-bg-layer {
+    z-index: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #main-hero {
+      /* Static polygon approximation of the blob shape */
+      clip-path: polygon(
+        0% 0%, 100% 0%, 100% 88%,
+        92% 93%, 82% 96%, 70% 92%,
+        58% 88%, 52% 82%, 40% 85%,
+        28% 88%, 16% 94%, 0% 88%
+      );
+    }
+  }
+</style>
 
 <script>
   import {scheduleHeroIntro} from '../../lib/animations/heroIntro'

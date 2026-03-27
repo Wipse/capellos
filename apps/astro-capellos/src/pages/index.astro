@@ -7,32 +7,23 @@ const heroSettings = await getMainHeroSettings()
 ---
 
 <MainLayout title="Capellos">
-  <div class="bg-hero-bg">
-    <MainHero
-      textColor={heroSettings.textColorHex}
-      navigationTextColor={heroSettings.navigationTextColorHex}
-      backgroundColor={heroSettings.backgroundColorHex}
-    />
+  <MainHero
+    textColor={heroSettings.textColorHex}
+    navigationTextColor={heroSettings.navigationTextColorHex}
+    backgroundColor={heroSettings.backgroundColorHex}
+  />
 
-    <div
-      id="hero-scroll-spacer"
-      class="h-[135dvh] max-md:h-[125dvh]"
-      aria-hidden="true"
-    >
+  <main
+    id="home-main"
+    class="min-h-dvh bg-hero-bg px-section-md py-section-lg"
+  >
+    <div class="mx-auto max-w-3xl">
+      <h1 class="text-capellos-purple text-3xl sm:text-4xl">
+        Welkom bij Capellos
+      </h1>
+      <p class="mt-6 text-lg leading-relaxed text-capellos-purple/85">
+        Scroll om de hero te verlaten — hier komt je homepage-content.
+      </p>
     </div>
-
-    <main
-      id="home-main"
-      class="relative z-20 -mt-16 min-h-dvh rounded-t-3xl bg-hero-bg px-section-md py-section-lg shadow-[0_-20px_60px_rgba(0,0,0,0.12)]"
-    >
-      <div class="mx-auto max-w-3xl">
-        <h1 class="text-capellos-purple text-3xl sm:text-4xl">
-          Welkom bij Capellos
-        </h1>
-        <p class="mt-6 text-lg leading-relaxed text-capellos-purple/85">
-          Scroll om de hero te verlaten — hier komt je homepage-content.
-        </p>
-      </div>
-    </main>
-  </div>
+  </main>
 </MainLayout>

@@ -11,12 +11,12 @@ export default defineConfig({
 
   integrations: [
     sanity({
-      projectId: import.meta.env.SANITY_PROJECT_ID,
-      dataset: import.meta.env.SANITY_DATASET,
+      projectId: process.env.SANITY_STUDIO_PROJECT_ID ?? '26834z8k',
+      dataset: process.env.SANITY_STUDIO_DATASET ?? 'production',
       useCdn: false, // for static builds
       visualEditing: {
-        token: import.meta.env.SANITY_VIEWER_TOKEN,
-        studioUrl: import.meta.env.SANITY_STUDIO_URL,
+        token: process.env.SANITY_STUDIO_VIEWER_TOKEN ?? '',
+        studioUrl: process.env.SANITY_STUDIO_URL ?? 'http://localhost:4321',
         stega: true
       }
     }),

@@ -11,18 +11,14 @@ export default defineConfig({
   name: 'default',
   title: 'Capellos',
 
-  projectId: '26834z8k',
-  dataset: 'production',
+  projectId: process.env.SANITY_STUDIO_PROJECT_ID as string ?? '26834z8k',
+  dataset: process.env.SANITY_STUDIO_DATASET as string ?? 'production',
 
   plugins: [
     presentationTool({
       previewUrl: {
-        origin: process.env.SANITY_STUDIO_URL,
+        origin: process.env.SANITY_STUDIO_PREVIEW_ORIGIN as string ?? 'http://localhost:4321',
         preview: '/',
-        previewMode: {
-          enable: '/preview/enable',
-          disable: '/preview/disable',
-        },
       },
     }),
     structureTool({

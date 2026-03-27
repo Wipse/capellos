@@ -1,3 +1,16 @@
 {
-    "noUpdateNotifier": true
+  "noUpdateNotifier": true,
+  "tasks": {
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", ".astro/**", "build/**"]
+    },
+    "lint": {
+      "outputs": []
+    }
+  }
 }
