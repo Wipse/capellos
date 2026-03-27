@@ -1,0 +1,74 @@
+[
+  {
+    "id": "1",
+    "title": "Droombeer op Vakantie",
+    "price": 25.00,
+    "size": "25 x 40 cm",
+    "imageUrl": "/images/frutsel.png",
+    "slug": "print-1"
+  },
+  {
+    "id": "2",
+    "title": "Mijn Kat Begrijpt Me",
+    "price": 35.00,
+    "size": "30 x 45 cm",
+    "imageUrl": "/images/frutsel.png",
+    "slug": "print-2"
+  },
+  {
+    "id": "3",
+    "title": "Zaterdag Voelt Anders",
+    "price": 20.00,
+    "size": "20 x 30 cm",
+    "imageUrl": "/images/frutsel.png",
+    "slug": "print-3"
+  },
+  {
+    "id": "4",
+    "title": "Vergeten Boodschappenlijstje",
+    "price": 45.00,
+    "size": "40 x 60 cm",
+    "imageUrl": "/images/frutsel.png",
+    "slug": "print-4"
+  },
+  {
+    "id": "5",
+    "title": "Patat met Teveel Filosofie",
+    "price": 30.00,
+    "size": "25 x 35 cm",
+    "imageUrl": "/images/frutsel.png",
+    "slug": "print-5"
+  },
+  {
+    "id": "6",
+    "title": "Opa's Tweede Telefoon",
+    "price": 55.00,
+    "size": "50 x 70 cm",
+    "imageUrl": "/images/frutsel.png",
+    "slug": "print-6"
+  },
+  {
+    "id": "7",
+    "title": "Gevoel zonder Naam",
+    "price": 28.00,
+    "size": "30 x 30 cm",
+    "imageUrl": "/images/frutsel.png",
+    "slug": "print-7"
+  },
+  {
+    "id": "8",
+    "title": "Hond Denkt Na",
+    "price": 40.00,
+    "size": "35 x 50 cm",
+    "imageUrl": "/images/frutsel.png",
+    "slug": "print-8"
+  },
+  {
+    "id": "9",
+    "title": "De Fiets Stond Er Al",
+    "price": 22.00,
+    "size": "20 x 40 cm",
+    "imageUrl": "/images/frutsel.png",
+    "slug": "print-9"
+  }
+]

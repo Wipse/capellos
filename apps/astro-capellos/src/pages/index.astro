@@ -2,6 +2,8 @@
 import MainLayout from '../layouts/main.astro'
 import MainHero from '../components/sections/MainHero.astro'
 import {getMainHeroSettings} from '../queries/settings'
+import CatalogPreview from '../components/sections/CatalogPreview.astro'
+import placeholderPrints from '../data/placeholder-prints.json'
 
 const heroSettings = await getMainHeroSettings()
 ---
@@ -13,17 +15,5 @@ const heroSettings = await getMainHeroSettings()
     backgroundColor={heroSettings.backgroundColorHex}
   />
 
-  <main
-    id="home-main"
-    class="min-h-dvh bg-hero-bg px-section-md py-section-lg"
-  >
-    <div class="mx-auto max-w-3xl">
-      <h1 class="text-capellos-purple text-3xl sm:text-4xl">
-        Welkom bij Capellos
-      </h1>
-      <p class="mt-6 text-lg leading-relaxed text-capellos-purple/85">
-        Scroll om de hero te verlaten — hier komt je homepage-content.
-      </p>
-    </div>
-  </main>
+  <CatalogPreview prints={placeholderPrints} />
 </MainLayout>

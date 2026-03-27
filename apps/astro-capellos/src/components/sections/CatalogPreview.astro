@@ -1,0 +1,112 @@
+---
+import PrintItem from '../PrintItem.astro'
+
+export interface Print {
+  id: string
+  title: string
+  price: number
+  size: string
+  imageUrl: string
+  slug?: string
+}
+
+interface Props {
+  prints: Print[]
+}
+
+const {prints} = Astro.props
+
+// 3×3 staggered grid — auto-rows-[80px], row-span-4 → ~320px per item
+// groups separated by 2 empty rows for breathing room
+const gridPositions = [
+  // group 1
+  'col-span-3 col-start-1  row-start-1  row-span-4',
+  'col-span-3 col-start-5  row-start-4  row-span-4',
+  'col-span-3 col-start-9  row-start-2  row-span-4',
+  // group 2 (2-row gap after group 1)
+  'col-span-3 col-start-2  row-start-8  row-span-4',
+  'col-span-3 col-start-6  row-start-10  row-span-4',
+  'col-span-3 col-start-10 row-start-7  row-span-4',
+  // group 3 (2-row gap after group 2)
+  'col-span-3 col-start-1  row-start-13 row-span-4',
+  'col-span-3 col-start-5  row-start-16 row-span-4',
+  'col-span-3 col-start-9  row-start-14 row-span-4',
+]
+
+// 8 ghost background images spread across the full section height
+const bgPositions = [
+  'top: 3%;  left: 1%;   width: 20%;',
+  'top: 4%;  left: 43%;  width: 20%;',
+  'top: 3%;  right: 0%;  width: 20%;',
+  'top: 32%; left: 22%;  width: 20%;',
+  'top: 36%; right: 2%;  width: 20%;',
+  'top: 58%; left: 1%;   width: 20%;',
+  'top: 62%; left: 53%;  width: 20%;',
+  'top: 65%; right: 1%;  width: 20%;',
+]
+
+const bgItems = prints.length
+  ? bgPositions.map((style, i) => ({style, imageUrl: prints[i % prints.length].imageUrl}))
+  : []
+---
+
+<section id="catalog-preview" class="relative overflow-hidden py-section-md">
+  <!-- Parallax background layer -->
+  <div id="catalog-preview-bg" class="pointer-events-none absolute inset-x-0 top-0 bottom-[-25%]">
+    {
+      bgItems.map((item) => (
+        <div class="absolute aspect-square opacity-30" style={item.style}>
+          <img
+            src={item.imageUrl}
+            alt=""
+            class="h-full w-full object-cover"
+            style="filter: blur(8px);"
+          />
+        </div>
+      ))
+    }
+  </div>
+
+  <!-- Foreground grid -->
+  <div class="container relative mx-auto px-4">
+    <div class="grid grid-cols-12 auto-rows-[80px] gap-x-4 gap-y-6">
+      {
+        prints
+          .slice(0, gridPositions.length)
+          .map((print, i) => (
+            <PrintItem
+              gridClass={gridPositions[i]}
+              title={print.title}
+              price={print.price}
+              imageUrl={print.imageUrl}
+              size={print.size}
+              href={print.slug ? `/prints/${print.slug}` : '#'}
+            />
+          ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  import gsap from 'gsap'
+  import {ScrollTrigger} from 'gsap/ScrollTrigger'
+
+  gsap.registerPlugin(ScrollTrigger)
+
+  const section = document.getElementById('catalog-preview')
+  const bg = document.getElementById('catalog-preview-bg')
+
+  if (section && bg) {
+    gsap.to(bg, {
+      yPercent: 18,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: section,
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: 1.4,
+      },
+    })
+  }
+</script>
