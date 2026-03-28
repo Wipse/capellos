@@ -1,0 +1,17 @@
+---
+interface Props {
+  opacity?: number
+  id?: string
+}
+
+const {opacity = 10, id} = Astro.props
+---
+
+<div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true" id={id}>
+  <img
+    src="/images/frutsel-zw.jpg"
+    alt=""
+    class="bg-drift h-full w-full object-cover"
+    style={`opacity: ${opacity / 100};`}
+  />
+</div>

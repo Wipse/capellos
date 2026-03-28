@@ -1,6 +1,9 @@
 ---
 import Logo from '../Logo.astro'
 import BlobClip from '../BlobClip.astro'
+import DriftBackground from '../DriftBackground.astro'
+import Icon from '../Icon.astro'
+import Link from '../Link.astro'
 
 interface Props {
   textColor?: string
@@ -26,17 +29,7 @@ const navItems = [
   class="relative flex h-[88dvh] min-h-[88svh] items-center justify-center px-4 py-10"
   style={`background-color: ${backgroundColor}; --hero-text: ${textColor}; --hero-nav-text: ${navigationTextColor}; --hero-background: ${backgroundColor};`}
 >
-  <div
-    id="hero-bg-layer"
-    class="pointer-events-none absolute inset-0 overflow-hidden"
-    aria-hidden="true"
-  >
-    <img
-      src="/images/frutsel-zw.jpg"
-      alt=""
-      class="bg-drift h-full w-full object-cover opacity-10"
-    />
-  </div>
+  <DriftBackground id="hero-bg-layer" />
 
   <div
     id="hero-inner"
@@ -47,7 +40,11 @@ const navItems = [
       class="hero-anim-start relative aspect-859/286 w-full max-w-[min(92vw,52rem)]"
     >
       <Logo color="#FFFFFF" addedClasses="absolute inset-0 h-full w-full" />
-      <Logo color={textColor} addedClasses="absolute inset-0 top-1 left-0.5 h-full w-full" />
+      <Logo
+        color={textColor}
+        addedClasses="absolute inset-0 top-1 left-0.5 h-full w-full"
+        has-hover-colors
+      />
     </div>
 
     <nav
@@ -61,18 +58,16 @@ const navItems = [
         {
           navItems.map(({href, label}) => (
             <li class="md:px-6 md:first:pl-0 md:last:pr-0 sm:px-10">
-              <a
+              <Link
                 data-hero-nav-item
                 href={href}
-                class:list={[
-                  'relative inline-block pb-1 text-xl font-heading font-semibold text-(--hero-nav-text)',
-                  "after:pointer-events-none after:absolute after:bottom-0 after:left-0 after:block after:h-0.5 after:w-full after:content-['']",
-                  'after:origin-left after:scale-x-0 after:bg-(--hero-text) after:transition-transform after:duration-300 after:ease-out',
-                  'hover:after:scale-x-100 focus-visible:after:scale-x-100 focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-(--hero-nav-text)/90 focus-visible:ring-offset-2 focus-visible:ring-offset-(--hero-background)',
-                ]}
-              >
-                {label}
-              </a>
+                label={label}
+                size="xl"
+                hover="underline"
+                has-heading-font
+                underline-color="var(--hero-text)"
+                class="font-semibold text-(--hero-nav-text) focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-(--hero-nav-text)/90 focus-visible:ring-offset-2 focus-visible:ring-offset-(--hero-background)"
+              />
             </li>
           ))
         }
@@ -92,18 +87,7 @@ const navItems = [
     <span class="font-heading text-sm tracking-wide text-(--hero-nav-text)/80 md:text-base">
       Scroll
     </span>
-    <svg
-      class="h-7 w-7 text-(--hero-text)"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      aria-hidden="true"
-    >
-      <path d="m6 9 6 6 6-6"></path>
-    </svg>
+    <Icon type="chevron-down" size={28} addedClasses="text-(--hero-text)" />
   </div>
 </div>
 
@@ -120,10 +104,18 @@ const navItems = [
     #main-hero {
       /* Static polygon approximation of the blob shape */
       clip-path: polygon(
-        0% 0%, 100% 0%, 100% 88%,
-        92% 93%, 82% 96%, 70% 92%,
-        58% 88%, 52% 82%, 40% 85%,
-        28% 88%, 16% 94%, 0% 88%
+        0% 0%,
+        100% 0%,
+        100% 88%,
+        92% 93%,
+        82% 96%,
+        70% 92%,
+        58% 88%,
+        52% 82%,
+        40% 85%,
+        28% 88%,
+        16% 94%,
+        0% 88%
       );
     }
   }

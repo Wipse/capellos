@@ -2,6 +2,8 @@
 import BlobClip from '../BlobClip.astro'
 import Logo from '../Logo.astro'
 import CategoryNavItem from '../CategoryNavItem.astro'
+import DriftBackground from '../DriftBackground.astro'
+import Icon from '../Icon.astro'
 
 interface Category {
   label: string
@@ -33,14 +35,7 @@ const categories: Category[] = [
   class="relative -mt-20 py-section-xl"
   style={`background-color: ${backgroundColor}; --about-text: ${textColor}; --about-bg: ${backgroundColor};`}
 >
-  <!-- Moving background texture -->
-  <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-    <img
-      src="/images/frutsel-zw.jpg"
-      alt=""
-      class="bg-drift h-full w-full object-cover opacity-10"
-    />
-  </div>
+  <DriftBackground />
 
   <!-- Content -->
   <div class="container relative mx-auto px-6 lg:px-12">
@@ -94,18 +89,7 @@ const categories: Category[] = [
           style={`color: ${textColor}; border-color: ${textColor};`}
         >
           Lees meer
-          <svg
-            class="h-4 w-4"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <path d="m9 18 6-6-6-6"></path>
-          </svg>
+          <Icon type="chevron-right" size={16} />
         </a>
       </div>
     </div>

@@ -5,6 +5,7 @@ import CatalogPreview from '../components/sections/CatalogPreview.astro'
 import AboutCapellos from '../components/sections/AboutCapellos.astro'
 import {getMainHeroSettings, getAboutCapellosSettings} from '../queries/settings'
 import placeholderPrints from '../data/placeholder-prints.json'
+import Footer from '../components/sections/Footer.astro'
 
 const [heroSettings, aboutSettings] = await Promise.all([
   getMainHeroSettings(),
@@ -25,4 +26,6 @@ const [heroSettings, aboutSettings] = await Promise.all([
     backgroundColor={aboutSettings.backgroundColorHex}
     textColor={aboutSettings.textColorHex}
   />
+
+  <Footer />
 </MainLayout>

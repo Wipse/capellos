@@ -1,0 +1,96 @@
+---
+import type {HTMLAttributes} from 'astro/types'
+import type {IconType} from '../types/icons'
+import Icon from './Icon.astro'
+
+type Size = 'sm' | 'md' | 'lg' | 'xl'
+type Hover = 'opacity' | 'underline'
+
+type Props = HTMLAttributes<'a'> & {
+  href: string
+  label?: string
+  size?: Size
+  hover?: Hover
+  'prefix-icon'?: IconType
+  /** CSS color value for the underline (hover="underline" only). Defaults to currentColor. */
+  'underline-color'?: string
+  'has-heading-font'?: boolean
+}
+
+const {
+  href,
+  label,
+  size = 'md',
+  hover = 'opacity',
+  'prefix-icon': prefixIcon,
+  'underline-color': underlineColor,
+  'has-heading-font': hasHeadingFont = false,
+  class: className,
+  style,
+  ...rest
+} = Astro.props
+
+const inlineStyle = [
+  underlineColor ? `--link-underline: ${underlineColor};` : '',
+  style ?? '',
+]
+  .filter(Boolean)
+  .join(' ') || undefined
+
+const sizeConfig: Record<Size, {text: string; bubble: string; icon: number; gap: string}> = {
+  sm: {text: 'text-sm',   bubble: 'size-8',  icon: 14, gap: 'gap-2'},
+  md: {text: 'text-base', bubble: 'size-9',  icon: 16, gap: 'gap-2'},
+  lg: {text: 'text-lg',   bubble: 'size-12', icon: 24, gap: 'gap-3'},
+  xl: {text: 'text-xl',   bubble: 'size-14', icon: 28, gap: 'gap-4'},
+}
+
+const {text, bubble, icon: iconSize, gap} = sizeConfig[size]
+
+const hasIcon = !!prefixIcon
+const hasLabel = !!label
+
+// When there's an icon, underline only the text span via group-hover.
+// When there's no icon, apply the underline directly to the <a>.
+const underlineOnAnchor = [
+  'relative pb-1',
+  "after:pointer-events-none after:absolute after:bottom-0 after:left-0 after:block after:h-0.5 after:w-full after:content-['']",
+  'after:origin-left after:scale-x-0 after:bg-(--link-underline,currentColor) after:transition-transform after:duration-300 after:ease-out',
+  'hover:after:scale-x-100 focus-visible:after:scale-x-100',
+].join(' ')
+
+const underlineOnLabel = [
+  'relative pb-0.5',
+  "after:pointer-events-none after:absolute after:bottom-0 after:left-0 after:block after:h-0.5 after:w-full after:content-['']",
+  'after:origin-left after:scale-x-0 after:bg-(--link-underline,currentColor) after:transition-transform after:duration-300 after:ease-out',
+  'group-hover:after:scale-x-100 group-focus-visible:after:scale-x-100',
+].join(' ')
+
+const anchorHoverClasses =
+  hover === 'opacity'
+    ? 'hover:opacity-75 transition-opacity'
+    : hasIcon
+      ? 'group'
+      : underlineOnAnchor
+
+const layout = hasIcon ? `inline-flex items-center ${gap}` : 'inline-block'
+---
+
+<a
+  href={href}
+  class:list={[layout, anchorHoverClasses, text, hasHeadingFont && 'font-heading', className]}
+  style={inlineStyle}
+  {...rest}
+>
+  {
+    hasIcon && (
+      <span class:list={['flex shrink-0 items-center justify-center rounded-full bg-current/12', bubble]}>
+        <Icon type={prefixIcon!} size={iconSize} />
+      </span>
+    )
+  }
+  {hasLabel && (
+    <span class:list={[hover === 'underline' && hasIcon && underlineOnLabel]}>
+      {label}
+    </span>
+  )}
+</a>

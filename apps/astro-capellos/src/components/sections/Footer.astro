@@ -1,0 +1,119 @@
+---
+import BlobClip from '../BlobClip.astro'
+import Logo from '../Logo.astro'
+import FooterContactInfo from '../FooterContactInfo.astro'
+import FooterNav from '../FooterNav.astro'
+import DriftBackground from '../DriftBackground.astro'
+import Link from '../Link.astro'
+
+interface Props {
+  backgroundColor?: string
+  textColor?: string
+}
+
+const {backgroundColor = '#5B6FE6', textColor = '#FFFFFF'} = Astro.props
+
+const navGroups = [
+  {
+    title: 'Capellos',
+    links: [
+      {label: 'Over Capellos', href: '/over'},
+      {label: 'Contact', href: '/contact'},
+      {label: 'Retour voorwaarden', href: '/retour'},
+    ],
+  },
+  {
+    title: 'Producten',
+    links: [
+      {label: 'Prints', href: '/prints'},
+      {label: 'Kleding', href: '/kleding'},
+      {label: 'Sieraden', href: '/sieraden'},
+      {label: 'Aanvragen', href: '/aanvragen'},
+    ],
+  },
+]
+
+const legalLinks = [
+  {label: 'Cookie Policy', href: '/cookies'},
+  {label: 'Privacy Policy', href: '/privacy'},
+  {label: 'Algemene Voorwaarden', href: '/voorwaarden'},
+]
+---
+
+<BlobClip id="footerClip" edges="top" movement="slow" />
+
+<footer
+  id="site-footer"
+  class="relative pt-section-xl pb-10"
+  style={`background-color: ${backgroundColor}; --footer-text: ${textColor};`}
+>
+  <DriftBackground />
+
+  <div class="container relative mx-auto px-6 lg:px-12">
+    <!-- Top 3-column grid -->
+    <div class="grid grid-cols-1 gap-10 sm:grid-cols-12 sm:">
+      <div class="col-span-3">
+        <FooterContactInfo textColor={textColor} />
+      </div>
+      <div class="col-span-6 col-start-6">
+        <FooterNav textColor={textColor} groups={navGroups} />
+      </div>
+    </div>
+
+    <!-- Full-width logo -->
+    <div class="w-full" aria-hidden="true">
+      <Logo color={textColor} addedClasses="w-full h-auto" />
+    </div>
+
+    <!-- Bottom bar -->
+    <div
+      class="mt-6 flex flex-col gap-2 border-t pt-6 sm:flex-row sm:items-center sm:justify-between"
+      style={`border-color: ${textColor}30;`}
+    >
+      <p class="font-heading text-sm font-semibold" style={`color: ${textColor};`}>
+        Website by Wisse Heida
+      </p>
+      <ul class="flex flex-wrap gap-4">
+        {
+          legalLinks.map(({label, href}) => (
+            <li>
+              <Link
+                href={href}
+                label={label}
+                hover="underline"
+                size="sm"
+                style={`color: ${textColor};`}
+                has-heading-font
+              />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<style>
+  #site-footer {
+    clip-path: url(#footerClip);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #site-footer {
+      clip-path: polygon(
+        0% 14%,
+        12% 4%,
+        25% 0%,
+        42% 7%,
+        54% 12%,
+        60% 16%,
+        72% 7%,
+        84% 0%,
+        93% 3%,
+        100% 14%,
+        100% 100%,
+        0% 100%
+      );
+    }
+  }
+</style>

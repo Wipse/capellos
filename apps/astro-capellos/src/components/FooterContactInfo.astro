@@ -1,0 +1,76 @@
+---
+import {getFooterContactInfo} from '../queries/settings'
+import Link from './Link.astro'
+import Icon from './Icon.astro'
+
+interface Props {
+  textColor: string
+}
+
+const {textColor} = Astro.props
+const contact = await getFooterContactInfo()
+---
+
+<div>
+  <h2 class="mb-6 font-heading text-4xl font-bold" style={`color: ${textColor};`}>
+    {contact.sectionTitle}
+  </h2>
+  <ul class="flex flex-col gap-3">
+    <li>
+      <Link
+        href={`mailto:${contact.email}`}
+        label={contact.email}
+        prefix-icon="email"
+        size="lg"
+        hover="opacity"
+        style={`color: ${textColor};`}
+      />
+    </li>
+    <li>
+      <Link
+        href={`tel:${contact.phoneHref}`}
+        label={contact.phone}
+        prefix-icon="phone"
+        size="lg"
+        hover="opacity"
+        style={`color: ${textColor};`}
+      />
+    </li>
+    <li>
+      <span class="flex items-center gap-3 text-lg" style={`color: ${textColor};`}>
+        <span class="flex size-12 shrink-0 items-center justify-center rounded-full bg-current/12">
+          <Icon type="map-pin" size={24} />
+        </span>
+        {contact.address}
+      </span>
+    </li>
+  </ul>
+
+  <!-- Social icons -->
+  <div class="mt-6 flex gap-3">
+    {
+      contact.instagramUrl && (
+        <Link
+          href={contact.instagramUrl}
+          prefix-icon="instagram"
+          size="lg"
+          hover="opacity"
+          aria-label="Instagram"
+          style={`color: ${textColor};`}
+        />
+      )
+    }
+    {
+      contact.linkedinUrl && (
+        <Link
+          href={contact.linkedinUrl}
+          prefix-icon="linkedin"
+          size="lg"
+          hover="opacity"
+          aria-label="LinkedIn"
+          style={`color: ${textColor};`}
+        />
+      )
+    }
+  </div>
+</div>

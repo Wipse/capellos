@@ -88,15 +88,14 @@ export const structure: StructureResolver = (S) =>
                     .title('Beginscherm Instellingen')
                     .initialValueTemplate('mainHeroSettings')
                 ),
-              // Accessories Types
+              // Footer Contact Info
               S.listItem()
-              .title('Accessories Types')
-              .child(
-                S.document()
-                  .documentId('contactPage')
-                  .schemaType('standardPage')
-                  .title('Contactpagina')
-                  .initialValueTemplate('contactPage')
+                .title('Footer Contactgegevens')
+                .child(
+                  S.document()
+                    .documentId('footerContactInfoSettings')
+                    .schemaType('footerContactInfoSettings')
+                    .title('Footer Contactgegevens')
                 ),
             ])
         ),

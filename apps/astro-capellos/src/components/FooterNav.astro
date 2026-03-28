@@ -1,0 +1,46 @@
+---
+import Link from './Link.astro'
+
+interface NavLink {
+  label: string
+  href: string
+}
+
+interface NavGroup {
+  title: string
+  links: NavLink[]
+}
+
+interface Props {
+  textColor: string
+  groups: NavGroup[]
+}
+
+const {textColor, groups} = Astro.props
+---
+
+<div class="flex justify-end gap-20">
+  {
+    groups.map(({title, links}) => (
+      <div>
+        <h2 class="mb-6 font-heading text-4xl font-bold" style={`color: ${textColor};`}>
+          {title}
+        </h2>
+        <ul class="flex flex-col gap-3">
+          {links.map(({label, href}) => (
+            <li>
+              <Link
+                href={href}
+                label={label}
+                size="lg"
+                hover="opacity"
+                class="font-body"
+                style={`color: ${textColor};`}
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))
+  }
+</div>

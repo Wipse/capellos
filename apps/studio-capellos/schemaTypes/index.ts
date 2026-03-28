@@ -10,6 +10,7 @@ import {textImageType} from './pages/sections/textImageType'
 
 // Singleton documents (IDs in structure are fixed, no `sections`-objects)
 import {mainHeroSettingsType} from './singletons/mainHeroSettings'
+import {footerContactInfoSettingsType} from './singletons/footerContactInfoSettings'
 
 export const schemaTypes = [
   // Products
@@ -26,4 +27,5 @@ export const schemaTypes = [
 
   // Singletons
   mainHeroSettingsType,
+  footerContactInfoSettingsType,
 ]
