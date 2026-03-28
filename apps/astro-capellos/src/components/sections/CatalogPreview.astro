@@ -24,25 +24,25 @@ const gridPositions = [
   'col-span-3 col-start-5  row-start-4  row-span-4',
   'col-span-3 col-start-9  row-start-2  row-span-4',
   // group 2 (2-row gap after group 1)
-  'col-span-3 col-start-2  row-start-8  row-span-4',
+  'col-span-3 col-start-2  row-start-9  row-span-4',
   'col-span-3 col-start-6  row-start-10  row-span-4',
-  'col-span-3 col-start-10 row-start-7  row-span-4',
+  'col-span-3 col-start-10 row-start-8  row-span-4',
   // group 3 (2-row gap after group 2)
-  'col-span-3 col-start-1  row-start-13 row-span-4',
-  'col-span-3 col-start-5  row-start-16 row-span-4',
-  'col-span-3 col-start-9  row-start-14 row-span-4',
+  'col-span-3 col-start-1  row-start-15 row-span-4',
+  'col-span-3 col-start-5  row-start-17 row-span-4',
+  'col-span-3 col-start-9  row-start-16 row-span-4',
 ]
 
 // 8 ghost background images spread across the full section height
 const bgPositions = [
-  'top: 3%;  left: 1%;   width: 20%;',
-  'top: 4%;  left: 43%;  width: 20%;',
-  'top: 3%;  right: 0%;  width: 20%;',
-  'top: 32%; left: 22%;  width: 20%;',
-  'top: 36%; right: 2%;  width: 20%;',
-  'top: 58%; left: 1%;   width: 20%;',
-  'top: 62%; left: 53%;  width: 20%;',
-  'top: 65%; right: 1%;  width: 20%;',
+  'top: 32%;  left: 1%;   width: 20%;',
+  'top: 24%;  left: 46%;  width: 20%;',
+  'top: 36%;  right: 5%;  width: 20%;',
+  'top: 55%;  left: 40%;  width: 20%;',
+  'top: 62%;  right: 2%;  width: 20%;',
+  'top: 75%;  left: 5%;   width: 20%;',
+  'top: 82%;  left: 40%;  width: 20%;',
+  'top: 95%;  right: 1%;  width: 20%;',
 ]
 
 const bgItems = prints.length
@@ -50,12 +50,12 @@ const bgItems = prints.length
   : []
 ---
 
-<section id="catalog-preview" class="relative overflow-hidden py-section-md">
+<section id="catalog-preview" class="relative z-10 overflow-hidden pt-section-md pb-section-xl">
   <!-- Parallax background layer -->
-  <div id="catalog-preview-bg" class="pointer-events-none absolute inset-x-0 top-0 bottom-[-25%]">
+  <div id="catalog-preview-bg" class="pointer-events-none absolute inset-x-0 top-[-20%] bottom-0">
     {
       bgItems.map((item) => (
-        <div class="absolute aspect-square opacity-30" style={item.style}>
+        <div class="absolute aspect-297-420 opacity-30" style={item.style}>
           <img
             src={item.imageUrl}
             alt=""
@@ -99,7 +99,7 @@ const bgItems = prints.length
 
   if (section && bg) {
     gsap.to(bg, {
-      yPercent: 18,
+      yPercent: -15,
       ease: 'none',
       scrollTrigger: {
         trigger: section,

@@ -1,0 +1,48 @@
+---
+interface Props {
+  label: string
+  title: string
+  href: string
+  imageUrl: string
+  textColor?: string
+}
+
+const {label, title, href, imageUrl, textColor = '#FFFFFF'} = Astro.props
+---
+
+<a href={href} class="group">
+  <img
+    src={imageUrl}
+    alt={title}
+    class="w-full aspect-16/11 object-cover transition-transform duration-300 group-hover:scale-105 rounded-t-2xl"
+  />
+  <div class="flex justify-between items-center">
+    <div class="flex-1 mt-3">
+      <p
+        class="text-xs font-heading tracking-widest uppercase opacity-70"
+        style={`color: ${textColor};`}
+      >
+        {label}
+      </p>
+      <p
+        class="text-2xl font-heading uppercase font-semibold group-hover:underline"
+        style={`color: ${textColor};`}
+      >
+        {title}
+      </p>
+    </div>
+    <svg
+      class="h-10 w-10 shrink-0 transition-transform duration-200 group-hover:translate-x-1"
+      style={`color: ${textColor};`}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <path d="m9 18 6-6-6-6"></path>
+    </svg>
+  </div>
+</a>

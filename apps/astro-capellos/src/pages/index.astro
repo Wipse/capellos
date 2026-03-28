@@ -1,11 +1,15 @@
 ---
 import MainLayout from '../layouts/main.astro'
 import MainHero from '../components/sections/MainHero.astro'
-import {getMainHeroSettings} from '../queries/settings'
 import CatalogPreview from '../components/sections/CatalogPreview.astro'
+import AboutCapellos from '../components/sections/AboutCapellos.astro'
+import {getMainHeroSettings, getAboutCapellosSettings} from '../queries/settings'
 import placeholderPrints from '../data/placeholder-prints.json'
 
-const heroSettings = await getMainHeroSettings()
+const [heroSettings, aboutSettings] = await Promise.all([
+  getMainHeroSettings(),
+  getAboutCapellosSettings(),
+])
 ---
 
 <MainLayout title="Capellos">
@@ -16,4 +20,9 @@ const heroSettings = await getMainHeroSettings()
   />
 
   <CatalogPreview prints={placeholderPrints} />
+
+  <AboutCapellos
+    backgroundColor={aboutSettings.backgroundColorHex}
+    textColor={aboutSettings.textColorHex}
+  />
 </MainLayout>

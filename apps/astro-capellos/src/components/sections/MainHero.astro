@@ -1,5 +1,6 @@
 ---
 import Logo from '../Logo.astro'
+import BlobClip from '../BlobClip.astro'
 
 interface Props {
   textColor?: string
@@ -18,36 +19,7 @@ const navItems = [
 ] as const
 ---
 
-<!-- Hidden SVG – defines the animated clip-path that gives the hero its organic bottom edge -->
-<svg
-  width="0"
-  height="0"
-  style="position:absolute;pointer-events:none;overflow:hidden"
-  aria-hidden="true"
-  focusable="false"
->
-  <defs>
-    <clipPath id="heroClip" clipPathUnits="objectBoundingBox">
-      <path
-        d="M0,0 L1,0 L1,0.88 C0.92,0.93 0.82,0.96 0.70,0.92 C0.58,0.88 0.52,0.82 0.40,0.85 C0.28,0.88 0.16,0.94 0,0.88 Z"
-      >
-        <animate
-          attributeName="d"
-          dur="9s"
-          repeatCount="indefinite"
-          calcMode="spline"
-          keyTimes="0;0.5;1"
-          keySplines=".4 0 .2 1;.4 0 .2 1"
-          values="
-            M0,0 L1,0 L1,0.88 C0.92,0.93 0.82,0.96 0.70,0.92 C0.58,0.88 0.52,0.82 0.40,0.85 C0.28,0.88 0.16,0.94 0,0.88 Z;
-            M0,0 L1,0 L1,0.93 C0.92,0.88 0.82,0.84 0.71,0.88 C0.59,0.92 0.53,0.97 0.40,0.94 C0.27,0.91 0.15,0.88 0,0.93 Z;
-            M0,0 L1,0 L1,0.88 C0.92,0.93 0.82,0.96 0.70,0.92 C0.58,0.88 0.52,0.82 0.40,0.85 C0.28,0.88 0.16,0.94 0,0.88 Z
-          "
-        />
-      </path>
-    </clipPath>
-  </defs>
-</svg>
+<BlobClip id="heroClip" edges="bottom" movement="normal" />
 
 <section
   id="main-hero"

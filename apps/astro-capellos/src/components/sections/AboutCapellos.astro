@@ -1,0 +1,163 @@
+---
+import BlobClip from '../BlobClip.astro'
+import Logo from '../Logo.astro'
+import CategoryNavItem from '../CategoryNavItem.astro'
+
+interface Category {
+  label: string
+  title: string
+  href: string
+  imageUrl: string
+}
+
+interface Props {
+  backgroundColor?: string
+  textColor?: string
+}
+
+const {backgroundColor = '#4BAF6E', textColor = '#FFFFFF'} = Astro.props
+
+// Placeholder categories — will come from Sanity
+const categories: Category[] = [
+  {label: 'Shop', title: 'Kleding', href: '/', imageUrl: '/images/frutsel.png'},
+  {label: 'Shop', title: 'Prints', href: '/prints', imageUrl: '/images/frutsel.png'},
+  {label: 'Shop', title: 'Sieraden', href: '#', imageUrl: '/images/frutsel.png'},
+  {label: 'Jij vraagt ik maak!', title: 'Aanvragen', href: '#', imageUrl: '/images/frutsel.png'},
+]
+---
+
+<BlobClip id="aboutClip" edges="both" movement="slow" />
+
+<section
+  id="about-capellos"
+  class="relative -mt-20 py-section-xl"
+  style={`background-color: ${backgroundColor}; --about-text: ${textColor}; --about-bg: ${backgroundColor};`}
+>
+  <!-- Moving background texture -->
+  <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+    <img
+      src="/images/frutsel-zw.jpg"
+      alt=""
+      class="bg-drift h-full w-full object-cover opacity-10"
+    />
+  </div>
+
+  <!-- Content -->
+  <div class="container relative mx-auto px-6 lg:px-12">
+    <div class="grid grid-cols-1 gap-12 lg:grid-cols-[2fr_3fr] lg:gap-20">
+      <!-- Left: category navigation -->
+      <nav aria-label="Categorieën" class="flex flex-col gap-20">
+        {
+          categories.map((cat) => (
+            <CategoryNavItem
+              label={cat.label}
+              title={cat.title}
+              href={cat.href}
+              imageUrl={cat.imageUrl}
+              textColor={textColor}
+            />
+          ))
+        }
+      </nav>
+
+      <!-- Right: about text — sticky while left column scrolls past -->
+      <div class="flex flex-col lg:sticky lg:self-start lg:top-[12vh]">
+        <p class="font-heading text-4xl font-light -mb-5" style={`color: ${textColor};`}>Wat is</p>
+        <div class="w-full max-w-md">
+          <Logo color={textColor} addedClasses="w-full h-auto" />
+        </div>
+
+        <div
+          class="mt-6 flex flex-col gap-4 font-body text-base leading-relaxed opacity-90"
+          style={`color: ${textColor};`}
+        >
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie,
+            dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem
+            sollicitudin lacus.
+          </p>
+          <p>
+            Risus. Maecenas eget condimentum velit, sit amet feugiat lectus. Class aptent taciti
+            sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+          </p>
+          <p>
+            Risus. Maecenas eget condimentum velit, sit amet feugiat lectus. Class aptent taciti
+            sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Risus. Maecenas
+            eget condimentum velit, sit amet feugiat lectus. Class aptent taciti sociosqu ad litora
+            torquent per conubia nostra, per inceptos himenaeos.
+          </p>
+        </div>
+
+        <a
+          href="/over"
+          class="mt-8 inline-flex w-fit items-center gap-2 border px-6 py-3 font-heading text-sm font-semibold tracking-widest uppercase transition-colors hover:opacity-80"
+          style={`color: ${textColor}; border-color: ${textColor};`}
+        >
+          Lees meer
+          <svg
+            class="h-4 w-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="m9 18 6-6-6-6"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import gsap from 'gsap'
+  import {ScrollTrigger} from 'gsap/ScrollTrigger'
+
+  gsap.registerPlugin(ScrollTrigger)
+
+  const items = gsap.utils.toArray<HTMLElement>('#about-capellos nav > a')
+
+  items.forEach((item) => {
+    gsap.from(item, {
+      y: 48,
+      opacity: 0,
+      duration: 0.7,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: item,
+        start: 'top 88%',
+        toggleActions: 'play none play reverse',
+      },
+    })
+  })
+</script>
+
+<style>
+  #about-capellos {
+    clip-path: url(#aboutClip);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #about-capellos {
+      clip-path: polygon(
+        0% 5%,
+        18% 1%,
+        35% 3%,
+        52% 6%,
+        68% 9%,
+        82% 4%,
+        100% 5%,
+        100% 95%,
+        82% 99%,
+        65% 97%,
+        48% 94%,
+        32% 91%,
+        17% 96%,
+        0% 95%
+      );
+    }
+  }
+</style>
