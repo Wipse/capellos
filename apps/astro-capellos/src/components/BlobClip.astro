@@ -1,47 +1,110 @@
 ---
 /**
- * Renders a hidden SVG <clipPath> definition.
+ * Renders hidden SVG <clipPath> definitions — one for desktop, one for mobile.
  * Apply to any element with: style="clip-path: url(#{id})"
+ * On mobile (< 640px) CSS switches to url(#{id}-mobile) automatically.
  *
  * edges:
  *   'bottom'  — wavy bottom edge only (hero-style)
+ *   'top'     — wavy top edge only (footer-style)
  *   'both'    — wavy top + bottom edges (section-style)
  *
  * movement:
  *   'slow'    — 14s cycle, subtle wobble
  *   'normal'  — 9s cycle
  *   'intense' — 5s cycle, aggressive morph
+ *
+ * amplitude:
+ *   'sm'  — subtle wave
+ *   'md'  — moderate wave
+ *   'lg'  — prominent wave (default)
+ *   'xl'  — aggressive wave
  */
 interface Props {
   id: string
   edges?: 'bottom' | 'top' | 'both'
   movement?: 'slow' | 'normal' | 'intense'
+  amplitude?: 'sm' | 'md' | 'lg' | 'xl'
 }
 
-const {id, edges = 'bottom', movement = 'normal'} = Astro.props
+type Movement = NonNullable<Props['movement']>
+type Amplitude = NonNullable<Props['amplitude']>
 
-const dur = {slow: '14s', normal: '9s', intense: '5s'}[movement]
+const MOVEMENT_DUR = {
+  slow: '14s',
+  normal: '9s',
+  intense: '5s',
+} as const satisfies Record<Movement, string>
 
-// bottom-only: clips a rectangular top, wavy bottom (~82–93% height)
-const bottomP1 =
-  'M0,0 L1,0 L1,0.88 C0.92,0.93 0.82,0.96 0.70,0.92 C0.58,0.88 0.52,0.82 0.40,0.85 C0.28,0.88 0.16,0.94 0,0.88 Z'
-const bottomP2 =
-  'M0,0 L1,0 L1,0.93 C0.92,0.88 0.82,0.84 0.71,0.88 C0.59,0.92 0.53,0.97 0.40,0.94 C0.27,0.91 0.15,0.88 0,0.93 Z'
+// Desktop (d) and mobile (m) amplitude per level
+const AMP = {
+  sm: {d: 0.03, m: 0.01},
+  md: {d: 0.05, m: 0.02},
+  lg: {d: 0.08, m: 0.03},
+  xl: {d: 0.12, m: 0.05},
+} as const satisfies Record<Amplitude, {d: number; m: number}>
 
-// top-only: wavy top (~0–15%), flat bottom — for footer
-const topP1 =
-  'M0,0.14 C0.12,0.04 0.25,0 0.42,0.07 C0.54,0.12 0.60,0.16 0.72,0.07 C0.84,0 0.93,0.03 1,0.14 L1,1 L0,1 Z'
-const topP2 =
-  'M0,0.09 C0.12,0.17 0.25,0.13 0.42,0.08 C0.54,0.03 0.60,0 0.72,0.08 C0.84,0.14 0.93,0.12 1,0.09 L1,1 L0,1 Z'
+const {
+  id,
+  edges = 'bottom',
+  movement: movementProp = 'normal',
+  amplitude: amplitudeProp = 'lg',
+} = Astro.props
 
-// both-edges: wavy top (~4–8%) and wavy bottom (~92–96%) — less amplitude than hero
-const bothP1 =
-  'M0,0.05 C0.18,0.01 0.35,0.03 0.52,0.06 C0.68,0.09 0.82,0.04 1,0.05 L1,0.95 C0.82,0.99 0.65,0.97 0.48,0.94 C0.32,0.91 0.17,0.96 0,0.95 Z'
-const bothP2 =
-  'M0,0.08 C0.18,0.05 0.35,0.07 0.52,0.03 C0.68,0 0.82,0.07 1,0.08 L1,0.92 C0.82,0.95 0.65,0.94 0.48,0.97 C0.32,1.00 0.17,0.93 0,0.92 Z'
+const movement = movementProp as Movement
+const amplitude = amplitudeProp as Amplitude
+const dur = MOVEMENT_DUR[movement]
+const {d: da, m: ma} = AMP[amplitude]
 
-const p1 = edges === 'both' ? bothP1 : edges === 'top' ? topP1 : bottomP1
-const p2 = edges === 'both' ? bothP2 : edges === 'top' ? topP2 : bottomP2
+// ─── Path generators (C1-continuous 2-segment cubic bezier) ──────────────────
+// C1 continuity: at each junction Q, if incoming last CP is P, outgoing first CP = 2Q − P.
+
+const r = (n: number) => Math.round(n * 1000) / 1000
+
+// Wavy bottom: flat top, wavy bottom edge
+// Phase 1: right half peaks at c+a, left half dips to c-a (inverted next cycle)
+function bottomPaths(c: number, a: number): [string, string] {
+  const p1 = `M0,0 L1,0 L1,${c} C0.83,${r(c + a)} 0.67,${r(c + a)} 0.50,${c} C0.33,${r(c - a)} 0.17,${r(c - a)} 0,${c} Z`
+  const p2 = `M0,0 L1,0 L1,${c} C0.83,${r(c - a)} 0.67,${r(c - a)} 0.50,${c} C0.33,${r(c + a)} 0.17,${r(c + a)} 0,${c} Z`
+  return [p1, p2]
+}
+
+// Wavy top: wavy top edge, flat bottom
+function topPaths(c: number, a: number): [string, string] {
+  const p1 = `M0,${c} C0.17,${r(c - a)} 0.33,${r(c - a)} 0.50,${c} C0.67,${r(c + a)} 0.83,${r(c + a)} 1,${c} L1,1 L0,1 Z`
+  const p2 = `M0,${c} C0.17,${r(c + a)} 0.33,${r(c + a)} 0.50,${c} C0.67,${r(c - a)} 0.83,${r(c - a)} 1,${c} L1,1 L0,1 Z`
+  return [p1, p2]
+}
+
+// Wavy top + bottom
+function bothPaths(tc: number, bc: number, a: number): [string, string] {
+  const p1 =
+    `M0,${tc} C0.17,${r(tc - a)} 0.33,${r(tc - a)} 0.50,${tc} C0.67,${r(tc + a)} 0.83,${r(tc + a)} 1,${tc}` +
+    ` L1,${bc} C0.83,${r(bc + a)} 0.67,${r(bc + a)} 0.50,${bc} C0.33,${r(bc - a)} 0.17,${r(bc - a)} 0,${bc} Z`
+  const p2 =
+    `M0,${tc} C0.17,${r(tc + a)} 0.33,${r(tc + a)} 0.50,${tc} C0.67,${r(tc - a)} 0.83,${r(tc - a)} 1,${tc}` +
+    ` L1,${bc} C0.83,${r(bc - a)} 0.67,${r(bc - a)} 0.50,${bc} C0.33,${r(bc + a)} 0.17,${r(bc + a)} 0,${bc} Z`
+  return [p1, p2]
+}
+
+// Edge centers (desktop / mobile)
+const BOTTOM = {d: 0.88, m: 0.92}
+const TOP = {d: 0.10, m: 0.07}
+const BOTH_T = {d: 0.06, m: 0.04}
+const BOTH_B = {d: 0.94, m: 0.96}
+
+let p1: string, p2: string, mp1: string, mp2: string
+
+if (edges === 'top') {
+  ;[p1, p2] = topPaths(TOP.d, da)
+  ;[mp1, mp2] = topPaths(TOP.m, ma)
+} else if (edges === 'both') {
+  ;[p1, p2] = bothPaths(BOTH_T.d, BOTH_B.d, da)
+  ;[mp1, mp2] = bothPaths(BOTH_T.m, BOTH_B.m, ma)
+} else {
+  ;[p1, p2] = bottomPaths(BOTTOM.d, da)
+  ;[mp1, mp2] = bottomPaths(BOTTOM.m, ma)
+}
 ---
 
 <svg
@@ -52,6 +115,7 @@ const p2 = edges === 'both' ? bothP2 : edges === 'top' ? topP2 : bottomP2
   focusable="false"
 >
   <defs>
+    <!-- Desktop clip -->
     <clipPath id={id} clipPathUnits="objectBoundingBox">
       <path d={p1}>
         <animate
@@ -61,8 +125,21 @@ const p2 = edges === 'both' ? bothP2 : edges === 'top' ? topP2 : bottomP2
           calcMode="spline"
           keyTimes="0;0.5;1"
           keySplines=".4 0 .2 1;.4 0 .2 1"
-          values={`${p1};${p2};${p1}`}
-        />
+          values={`${p1};${p2};${p1}`}></animate>
+      </path>
+    </clipPath>
+
+    <!-- Mobile clip (reduced amplitude) -->
+    <clipPath id={`${id}-mobile`} clipPathUnits="objectBoundingBox">
+      <path d={mp1}>
+        <animate
+          attributeName="d"
+          dur={dur}
+          repeatCount="indefinite"
+          calcMode="spline"
+          keyTimes="0;0.5;1"
+          keySplines=".4 0 .2 1;.4 0 .2 1"
+          values={`${mp1};${mp2};${mp1}`}></animate>
       </path>
     </clipPath>
   </defs>

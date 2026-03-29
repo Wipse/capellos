@@ -28,20 +28,23 @@ const categories: Category[] = [
 ]
 ---
 
-<BlobClip id="aboutClip" edges="both" movement="slow" />
+<BlobClip id="aboutClip" edges="both" movement="slow" amplitude="sm" />
 
 <section
   id="about-capellos"
-  class="relative -mt-20 py-section-xl"
+  class="relative -mt-20 pt-section-xl pb-section-2xl min-[550px]:pb-section-xl"
   style={`background-color: ${backgroundColor}; --about-text: ${textColor}; --about-bg: ${backgroundColor};`}
 >
   <DriftBackground />
 
   <!-- Content -->
-  <div class="container relative mx-auto px-6 lg:px-12">
+  <div class="container relative mx-auto px-6 text-center lg:px-12 lg:text-left">
     <div class="grid grid-cols-1 gap-12 lg:grid-cols-[2fr_3fr] lg:gap-20">
       <!-- Left: category navigation -->
-      <nav aria-label="Categorieën" class="flex flex-col gap-20">
+      <nav
+        aria-label="Categorieën"
+        class="order-2 grid grid-cols-1 gap-20 min-[550px]:gap-y-12 gap-x-8 min-[550px]:grid-cols-2 lg:order-1 lg:flex lg:flex-col lg:items-stretch lg:gap-20"
+      >
         {
           categories.map((cat) => (
             <CategoryNavItem
@@ -56,14 +59,21 @@ const categories: Category[] = [
       </nav>
 
       <!-- Right: about text — sticky while left column scrolls past -->
-      <div class="flex flex-col lg:sticky lg:self-start lg:top-[12vh]">
-        <p class="font-heading text-4xl font-light -mb-5" style={`color: ${textColor};`}>Wat is</p>
+      <div
+        class="order-1 flex flex-col items-center lg:order-2 lg:sticky lg:items-start lg:self-start lg:top-[12vh]"
+      >
+        <p
+          class="font-heading text-4xl font-light -mb-5 lg:text-5xl"
+          style={`color: ${textColor};`}
+        >
+          Wat is
+        </p>
         <div class="w-full max-w-md">
           <Logo color={textColor} addedClasses="w-full h-auto" />
         </div>
 
         <div
-          class="mt-6 flex flex-col gap-4 font-body text-base leading-relaxed opacity-90"
+          class="mt-6 flex max-w-xl flex-col gap-4 font-body text-base leading-relaxed opacity-90 lg:max-w-none"
           style={`color: ${textColor};`}
         >
           <p>
@@ -85,7 +95,7 @@ const categories: Category[] = [
 
         <a
           href="/over"
-          class="mt-8 inline-flex w-fit items-center gap-2 border px-6 py-3 font-heading text-sm font-semibold tracking-widest uppercase transition-colors hover:opacity-80"
+          class="mt-8 inline-flex w-fit items-center justify-center gap-2 border px-6 py-3 font-heading text-sm font-semibold tracking-widest uppercase transition-colors hover:opacity-80"
           style={`color: ${textColor}; border-color: ${textColor};`}
         >
           Lees meer
@@ -124,23 +134,25 @@ const categories: Category[] = [
     clip-path: url(#aboutClip);
   }
 
+  @media (max-width: 639px) {
+    #about-capellos {
+      clip-path: url(#aboutClip-mobile);
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     #about-capellos {
       clip-path: polygon(
-        0% 5%,
-        18% 1%,
-        35% 3%,
-        52% 6%,
-        68% 9%,
-        82% 4%,
-        100% 5%,
-        100% 95%,
-        82% 99%,
-        65% 97%,
-        48% 94%,
-        32% 91%,
-        17% 96%,
-        0% 95%
+        0% 6%,
+        17% -2%,
+        50% 6%,
+        83% 14%,
+        100% 6%,
+        100% 94%,
+        83% 102%,
+        50% 94%,
+        17% 86%,
+        0% 94%
       );
     }
   }

@@ -22,11 +22,11 @@ const navItems = [
 ] as const
 ---
 
-<BlobClip id="heroClip" edges="bottom" movement="normal" />
+<BlobClip id="heroClip" edges="bottom" movement="normal" aplitude="lg" />
 
 <section
   id="main-hero"
-  class="relative flex h-[88dvh] min-h-[88svh] items-center justify-center px-4 py-10"
+  class="relative flex h-dvh min-h-[88svh] items-center justify-center px-4 py-10"
   style={`background-color: ${backgroundColor}; --hero-text: ${textColor}; --hero-nav-text: ${navigationTextColor}; --hero-background: ${backgroundColor};`}
 >
   <DriftBackground id="hero-bg-layer" />
@@ -100,23 +100,15 @@ const navItems = [
     z-index: 0;
   }
 
+  @media (max-width: 639px) {
+    #main-hero {
+      clip-path: url(#heroClip-mobile);
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     #main-hero {
-      /* Static polygon approximation of the blob shape */
-      clip-path: polygon(
-        0% 0%,
-        100% 0%,
-        100% 88%,
-        92% 93%,
-        82% 96%,
-        70% 92%,
-        58% 88%,
-        52% 82%,
-        40% 85%,
-        28% 88%,
-        16% 94%,
-        0% 88%
-      );
+      clip-path: polygon(0% 0%, 100% 0%, 100% 88%, 83% 96%, 50% 88%, 17% 80%, 0% 88%);
     }
   }
 </style>

@@ -12,14 +12,14 @@ interface Props {
 const {label, title, href, imageUrl, textColor = '#FFFFFF'} = Astro.props
 ---
 
-<a href={href} class="group">
+<a href={href} class="group block text-center lg:text-left">
   <img
     src={imageUrl}
     alt={title}
-    class="w-full aspect-16/11 object-cover transition-transform duration-300 group-hover:scale-105 rounded-t-2xl"
+    class="w-full aspect-16/11 object-cover transition-transform duration-300 group-hover:-rotate-2 rounded-t-2xl"
   />
-  <div class="flex justify-between items-center">
-    <div class="flex-1 mt-3">
+  <div class="mt-5 lg:mt-3 flex items-center justify-between gap-3">
+    <div class="min-w-0 flex-1 text-center lg:text-left">
       <p
         class="text-xs font-heading tracking-widest uppercase opacity-70"
         style={`color: ${textColor};`}
@@ -27,7 +27,7 @@ const {label, title, href, imageUrl, textColor = '#FFFFFF'} = Astro.props
         {label}
       </p>
       <p
-        class="text-2xl font-heading uppercase font-semibold group-hover:underline"
+        class="font-heading font-semibold uppercase group-hover:underline text-3xl"
         style={`color: ${textColor};`}
       >
         {title}
@@ -35,8 +35,8 @@ const {label, title, href, imageUrl, textColor = '#FFFFFF'} = Astro.props
     </div>
     <Icon
       type="chevron-right"
-      size={40}
-      addedClasses="shrink-0 transition-transform duration-200 group-hover:translate-x-1"
+      size={24}
+      addedClasses="shrink-0 transition-transform duration-200 group-hover:translate-x-1 hidden lg:block"
       style={`color: ${textColor};`}
     />
   </div>

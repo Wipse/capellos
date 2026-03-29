@@ -68,6 +68,8 @@
   --spacing-section-md: clamp(2.5rem, 1.85rem + 5.65vw, 5rem);
   --spacing-section-lg: clamp(5rem, 3.69rem + 11.30vw, 10rem);
   --spacing-section-xl: clamp(7.5rem, 5.54rem + 16.96vw, 15rem);
+  --spacing-section-2xl: clamp(11rem, 8.31rem + 25.44vw, 22.5rem);
+  --spacing-section-3xl: clamp(15rem, 11.08rem + 33.92vw, 30rem);
 
   /* Spacing - Header heights (fixed) */
   --spacing-header-mobile: 4rem;
@@ -155,5 +157,37 @@
   .ml-section-xl { margin-left: var(--spacing-section-xl); }
   .mr-section-xl { margin-right: var(--spacing-section-xl); }
   .gap-section-xl { gap: var(--spacing-section-xl); }
+
+  .p-section-2xl { padding: var(--spacing-section-2xl); }
+  .py-section-2xl { padding-top: var(--spacing-section-2xl); padding-bottom: var(--spacing-section-2xl); }
+  .px-section-2xl { padding-left: var(--spacing-section-2xl); padding-right: var(--spacing-section-2xl); }
+  .pt-section-2xl { padding-top: var(--spacing-section-2xl); }
+  .pb-section-2xl { padding-bottom: var(--spacing-section-2xl); }
+  .pl-section-2xl { padding-left: var(--spacing-section-2xl); }
+  .pr-section-2xl { padding-right: var(--spacing-section-2xl); }
+  .m-section-2xl { margin: var(--spacing-section-2xl); }
+  .my-section-2xl { margin-top: var(--spacing-section-2xl); margin-bottom: var(--spacing-section-2xl); }
+  .mx-section-2xl { margin-left: var(--spacing-section-2xl); margin-right: var(--spacing-section-2xl); }
+  .mt-section-2xl { margin-top: var(--spacing-section-2xl); }
+  .mb-section-2xl { margin-bottom: var(--spacing-section-2xl); }
+  .ml-section-2xl { margin-left: var(--spacing-section-2xl); }
+  .mr-section-2xl { margin-right: var(--spacing-section-2xl); }
+  .gap-section-2xl { gap: var(--spacing-section-2xl); }
+
+  .p-section-3xl { padding: var(--spacing-section-3xl); }
+  .py-section-3xl { padding-top: var(--spacing-section-3xl); padding-bottom: var(--spacing-section-3xl); }
+  .px-section-3xl { padding-left: var(--spacing-section-3xl); padding-right: var(--spacing-section-3xl); }
+  .pt-section-3xl { padding-top: var(--spacing-section-3xl); }
+  .pb-section-3xl { padding-bottom: var(--spacing-section-3xl); }
+  .pl-section-3xl { padding-left: var(--spacing-section-3xl); }
+  .pr-section-3xl { padding-right: var(--spacing-section-3xl); }
+  .m-section-3xl { margin: var(--spacing-section-3xl); }
+  .my-section-3xl { margin-top: var(--spacing-section-3xl); margin-bottom: var(--spacing-section-3xl); }
+  .mx-section-3xl { margin-left: var(--spacing-section-3xl); margin-right: var(--spacing-section-3xl); }
+  .mt-section-3xl { margin-top: var(--spacing-section-3xl); }
+  .mb-section-3xl { margin-bottom: var(--spacing-section-3xl); }
+  .ml-section-3xl { margin-left: var(--spacing-section-3xl); }
+  .mr-section-3xl { margin-right: var(--spacing-section-3xl); }
+  .gap-section-3xl { gap: var(--spacing-section-3xl); }
 }
 

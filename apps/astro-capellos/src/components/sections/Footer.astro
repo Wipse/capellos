@@ -40,7 +40,7 @@ const legalLinks = [
 ]
 ---
 
-<BlobClip id="footerClip" edges="top" movement="slow" />
+<BlobClip id="footerClip" edges="top" />
 
 <footer
   id="site-footer"
@@ -49,25 +49,25 @@ const legalLinks = [
 >
   <DriftBackground />
 
-  <div class="container relative mx-auto px-6 lg:px-12">
+  <div class="container relative mx-auto px-6 text-center lg:px-12 lg:text-left">
     <!-- Top 3-column grid -->
-    <div class="grid grid-cols-1 gap-10 sm:grid-cols-12 sm:">
-      <div class="col-span-3">
+    <div class="grid grid-cols-1 gap-10 md:grid-cols-12">
+      <div class="mx-auto w-full max-w-md md:col-span-3 md:mx-0 md:max-w-none">
         <FooterContactInfo textColor={textColor} />
       </div>
-      <div class="col-span-6 col-start-6">
+      <div class="mx-auto w-full max-w-md md:col-span-6 md:col-start-6 md:mx-0 md:max-w-none">
         <FooterNav textColor={textColor} groups={navGroups} />
       </div>
     </div>
 
     <!-- Full-width logo -->
-    <div class="w-full" aria-hidden="true">
+    <div class="mt-10 w-full md:mt-12" aria-hidden="true">
       <Logo color={textColor} addedClasses="w-full h-auto" />
     </div>
 
     <!-- Bottom bar -->
     <div
-      class="mt-6 flex flex-col gap-2 border-t pt-6 sm:flex-row sm:items-center sm:justify-between"
+      class="mt-6 flex flex-col items-center gap-3 border-t pt-6 text-center md:flex-row md:items-center md:justify-between md:text-left"
       style={`border-color: ${textColor}30;`}
     >
       <p class="font-heading text-sm font-semibold" style={`color: ${textColor};`}>
@@ -98,22 +98,15 @@ const legalLinks = [
     clip-path: url(#footerClip);
   }
 
+  @media (max-width: 639px) {
+    #site-footer {
+      clip-path: url(#footerClip-mobile);
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     #site-footer {
-      clip-path: polygon(
-        0% 14%,
-        12% 4%,
-        25% 0%,
-        42% 7%,
-        54% 12%,
-        60% 16%,
-        72% 7%,
-        84% 0%,
-        93% 3%,
-        100% 14%,
-        100% 100%,
-        0% 100%
-      );
+      clip-path: polygon(0% 10%, 17% 2%, 50% 10%, 83% 18%, 100% 10%, 100% 100%, 0% 100%);
     }
   }
 </style>
