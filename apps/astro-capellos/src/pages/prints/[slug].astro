@@ -2,6 +2,7 @@
 import MainLayout from '../../layouts/main.astro'
 import PrintHero from '../../components/sections/PrintHero.astro'
 import PrintDetail from '../../components/sections/PrintDetail.astro'
+import RelatedItems from '../../components/sections/RelatedItems.astro'
 import Footer from '../../components/sections/Footer.astro'
 
 // Placeholder — will come from Sanity via params.slug
@@ -19,6 +20,20 @@ export function getStaticPaths() {
           description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus.',
           category: 'Print',
+          material: 'Hoogwaardig fotopapier, 250 g/m², mat afgewerkt.',
+          shipping:
+            'Gratis verzending binnen Nederland. Geleverd binnen 3–5 werkdagen, opgerold in een stevige koker.',
+          additionalInfo: [
+            'Handgesigneerd door de kunstenaar',
+            'Geleverd met certificaat van echtheid',
+            'Geschikt voor lijsten in standaardformaat',
+          ],
+          relatedPrints: [
+            {id: '2', title: 'Botanische Studie', price: 19.99, size: 'A4', imageUrl: '/images/frutsel.png', href: '/prints/voorbeeld-print'},
+            {id: '3', title: 'Stadsgezicht', price: 29.99, size: 'A2', imageUrl: '/images/frutsel.png', href: '/prints/voorbeeld-print'},
+            {id: '4', title: 'Abstract No. 3', price: 22.50, size: 'A3', imageUrl: '/images/frutsel.png', href: '/prints/voorbeeld-print'},
+            {id: '5', title: 'Zeelandschap', price: 34.99, size: 'A2', imageUrl: '/images/frutsel.png', href: '/prints/voorbeeld-print'},
+          ],
         },
       },
     },
@@ -26,7 +41,7 @@ export function getStaticPaths() {
 }
 
 const {print} = Astro.props
-const {title, price, sizes, imageUrl, description, category} = print
+const {title, price, sizes, imageUrl, description, category, material, shipping, additionalInfo, relatedPrints} = print
 ---
 
 <MainLayout title={`${title} | Capellos`}>
@@ -37,6 +52,20 @@ const {title, price, sizes, imageUrl, description, category} = print
     description={description}
     category={category}
   />
-  <PrintDetail title={title} description={description} sizes={sizes} imageUrl={imageUrl} />
+  <PrintDetail
+    title={title}
+    description={description}
+    sizes={sizes}
+    imageUrl={imageUrl}
+    material={material}
+    shipping={shipping}
+    additionalInfo={additionalInfo}
+  />
+  <RelatedItems
+    items={relatedPrints}
+    heading="Bekijk andere prints"
+    browseAllLabel="Alle prints"
+    browseAllHref="/prints"
+  />
   <Footer />
 </MainLayout>
