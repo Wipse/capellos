@@ -1,0 +1,23 @@
+---
+import Link from './Link.astro'
+
+interface Props {
+  href: string
+  label: string
+  color?: string
+}
+
+const {href, label, color = 'currentColor'} = Astro.props
+---
+
+<Link
+  href={href}
+  label={label}
+  prefix-icon="chevron-left"
+  size="lg"
+  hover="underline"
+  has-heading-font
+  underline-color={color}
+  class="mb-10 inline-flex opacity-80 hover:opacity-100"
+  style={`color: ${color};`}
+/>
