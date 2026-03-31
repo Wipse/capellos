@@ -4,43 +4,48 @@ interface Props {
   description: string
   sizes: string[]
   imageUrl: string
+  material?: string
+  shipping?: string
+  additionalInfo?: string[]
 }
 
-const {title, description, sizes, imageUrl} = Astro.props
+const {title, description, sizes, imageUrl, material, shipping, additionalInfo} = Astro.props
 ---
 
 <section id="print-detail" class="py-section-lg">
   <div class="container mx-auto px-6 lg:px-12">
     <div class="grid grid-cols-12 gap-8 items-start">
-      <!-- Tekstvelden col 2–6 -->
+      <!-- textarea col 2–6 -->
       <div class="col-span-12 lg:col-start-2 lg:col-span-5 flex flex-col gap-10">
         <div>
-          <h2 class="font-heading text-3xl font-semibold uppercase mb-4 text-[#3D245F]">
+          <h2 class="font-heading text-3xl font-semibold uppercase mb-4 text-slate-900">
             Over deze print
           </h2>
-          <p class="font-body text-base leading-relaxed text-gray-700">
+          <p class="font-body text-base leading-relaxed text-slate-700">
             {description}
           </p>
         </div>
 
-        <div>
-          <h3 class="font-heading text-sm tracking-widest uppercase opacity-60 mb-3 text-[#3D245F]">
-            Materiaal
-          </h3>
-          <p class="font-body text-base text-gray-700">
-            Hoogwaardig fotopapier, 250 g/m², mat afgewerkt.
-          </p>
-        </div>
+        {
+          material && (
+            <div>
+              <h3 class="font-heading text-sm tracking-widest uppercase opacity-60 mb-3 text-slate-900">
+                Materiaal
+              </h3>
+              <p class="font-body text-base text-gray-700">{material}</p>
+            </div>
+          )
+        }
 
         <div>
-          <h3 class="font-heading text-sm tracking-widest uppercase opacity-60 mb-3 text-[#3D245F]">
+          <h3 class="font-heading text-sm tracking-widest uppercase opacity-60 mb-3 text-slate-900">
             Beschikbare formaten
           </h3>
           <ul class="flex flex-col gap-1">
             {
               sizes.map((size) => (
                 <li class="font-body text-base text-gray-700 flex items-center gap-2">
-                  <span class="inline-block w-1.5 h-1.5 rounded-full bg-[#3D245F] opacity-60" />
+                  <span class="inline-block w-1.5 h-1.5 rounded-full bg-slate-700 opacity-60" />
                   {size}
                 </li>
               ))
@@ -48,19 +53,38 @@ const {title, description, sizes, imageUrl} = Astro.props
           </ul>
         </div>
 
-        <div>
-          <h3 class="font-heading text-sm tracking-widest uppercase opacity-60 mb-3 text-[#3D245F]">
-            Verzending
-          </h3>
-          <p class="font-body text-base text-gray-700">
-            Gratis verzending binnen Nederland. Geleverd binnen 3–5 werkdagen, opgerold in een
-            stevige koker.
-          </p>
-        </div>
+        {
+          shipping && (
+            <div>
+              <h3 class="font-heading text-sm tracking-widest uppercase opacity-60 mb-3 text-slate-900">
+                Verzending
+              </h3>
+              <p class="font-body text-base text-gray-700">{shipping}</p>
+            </div>
+          )
+        }
+
+        {
+          additionalInfo && additionalInfo.length > 0 && (
+            <div>
+              <h3 class="font-heading text-sm tracking-widest uppercase opacity-60 mb-3 text-slate-900">
+                Aanvullende informatie
+              </h3>
+              <ul class="flex flex-col gap-1">
+                {additionalInfo.map((item) => (
+                  <li class="font-body text-base text-gray-700 flex items-center gap-2">
+                    <span class="inline-block w-1.5 h-1.5 rounded-full bg-slate-900 opacity-60" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
       </div>
 
-      <!-- Afbeelding col 8–11 -->
-      <div class="col-span-12 lg:col-start-8 lg:col-span-4">
+      <!-- image col 8–11 -->
+      <div class="col-span-12 lg:col-start-8 lg:col-span-4 lg:sticky lg:self-start lg:top-[12vh]">
         <!-- Outer wrapper translates, inner clips the image -->
         <div id="print-detail-travel-img" class="aspect-297/420 w-full">
           <div class="h-full w-full overflow-hidden rounded-2xl shadow-lg bg-gray-100">
