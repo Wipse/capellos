@@ -4,5 +4,6 @@ export type IconType =
   | 'map-pin'
   | 'instagram'
   | 'linkedin'
+  | 'chevron-left'
   | 'chevron-right'
   | 'chevron-down'

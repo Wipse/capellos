@@ -1,0 +1,42 @@
+---
+import MainLayout from '../../layouts/main.astro'
+import PrintHero from '../../components/sections/PrintHero.astro'
+import PrintDetail from '../../components/sections/PrintDetail.astro'
+import Footer from '../../components/sections/Footer.astro'
+
+// Placeholder — will come from Sanity via params.slug
+export function getStaticPaths() {
+  return [
+    {
+      params: {slug: 'voorbeeld-print'},
+      props: {
+        print: {
+          title: 'Voorbeeld Print',
+          price: 24.99,
+          sizes: ['A3'],
+          imageUrl: '/images/printshero.png',
+          backImageUrl: '/images/frutsel.png',
+          description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus.',
+          category: 'Print',
+        },
+      },
+    },
+  ]
+}
+
+const {print} = Astro.props
+const {title, price, sizes, imageUrl, description, category} = print
+---
+
+<MainLayout title={`${title} | Capellos`}>
+  <PrintHero
+    title={title}
+    price={price}
+    sizes={sizes}
+    description={description}
+    category={category}
+  />
+  <PrintDetail title={title} description={description} sizes={sizes} imageUrl={imageUrl} />
+  <Footer />
+</MainLayout>

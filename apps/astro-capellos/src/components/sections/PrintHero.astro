@@ -1,0 +1,166 @@
+---
+import BlobClip from '../BlobClip.astro'
+import DriftBackground from '../DriftBackground.astro'
+import Icon from '../Icon.astro'
+import BackLink from '../BackLink.astro'
+
+interface Props {
+  title: string
+  price: number
+  sizes: string[]
+  description: string
+  category: string
+  backgroundColor?: string
+  textColor?: string
+}
+
+const {
+  title,
+  price,
+  sizes,
+  description,
+  category,
+  backgroundColor = '#4BAF6E',
+  textColor = '#FFFFFF',
+} = Astro.props
+---
+
+<BlobClip id="printDetailClip" edges="bottom" movement="normal" aplitude="lg" />
+
+<section
+  id="print-detail-hero"
+  class="relative min-h-dvh pt-section-md pb-section-xl"
+  style={`background-color: ${backgroundColor};`}
+>
+  <DriftBackground />
+
+  <div class="container relative mx-auto px-6 lg:px-12">
+    <BackLink href="/prints" label="Terug naar prints" color={textColor} />
+
+    <div class="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-20 lg:items-start">
+      <!-- Image -->
+      <div id="print-hero-img" class="group col-start-2 col-span-4 relative mx-auto w-full max-w-sm lg:max-w-none">
+        <div
+          class="absolute -inset-3 rounded-3xl opacity-20 blur-xl"
+          style={`background-color: ${textColor};`}
+        ></div>
+        <div class="relative aspect-297/420 w-full overflow-hidden rounded-2xl shadow-2xl">
+          <img
+            src="https://placehold.co/300x400"
+            alt={title}
+            class="h-full w-full object-cover"
+          />
+        </div>
+      </div>
+
+      <!-- Product info -->
+      <div class="flex flex-col col-start-6 col-span-6 lg:pt-4">
+        <!-- Label -->
+        <p class="font-heading tracking-widest uppercase opacity-70" style={`color: ${textColor};`}>
+          {category}
+        </p>
+
+        <!-- Title -->
+        <h1
+          class="font-heading text-5xl font-semibold uppercase leading-tight lg:text-6xl"
+          style={`color: ${textColor};`}
+        >
+          {title}
+        </h1>
+
+        <!-- Price -->
+        <p class="mt-4 text-3xl font-extrabold" style={`color: ${textColor};`}>
+          €{price.toFixed(2)}
+        </p>
+
+        <!-- Divider -->
+        <div class="mt-6 h-px w-full opacity-20" style={`background-color: ${textColor};`}></div>
+
+        <!-- Size selector -->
+        <div class="mt-6">
+          <p
+            class="font-heading text-xs tracking-widest uppercase opacity-70 mb-3"
+            style={`color: ${textColor};`}
+          >
+            Formaat
+          </p>
+          <div class="flex flex-wrap gap-3">
+            {
+              sizes.map((size, i) => (
+                <button
+                  class={`font-heading text-sm font-semibold tracking-wider uppercase px-5 py-2 border transition-colors ${
+                    i === 0
+                      ? 'border-current bg-white/20'
+                      : 'border-white/30 hover:border-current hover:bg-white/10'
+                  }`}
+                  style={`color: ${textColor};`}
+                >
+                  {size}
+                </button>
+              ))
+            }
+          </div>
+        </div>
+
+        <!-- Description -->
+        <p
+          class="mt-6 font-body text-base leading-relaxed opacity-85"
+          style={`color: ${textColor};`}
+        >
+          {description}
+        </p>
+
+        <!-- CTA -->
+        <a
+          href="#"
+          class="mt-8 inline-flex w-fit items-center justify-center gap-3 px-8 py-4 font-heading text-sm font-semibold tracking-widest uppercase transition-all hover:gap-5"
+          style={`background-color: ${textColor}; color: ${backgroundColor};`}
+        >
+          Bestel nu
+          <Icon type="chevron-right" size={16} />
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import gsap from 'gsap'
+  import {ScrollTrigger} from 'gsap/ScrollTrigger'
+
+  gsap.registerPlugin(ScrollTrigger)
+
+  const heroImg = document.getElementById('print-hero-img')
+
+  if (heroImg) {
+    gsap.to(heroImg, {
+      x: -120,
+      opacity: 0,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: heroImg,
+        start: 'center center',
+        end: 'bottom top',
+        scrub: true,
+      },
+    })
+  }
+</script>
+
+<style>
+  #print-detail-hero {
+    clip-path: url(#printDetailClip);
+  }
+
+  @media (max-width: 639px) {
+    #print-detail-hero {
+      clip-path: url(#printDetailClip-mobile);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #print-detail-hero {
+      clip-path: polygon(0% 0%, 100% 0%, 100% 88%, 83% 96%, 50% 88%, 17% 80%, 0% 88%);
+    }
+  }
+</style>
