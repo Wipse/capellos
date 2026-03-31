@@ -53,11 +53,7 @@
 }
 
 @theme {
-    --color-hero-bg: #E3EDE8;
-    --color-capellos-purple: #3D245F;
-    --color-capellos-blue: #3251A6;
-
-    --font-heading: 'Jua', ui-sans-serif, system-ui, sans-serif;
+--font-heading: 'Jua', ui-sans-serif, system-ui, sans-serif;
     --font-body: 'ITC Benguiat Gothic', Georgia, 'Times New Roman', serif;
 
     --font-family-micro: 'Micro5', monospace;
