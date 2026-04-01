@@ -1,8 +1,6 @@
 ---
 import MainLayout from '../../layouts/main.astro'
-import ShopHero from '../../components/sections/ShopHero.astro'
 import TextImage from '../../components/sections/TextImage.astro'
-import Catalog from '../../components/sections/Catalog.astro'
 
 import {getPageContent} from '../../queries/pages'
 
@@ -15,22 +13,4 @@ if (!page) {
 const textImage = page.sections[0]
 ---
 
-<MainLayout title="Prints | Capellos">
-  <ShopHero title={page.title} />
-  <Catalog />
-  <Catalog />
-  <Catalog />
-  <TextImage
-    title={textImage.title}
-    text={textImage.text}
-    image={{
-      front: textImage.image.front,
-      back: textImage.image.back,
-      layout: textImage.image.layout,
-      frontOrientation: textImage.image.frontOrientation,
-    }}
-    hasLeftImage={textImage.hasLeftImage}
-    backgroundColor={textImage.backgroundColor}
-    sectionPadding={textImage.sectionPadding}
-  />
-</MainLayout>
+<MainLayout title="Prints | Capellos" />
