@@ -40,6 +40,7 @@ export function getStaticPaths() {
   ]
 }
 
+const {params} = Astro
 const {print} = Astro.props
 const {title, price, sizes, imageUrl, description, category, material, shipping, additionalInfo, relatedPrints} = print
 ---
@@ -51,6 +52,7 @@ const {title, price, sizes, imageUrl, description, category, material, shipping,
     sizes={sizes}
     description={description}
     category={category}
+    transitionName={`print-img-${params.slug}`}
   />
   <PrintDetail
     title={title}

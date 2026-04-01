@@ -106,9 +106,10 @@ const {title, description, sizes, imageUrl, material, shipping, additionalInfo} 
 
   gsap.registerPlugin(ScrollTrigger)
 
-  const detailImg = document.getElementById('print-detail-travel-img')
+  document.addEventListener('astro:page-load', () => {
+    const detailImg = document.getElementById('print-detail-travel-img')
+    if (!detailImg) return
 
-  if (detailImg) {
     gsap.fromTo(
       detailImg,
       {x: 120, opacity: 0},
@@ -124,5 +125,9 @@ const {title, description, sizes, imageUrl, material, shipping, additionalInfo} 
         },
       },
     )
-  }
+  })
+
+  document.addEventListener('astro:before-swap', () => {
+    ScrollTrigger.getAll().forEach((t) => t.kill())
+  })
 </script>

@@ -7,9 +7,10 @@ interface Props {
   imageAlt?: string
   href?: string
   gridClass?: string
+  transitionName?: string
 }
 
-const {title, price, size, imageUrl, imageAlt = title, href = '#', gridClass = ''} = Astro.props
+const {title, price, size, imageUrl, imageAlt = title, href = '#', gridClass = '', transitionName} = Astro.props
 ---
 
 <article class={`${gridClass} group cursor-pointer`}>
@@ -20,6 +21,7 @@ const {title, price, size, imageUrl, imageAlt = title, href = '#', gridClass = '
         src="https://placehold.co/300x400"
         alt={imageAlt}
         class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+        transition:name={transitionName}
       />
     </div>
 

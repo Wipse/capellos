@@ -118,6 +118,7 @@ const bgItems = prints.length
               imageUrl={print.imageUrl}
               size={print.size}
               href={print.slug ? `/prints/${print.slug}` : '#'}
+              transitionName={print.slug ? `print-img-${print.slug}` : undefined}
             />
           ))
       }
@@ -131,10 +132,11 @@ const bgItems = prints.length
 
   gsap.registerPlugin(ScrollTrigger)
 
-  const section = document.getElementById('catalog-preview')
-  const bg = document.getElementById('catalog-preview-bg')
+  document.addEventListener('astro:page-load', () => {
+    const section = document.getElementById('catalog-preview')
+    const bg = document.getElementById('catalog-preview-bg')
+    if (!section || !bg) return
 
-  if (section && bg) {
     gsap.to(bg, {
       yPercent: -15,
       ease: 'none',
@@ -145,7 +147,11 @@ const bgItems = prints.length
         scrub: 1.4,
       },
     })
-  }
+  })
+
+  document.addEventListener('astro:before-swap', () => {
+    ScrollTrigger.getAll().forEach((t) => t.kill())
+  })
 </script>
 
 <style

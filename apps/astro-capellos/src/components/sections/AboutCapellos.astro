@@ -112,20 +112,26 @@ const categories: Category[] = [
 
   gsap.registerPlugin(ScrollTrigger)
 
-  const items = gsap.utils.toArray<HTMLElement>('#about-capellos nav > a')
+  document.addEventListener('astro:page-load', () => {
+    const items = gsap.utils.toArray<HTMLElement>('#about-capellos nav > a')
 
-  items.forEach((item) => {
-    gsap.from(item, {
-      y: 48,
-      opacity: 0,
-      duration: 0.7,
-      ease: 'power2.out',
-      scrollTrigger: {
-        trigger: item,
-        start: 'top 88%',
-        toggleActions: 'play none play reverse',
-      },
+    items.forEach((item) => {
+      gsap.from(item, {
+        y: 48,
+        opacity: 0,
+        duration: 0.7,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: item,
+          start: 'top 88%',
+          toggleActions: 'play none play reverse',
+        },
+      })
     })
+  })
+
+  document.addEventListener('astro:before-swap', () => {
+    ScrollTrigger.getAll().forEach((t) => t.kill())
   })
 </script>
 

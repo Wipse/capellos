@@ -12,6 +12,7 @@ interface Props {
   category: string
   backgroundColor?: string
   textColor?: string
+  transitionName?: string
 }
 
 const {
@@ -22,6 +23,7 @@ const {
   category,
   backgroundColor = '#4BAF6E',
   textColor = '#FFFFFF',
+  transitionName,
 } = Astro.props
 ---
 
@@ -39,16 +41,21 @@ const {
 
     <div class="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-20 lg:items-start">
       <!-- Image -->
-      <div id="print-hero-img" class="group col-start-2 col-span-4 relative mx-auto w-full max-w-sm lg:max-w-none">
+      <div
+        id="print-hero-img"
+        class="group col-start-2 col-span-4 relative mx-auto w-full max-w-sm lg:max-w-none"
+      >
         <div
           class="absolute -inset-3 rounded-3xl opacity-20 blur-xl"
           style={`background-color: ${textColor};`}
-        ></div>
-        <div class="relative aspect-297/420 w-full overflow-hidden rounded-2xl shadow-2xl">
+        >
+        </div>
+        <div class="relative aspect-297/420 w-full overflow-hidden shadow-2xl">
           <img
             src="https://placehold.co/300x400"
             alt={title}
             class="h-full w-full object-cover"
+            transition:name={transitionName}
           />
         </div>
       </div>
@@ -130,9 +137,10 @@ const {
 
   gsap.registerPlugin(ScrollTrigger)
 
-  const heroImg = document.getElementById('print-hero-img')
+  document.addEventListener('astro:page-load', () => {
+    const heroImg = document.getElementById('print-hero-img')
+    if (!heroImg) return
 
-  if (heroImg) {
     gsap.to(heroImg, {
       x: -120,
       opacity: 0,
@@ -144,7 +152,11 @@ const {
         scrub: true,
       },
     })
-  }
+  })
+
+  document.addEventListener('astro:before-swap', () => {
+    ScrollTrigger.getAll().forEach((t) => t.kill())
+  })
 </script>
 
 <style>

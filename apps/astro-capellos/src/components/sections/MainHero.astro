@@ -114,15 +114,18 @@ const navItems = [
 </style>
 
 <script>
-  import {scheduleHeroIntro} from '../../lib/animations/heroIntro'
+  import {runHeroIntro} from '../../lib/animations/heroIntro'
   import {initHeroScrollHint, initMainHeroScroll} from '../../lib/animations/mainHeroScroll'
+  import {ScrollTrigger} from 'gsap/ScrollTrigger'
 
-  async function boot() {
-    await scheduleHeroIntro()
+  document.addEventListener('astro:page-load', async () => {
+    await runHeroIntro()
     document.getElementById('hero-scroll-hint')?.classList.add('scroll-hint--ready')
     initMainHeroScroll()
     initHeroScrollHint()
-  }
+  })
 
-  void boot()
+  document.addEventListener('astro:before-swap', () => {
+    ScrollTrigger.getAll().forEach((t) => t.kill())
+  })
 </script>
