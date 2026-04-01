@@ -6,10 +6,10 @@ interface Props {
   imageUrl: string
   imageAlt?: string
   href?: string
-  gridClass: string
+  gridClass?: string
 }
 
-const {title, price, size, imageUrl, imageAlt = title, href = '#', gridClass} = Astro.props
+const {title, price, size, imageUrl, imageAlt = title, href = '#', gridClass = ''} = Astro.props
 ---
 
 <article class={`${gridClass} group cursor-pointer`}>
@@ -17,19 +17,19 @@ const {title, price, size, imageUrl, imageAlt = title, href = '#', gridClass} = 
     <!-- Image -->
     <div class="aspect-297/420 overflow-hidden bg-gray-100 mb-2">
       <img
-        src={imageUrl}
+        src="https://placehold.co/300x400"
         alt={imageAlt}
         class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
       />
     </div>
 
     <!-- Info -->
-    <div class="flex justify-between">
+    <div class="flex flex-col min-[600px]:flex-row min-[600px]:justify-between">
       <div class="flex flex-col">
-        <h3 class="font-medium text-lg">{title}</h3>
-        <p class="text-gray-500 -mt-0.5">{size}</p>
+        <h3 class="font-medium leading-5 text-lg">{title}</h3>
+        <p class="text-gray-500">{size}</p>
       </div>
-      <p class="text-lg font-medium mt-0.5">€{price.toFixed(2)}</p>
+      <p class="text-lg font-medium mt-0.5 min-[600px]:mt-0.5">€{price.toFixed(2)}</p>
     </div>
   </a>
 </article>
