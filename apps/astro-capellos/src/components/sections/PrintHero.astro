@@ -3,6 +3,7 @@ import BlobClip from '../BlobClip.astro'
 import DriftBackground from '../DriftBackground.astro'
 import Icon from '../Icon.astro'
 import BackLink from '../BackLink.astro'
+import Heading from '../Heading.astro'
 
 interface Props {
   title: string
@@ -67,13 +68,8 @@ const {
           {category}
         </p>
 
-        <!-- Title -->
-        <h1
-          class="font-heading text-5xl font-semibold uppercase leading-tight lg:text-6xl"
-          style={`color: ${textColor};`}
-        >
-          {title}
-        </h1>
+        <!-- Title — h1: dit is de enige h1 op de printdetailpagina -->
+        <Heading as="h1" style={`color: ${textColor};`}>{title}</Heading>
 
         <!-- Price -->
         <p class="mt-4 text-3xl font-extrabold" style={`color: ${textColor};`}>

@@ -62,13 +62,14 @@ const categories: Category[] = [
       <div
         class="order-1 flex flex-col items-center lg:order-2 lg:sticky lg:items-start lg:self-start lg:top-[12vh]"
       >
-        <p
+        <h2
           class="font-heading text-4xl font-light -mb-5 lg:text-5xl"
           style={`color: ${textColor};`}
         >
-          Wat is
-        </p>
-        <div class="w-full max-w-md">
+          Wat is<span class="sr-only"> Capellos</span>
+        </h2>
+        {/* Logo is decoratief hier — de h2 hierboven communiceert al "Wat is Capellos" */}
+        <div class="w-full max-w-md" aria-hidden="true">
           <Logo color={textColor} addedClasses="w-full h-auto" />
         </div>
 

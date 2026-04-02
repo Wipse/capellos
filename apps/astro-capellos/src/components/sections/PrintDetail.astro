@@ -1,4 +1,6 @@
 ---
+import Heading from '../Heading.astro'
+
 interface Props {
   title: string
   description: string
@@ -18,9 +20,7 @@ const {title, description, sizes, imageUrl, material, shipping, additionalInfo} 
       <!-- textarea col 2–6 -->
       <div class="col-span-12 lg:col-start-2 lg:col-span-5 flex flex-col gap-10">
         <div>
-          <h2 class="font-heading text-3xl font-semibold uppercase mb-4 text-slate-900">
-            Over deze print
-          </h2>
+          <Heading as="h2" size="md" class="mb-4 text-slate-900">Over deze print</Heading>
           <p class="font-body text-base leading-relaxed text-slate-700">
             {description}
           </p>
@@ -29,18 +29,14 @@ const {title, description, sizes, imageUrl, material, shipping, additionalInfo} 
         {
           material && (
             <div>
-              <h3 class="font-heading text-sm tracking-widest uppercase opacity-60 mb-3 text-slate-900">
-                Materiaal
-              </h3>
+              <Heading as="h3" size="none" class="text-sm tracking-widest opacity-60 mb-3 text-slate-900">Materiaal</Heading>
               <p class="font-body text-base text-gray-700">{material}</p>
             </div>
           )
         }
 
         <div>
-          <h3 class="font-heading text-sm tracking-widest uppercase opacity-60 mb-3 text-slate-900">
-            Beschikbare formaten
-          </h3>
+          <Heading as="h3" size="none" class="text-sm tracking-widest opacity-60 mb-3 text-slate-900">Beschikbare formaten</Heading>
           <ul class="flex flex-col gap-1">
             {
               sizes.map((size) => (
@@ -56,9 +52,7 @@ const {title, description, sizes, imageUrl, material, shipping, additionalInfo} 
         {
           shipping && (
             <div>
-              <h3 class="font-heading text-sm tracking-widest uppercase opacity-60 mb-3 text-slate-900">
-                Verzending
-              </h3>
+              <Heading as="h3" size="none" class="text-sm tracking-widest opacity-60 mb-3 text-slate-900">Verzending</Heading>
               <p class="font-body text-base text-gray-700">{shipping}</p>
             </div>
           )
@@ -67,9 +61,7 @@ const {title, description, sizes, imageUrl, material, shipping, additionalInfo} 
         {
           additionalInfo && additionalInfo.length > 0 && (
             <div>
-              <h3 class="font-heading text-sm tracking-widest uppercase opacity-60 mb-3 text-slate-900">
-                Aanvullende informatie
-              </h3>
+              <Heading as="h3" size="none" class="text-sm tracking-widest opacity-60 mb-3 text-slate-900">Aanvullende informatie</Heading>
               <ul class="flex flex-col gap-1">
                 {additionalInfo.map((item) => (
                   <li class="font-body text-base text-gray-700 flex items-center gap-2">

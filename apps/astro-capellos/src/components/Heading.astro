@@ -1,0 +1,43 @@
+---
+interface Props {
+  as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'span'
+  size?: 'xl' | 'lg' | 'md' | 'sm' | 'xs' | 'none'
+  class?: string
+  style?: string
+}
+
+const {as = 'h2', size, class: className, style} = Astro.props
+
+const defaultSize: Record<NonNullable<Props['as']>, NonNullable<Props['size']>> = {
+  h1: 'xl',
+  h2: 'lg',
+  h3: 'md',
+  h4: 'sm',
+  h5: 'xs',
+  h6: 'xs',
+  span: 'md',
+}
+
+const sizeClasses: Record<NonNullable<Props['size']>, string> = {
+  xl: 'text-5xl lg:text-6xl',
+  lg: 'text-4xl lg:text-5xl',
+  md: 'text-3xl lg:text-4xl',
+  sm: 'text-2xl lg:text-3xl',
+  xs: 'text-xl lg:text-2xl',
+  none: '',
+}
+
+const resolvedSize = size ?? defaultSize[as]
+const Tag = as
+---
+
+<Tag
+  class:list={[
+    'font-heading font-semibold uppercase leading-tight',
+    sizeClasses[resolvedSize],
+    className,
+  ]}
+  style={style}
+>
+  <slot />
+</Tag>
