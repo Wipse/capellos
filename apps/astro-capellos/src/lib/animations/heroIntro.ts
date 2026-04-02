@@ -1,7 +1,7 @@
 import gsap from 'gsap'
 
 /**
- * GSAP intro for the main hero: logo fade-in, pause, logo moves up, nav reveals.
+ * GSAP intro for the main hero: logo fades in from below.
  * Skipped when prefers-reduced-motion is set.
  */
 export function runHeroIntro(): Promise<void> {
@@ -9,56 +9,18 @@ export function runHeroIntro(): Promise<void> {
   if (reducedMotion.matches) return Promise.resolve()
 
   const logoWrap = document.getElementById('hero-logo-wrap')
-  const nav = document.getElementById('hero-nav')
-  const navLinks = document.querySelectorAll<HTMLElement>('[data-hero-nav-item]')
-
-  if (!logoWrap || !nav) return Promise.resolve()
+  if (!logoWrap) return Promise.resolve()
 
   gsap.set(logoWrap, {autoAlpha: 0, y: 36})
-  gsap.set(nav, {autoAlpha: 0, y: -28})
-  gsap.set(navLinks, {autoAlpha: 0, y: -22})
 
-  const tl = gsap.timeline({defaults: {ease: 'power2.out'}})
+  const tl = gsap.timeline()
 
   tl.to(logoWrap, {
     autoAlpha: 1,
     y: 0,
-    duration: 0.8,
+    duration: 0.9,
     ease: 'power2.out',
   })
-
-  tl.to(
-    logoWrap,
-    {
-      y: -40,
-      duration: 0.95,
-      ease: 'power2.inOut',
-    },
-    '+=0.5',
-  )
-
-  tl.to(
-    nav,
-    {
-      autoAlpha: 1,
-      y: 0,
-      duration: 0.6,
-      ease: 'power2.out',
-    },
-    '-=0.04',
-  )
-
-  tl.to(
-    navLinks,
-    {
-      autoAlpha: 1,
-      y: 0,
-      duration: 0.5,
-      stagger: 0.1,
-      ease: 'power2.out',
-    },
-    '<0.08',
-  )
 
   return new Promise((resolve) => {
     tl.eventCallback('onComplete', () => resolve())

@@ -8,9 +8,8 @@ export function initMainHeroScroll() {
 
   const hero = document.getElementById('main-hero')
   const logoWrap = document.getElementById('hero-logo-wrap')
-  const nav = document.getElementById('hero-nav')
 
-  if (!hero || !logoWrap || !nav) return
+  if (!hero || !logoWrap) return
 
   gsap.context(() => {
     gsap.timeline({
@@ -22,7 +21,6 @@ export function initMainHeroScroll() {
       },
     })
       .to(logoWrap, {yPercent: -55, opacity: 0, ease: 'none'}, 0)
-      .to(nav, {yPercent: -12, opacity: 0, ease: 'none'}, 0)
       .to(hero, {opacity: 0, ease: 'none'}, 0.55)
   }, hero)
 

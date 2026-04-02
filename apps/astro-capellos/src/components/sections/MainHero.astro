@@ -2,24 +2,13 @@
 import Logo from '../Logo.astro'
 import BlobClip from '../BlobClip.astro'
 import DriftBackground from '../DriftBackground.astro'
-import Icon from '../Icon.astro'
-import Link from '../Link.astro'
 
 interface Props {
   textColor?: string
-  /** Menulinks + "Scroll" label */
-  navigationTextColor?: string
   backgroundColor?: string
 }
 
-const {textColor, navigationTextColor, backgroundColor} = Astro.props
-
-const navItems = [
-  {href: '/', label: 'Shop'},
-  {href: '/prints', label: 'Gepersonaliseerde Items'},
-  {href: '#', label: 'Over Capellos'},
-  {href: '#', label: 'Contact'},
-] as const
+const {textColor, backgroundColor} = Astro.props
 ---
 
 <BlobClip id="heroClip" edges="bottom" movement="normal" aplitude="lg" />
@@ -27,7 +16,7 @@ const navItems = [
 <section
   id="main-hero"
   class="relative flex h-dvh min-h-[88svh] items-center justify-center px-4 py-10"
-  style={`background-color: ${backgroundColor}; --hero-text: ${textColor}; --hero-nav-text: ${navigationTextColor}; --hero-background: ${backgroundColor};`}
+  style={`background-color: ${backgroundColor}; --hero-text: ${textColor};`}
 >
   {/* Hidden Header for SEO purposes */}
   <h1 class="sr-only">Capellos — Gepersonaliseerde prints en kleding</h1>
@@ -40,7 +29,7 @@ const navItems = [
   >
     <div
       id="hero-logo-wrap"
-      class="hero-anim-start relative aspect-859/286 w-full max-w-[min(92vw,52rem)]"
+      class="hero-anim-start relative aspect-859/286 w-full max-w-[min(92vw,52rem)] mb-30"
     >
       <Logo color="#FFFFFF" addedClasses="absolute inset-0 h-full w-full" />
       <Logo
@@ -49,48 +38,49 @@ const navItems = [
         has-hover-colors
       />
     </div>
-
-    <nav
-      id="hero-nav"
-      class="hero-anim-start mt-2 w-full max-w-3xl sm:mt-4"
-      aria-label="Hoofdnavigatie"
-    >
-      <ul
-        class="flex flex-col gap-4 md:flex-row md:flex-nowrap md:gap-0 items-center justify-center md:[&>li+li]:border-l md:[&>li+li]:border-solid md:[&>li+li]:border-(--hero-text)"
-      >
-        {
-          navItems.map(({href, label}) => (
-            <li class="md:px-6 md:first:pl-0 md:last:pr-0 sm:px-10">
-              <Link
-                data-hero-nav-item
-                href={href}
-                label={label}
-                size="xl"
-                hover="underline"
-                has-heading-font
-                underline-color="var(--hero-text)"
-                class="font-semibold text-(--hero-nav-text) focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-(--hero-nav-text)/90 focus-visible:ring-offset-2 focus-visible:ring-offset-(--hero-background)"
-              />
-            </li>
-          ))
-        }
-      </ul>
-    </nav>
   </div>
 </section>
 
 <!-- Sits outside the clipped section so it isn't cut off -->
 <div
   id="hero-scroll-hint"
-  class="scroll-hint pointer-events-none fixed bottom-5 left-1/2 z-20 -translate-x-1/2 md:bottom-10"
-  style={`--hero-nav-text: ${navigationTextColor}; --hero-text: ${textColor};`}
+  class="scroll-hint pointer-events-none fixed inset-x-0 bottom-[22vh] z-20"
   aria-hidden="true"
 >
-  <div class="scroll-hint__bounce">
-    <span class="font-heading text-sm tracking-wide text-(--hero-nav-text)/80 md:text-base">
-      Scroll
-    </span>
-    <Icon type="chevron-down" size={28} addedClasses="text-(--hero-text)" />
+  <div
+    class="scroll-hint__bounce absolute left-[20%] -translate-x-1/2"
+    style={`color: ${textColor};`}
+  >
+    <svg
+      width="32"
+      height="20"
+      viewBox="0 0 32 20"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M4 4 L16 14 L28 4"></path>
+    </svg>
+  </div>
+
+  <div
+    class="scroll-hint__bounce absolute left-[80%] -translate-x-1/2 [animation-delay:0.45s]"
+    style={`color: ${textColor};`}
+  >
+    <svg
+      width="32"
+      height="20"
+      viewBox="0 0 32 20"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M4 4 L16 14 L28 4"></path>
+    </svg>
   </div>
 </div>
 
