@@ -1,0 +1,55 @@
+---
+import BlobClip from '../BlobClip.astro'
+import DriftBackground from '../DriftBackground.astro'
+import BackLink from '../BackLink.astro'
+import Heading from '../Heading.astro'
+
+interface Props {
+  title: string
+  backHref?: string
+  backLabel?: string
+  backgroundColor?: string
+  textColor?: string
+}
+
+const {
+  title,
+  backHref = '/',
+  backLabel = 'Terug',
+  backgroundColor = '#4BAF6E',
+  textColor = '#FFFFFF',
+} = Astro.props
+---
+
+<BlobClip id="categoryHeroClip" edges="bottom" movement="slow" aplitude="md" />
+
+<section
+  id="category-hero"
+  class="relative flex min-h-[35vh] items-end pb-section-md pt-section-lg"
+  style={`background-color: ${backgroundColor};`}
+>
+  <DriftBackground />
+
+  <div class="container relative mx-auto px-6 lg:px-12 md:py-6">
+    <BackLink href={backHref} label={backLabel} color={textColor} />
+    <Heading as="h1" size="xl" style={`color: ${textColor};`}>{title}</Heading>
+  </div>
+</section>
+
+<style>
+  #category-hero {
+    clip-path: url(#categoryHeroClip);
+  }
+
+  @media (max-width: 639px) {
+    #category-hero {
+      clip-path: url(#categoryHeroClip-mobile);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #category-hero {
+      clip-path: polygon(0% 0%, 100% 0%, 100% 88%, 83% 96%, 50% 88%, 17% 80%, 0% 88%);
+    }
+  }
+</style>

@@ -1,20 +1,18 @@
 ---
 import Logo from './Logo.astro'
 import {colorLetters} from '../utils/colorLetters'
+import {getCategories} from '../queries/categories'
 
 const shopChars = colorLetters('Shop')
 const aanvragenChars = colorLetters('Aanvragen')
 const overChars = colorLetters('Over Capellos')
 const contactChars = colorLetters('Contact')
 
-const shopItems = [
-  {href: '/prints', label: 'Prints'},
-  {href: '/gepersonaliseerd', label: 'Gepersonaliseerde items'},
-  {href: '/schoenen', label: 'Schoenen'},
-  {href: '/sieraden', label: 'Sieraden'},
-  {href: '/kleding', label: 'Kleding'},
-  {href: '/accesoires', label: 'Accesoires'},
-]
+const categories = await getCategories()
+const shopItems = categories.map((cat) => ({
+  href: `/${cat.slug}`,
+  label: cat.title,
+}))
 ---
 
 <!-- Overlay -->

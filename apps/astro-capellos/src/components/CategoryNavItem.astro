@@ -14,7 +14,7 @@ const {label, title, href, imageUrl, textColor = '#FFFFFF'} = Astro.props
 
 <a href={href} class="group block text-center lg:text-left">
   <img
-    src="https://placehold.co/16x11"
+    src={imageUrl ?? 'https://placehold.co/16x11'}
     alt={title}
     class="w-full aspect-16/11 object-cover transition-transform duration-300 group-hover:-rotate-2 rounded-t-2xl"
   />
