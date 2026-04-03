@@ -1,6 +1,7 @@
 import {defineField, defineType} from 'sanity'
 import {HomeIcon} from '@sanity/icons'
 import {aboutSectionType} from './sections/aboutSectionType'
+import {aanvragenSectionType} from './sections/aanvragenSectionType'
 
 export const homepageType = defineType({
   name: 'homepage',
@@ -21,6 +22,13 @@ export const homepageType = defineType({
       description:
         'De sectie onder de catalogus met "Wat is Capellos" en de categorie-navigatie.',
       type: aboutSectionType.name,
+    }),
+    defineField({
+      name: 'aanvragen',
+      title: 'Aanvragen Sectie',
+      description:
+        'De sectie met de slider-afbeeldingen en de CTA naar de aanvragenpagina.',
+      type: aanvragenSectionType.name,
     }),
   ],
   preview: {

@@ -75,6 +75,20 @@ export const categoryType = defineType({
       description:
         'Een korte introductie over deze categorie. Wordt zichtbaar op de pagina én gebruikt als beschrijving in Google. Bijvoorbeeld: "Handgemaakte prints op hoogwaardig fotopapier."',
     }),
+    defineField({
+      name: 'catalogLayout',
+      title: 'Catalogus layout',
+      description: 'Kies hoe de producten op de categoriepagina worden getoond.',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Inconsistente raster', value: 'staggered'},
+          {title: 'Strak 3-koloms overzicht', value: 'shelf'},
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'staggered',
+    }),
   ],
   preview: {
     select: {

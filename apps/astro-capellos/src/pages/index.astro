@@ -1,16 +1,16 @@
 ---
 import MainLayout from '../layouts/main.astro'
 import MainHero from '../components/sections/MainHero.astro'
-import CatalogPreview from '../components/sections/catalogs/StaggeredGrid.astro'
 import AboutCapellos from '../components/sections/AboutCapellos.astro'
-import {getMainHeroSettings, getAboutCapellosSettings} from '../queries/settings'
+import AanvragenCTA from '../components/sections/AanvragenCTA.astro'
+import {getMainHeroSettings, getAboutCapellosSettings, getAanvragenSettings} from '../queries/settings'
 import {getCategories} from '../queries/categories'
-import placeholderPrints from '../data/placeholder-prints.json'
 import Footer from '../components/sections/Footer.astro'
 
-const [heroSettings, aboutSettings, categories] = await Promise.all([
+const [heroSettings, aboutSettings, aanvragenSettings, categories] = await Promise.all([
   getMainHeroSettings(),
   getAboutCapellosSettings(),
+  getAanvragenSettings(),
   getCategories(),
 ])
 ---
@@ -23,13 +23,18 @@ const [heroSettings, aboutSettings, categories] = await Promise.all([
     enableHoverEffect={heroSettings.enableHoverEffect}
   />
 
-  <CatalogPreview prints={placeholderPrints} />
-
   <AboutCapellos
-    backgroundColor={aboutSettings.backgroundColorHex}
-    textColor={aboutSettings.textColorHex}
     categories={categories}
     text={aboutSettings.text}
+  />
+
+  <AanvragenCTA
+    backgroundColor={aanvragenSettings.backgroundColorHex}
+    textColor={aanvragenSettings.textColorHex}
+    heading={aanvragenSettings.heading}
+    text={aanvragenSettings.text}
+    ctaLabel={aanvragenSettings.ctaLabel}
+    images={aanvragenSettings.images}
   />
 
   <Footer categories={categories} />

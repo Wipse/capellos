@@ -1,6 +1,15 @@
 import gsap from 'gsap'
 
+// Houd een cleanup-functie bij zodat we bij elke re-init de oude listeners verwijderen
+let _cleanup: (() => void) | null = null
+
 export function initSidebarNav() {
+  // Ruim vorige instantie op
+  if (_cleanup) {
+    _cleanup()
+    _cleanup = null
+  }
+
   const trigger = document.getElementById('nav-trigger')
   const sidebar = document.getElementById('nav-sidebar')
   const overlay = document.getElementById('nav-overlay')
@@ -87,9 +96,18 @@ export function initSidebarNav() {
       }
     }
 
-    trigger.addEventListener('click', () => (isOpen ? close() : open()))
+    const onTriggerClick = () => (isOpen ? close() : open())
+    const onBeforeSwap = () => close()
+
+    trigger.addEventListener('click', onTriggerClick)
     overlay.addEventListener('click', close)
-    document.addEventListener('astro:before-swap', close)
+    document.addEventListener('astro:before-swap', onBeforeSwap)
+
+    _cleanup = () => {
+      trigger.removeEventListener('click', onTriggerClick)
+      overlay.removeEventListener('click', close)
+      document.removeEventListener('astro:before-swap', onBeforeSwap)
+    }
   }
 
   // Shop submenu toggle

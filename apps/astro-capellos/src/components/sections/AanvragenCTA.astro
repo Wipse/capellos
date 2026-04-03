@@ -1,0 +1,184 @@
+---
+import BlobClip from '../BlobClip.astro'
+import DriftBackground from '../DriftBackground.astro'
+import Icon from '../Icon.astro'
+import Heading from '../Heading.astro'
+
+interface Props {
+  backgroundColor?: string
+  textColor?: string
+  heading?: string
+  text?: string | null
+  ctaLabel?: string
+  images?: {url: string; alt: string | null}[]
+}
+
+const {
+  backgroundColor = '#4BAF6E',
+  textColor = '#FFFFFF',
+  heading = 'Jij vraagt, ik maak',
+  text = null,
+  ctaLabel = 'Doe een aanvraag',
+  images = [],
+} = Astro.props
+
+// Fallback placeholders als er nog geen afbeeldingen zijn
+const MIN = 6
+const filledImages =
+  images.length >= MIN
+    ? images
+    : [
+        ...images,
+        ...Array.from({length: MIN - images.length}, (_, i) => ({
+          url: `https://placehold.co/300x420/cccccc/999999?text=Print+${i + 1}`,
+          alt: '',
+        })),
+      ]
+
+const half = Math.ceil(filledImages.length / 2)
+const colA = filledImages.slice(0, half)
+const colB = filledImages.slice(half)
+---
+
+<BlobClip id="aanvragenClip" edges="both" movement="slow" amplitude="sm" />
+
+<section
+  id="aanvragen-cta"
+  class="relative h-[120vh] overflow-hidden flex items-center"
+  style={`background-color: ${backgroundColor};`}
+>
+  <DriftBackground />
+
+  <!-- Sliders: absolute, full height of section, right half -->
+  <div
+    class="absolute inset-y-0 right-0 w-full lg:w-1/2 grid grid-cols-2 gap-3 overflow-hidden pointer-events-none"
+  >
+    <!-- Column A: scrolls up -->
+    <div class="slider-col relative overflow-hidden">
+      <div class="slider-track slider-up flex flex-col gap-3">
+        {
+          [...colA, ...colA].map((img) => (
+            <div class="aspect-297/420 w-full overflow-hidden rounded-lg shrink-0">
+              <img src={img.url} alt={img.alt} class="h-full w-full object-cover" loading="lazy" />
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <!-- Column B: scrolls down -->
+    <div class="slider-col relative overflow-hidden">
+      <div class="slider-track slider-down flex flex-col gap-3">
+        {
+          [...colB, ...colB].map((img) => (
+            <div class="aspect-297/420 w-full overflow-hidden rounded-lg shrink-0">
+              <img src={img.url} alt={img.alt} class="h-full w-full object-cover" loading="lazy" />
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Text content: centered left half -->
+  <div class="container relative mx-auto px-6 lg:px-12 py-section-xl">
+    <div class="lg:w-1/2 flex flex-col gap-6">
+      <Heading as="h2" size="lg" style={`color: ${textColor};`}>{heading}</Heading>
+      {text && (
+        <p
+          class="font-body text-base leading-relaxed max-w-lg opacity-85"
+          style={`color: ${textColor};`}
+        >
+          {text}
+        </p>
+      )}
+      <a
+        href="/aanvragen"
+        class="mt-2 inline-flex w-fit items-center justify-center gap-3 px-8 py-4 font-heading text-sm font-semibold tracking-widest uppercase transition-all hover:gap-5"
+        style={`background-color: ${textColor}; color: ${backgroundColor};`}
+      >
+        {ctaLabel}
+        <Icon type="chevron-right" size={16} />
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  import gsap from 'gsap'
+
+  document.addEventListener('astro:page-load', () => {
+    const tracksUp = Array.from(document.querySelectorAll<HTMLElement>('.slider-up'))
+    const tracksDown = Array.from(document.querySelectorAll<HTMLElement>('.slider-down'))
+
+    const tweens: gsap.core.Tween[] = []
+
+    tracksUp.forEach((track) => {
+      const height = track.scrollHeight / 2
+      tweens.push(gsap.fromTo(track, {y: 0}, {y: -height, duration: 30, ease: 'none', repeat: -1}))
+    })
+
+    tracksDown.forEach((track) => {
+      const height = track.scrollHeight / 2
+      tweens.push(gsap.fromTo(track, {y: -height}, {y: 0, duration: 30, ease: 'none', repeat: -1}))
+    })
+
+    let scrollTimer: ReturnType<typeof setTimeout>
+
+    const onScroll = () => {
+      tweens.forEach((t) => t.timeScale(4))
+      clearTimeout(scrollTimer)
+      scrollTimer = setTimeout(() => {
+        tweens.forEach((t) => gsap.to(t, {timeScale: 1, duration: 0.8, ease: 'power2.out'}))
+      }, 100)
+    }
+
+    window.addEventListener('scroll', onScroll, {passive: true})
+
+    const section = document.getElementById('aanvragen-cta')
+    if (section) {
+      ;(section as any)._cleanup = () => {
+        window.removeEventListener('scroll', onScroll)
+        clearTimeout(scrollTimer)
+        tweens.forEach((t) => t.kill())
+      }
+    }
+  })
+
+  document.addEventListener('astro:before-swap', () => {
+    ;(document.getElementById('aanvragen-cta') as any)?._cleanup?.()
+  })
+</script>
+
+<style>
+  #aanvragen-cta {
+    clip-path: url(#aanvragenClip);
+  }
+
+  @media (max-width: 639px) {
+    #aanvragen-cta {
+      clip-path: url(#aanvragenClip-mobile);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #aanvragen-cta {
+      clip-path: polygon(
+        0% 6%,
+        17% -2%,
+        50% 6%,
+        83% 14%,
+        100% 6%,
+        100% 94%,
+        83% 102%,
+        50% 94%,
+        17% 86%,
+        0% 94%
+      );
+    }
+    .slider-up,
+    .slider-down {
+      animation: none !important;
+    }
+  }
+</style>

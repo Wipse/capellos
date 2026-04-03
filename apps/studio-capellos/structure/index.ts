@@ -94,6 +94,14 @@ export const structure: StructureResolver = (S, {getClient}) => {
                 ),
               S.divider(),
               S.listItem()
+                .title('Navigatie')
+                .child(
+                  S.document()
+                    .documentId('navSettings')
+                    .schemaType('navSettings')
+                    .title('Navigatie Instellingen')
+                ),
+              S.listItem()
                 .title('Footer')
                 .child(
                   S.document()

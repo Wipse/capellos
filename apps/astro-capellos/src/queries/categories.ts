@@ -8,6 +8,7 @@ export interface Category {
   imageUrl: string | null
   imageAlt: string | null
   description: string | null
+  catalogLayout: 'staggered' | 'shelf'
 }
 
 const categoriesGroq = `*[_type == "category"] | order(title asc) {
@@ -17,12 +18,13 @@ const categoriesGroq = `*[_type == "category"] | order(title asc) {
   "textColorHex": coalesce(textColor.hex, "#FFFFFF"),
   "imageUrl": image.asset->url,
   "imageAlt": image.alt,
-  description
+  description,
+  "catalogLayout": coalesce(catalogLayout, "staggered")
 }`
 
 const FALLBACK_CATEGORIES: Category[] = [
-  {title: 'Prints', slug: 'prints', colorHex: '#4BAF6E', textColorHex: '#FFFFFF', imageUrl: null, imageAlt: null, description: null},
-  {title: 'Kleding', slug: 'kleding', colorHex: '#4BAF6E', textColorHex: '#FFFFFF', imageUrl: null, imageAlt: null, description: null},
+  {title: 'Prints', slug: 'prints', colorHex: '#4BAF6E', textColorHex: '#FFFFFF', imageUrl: null, imageAlt: null, description: null, catalogLayout: 'staggered'},
+  {title: 'Kleding', slug: 'kleding', colorHex: '#4BAF6E', textColorHex: '#FFFFFF', imageUrl: null, imageAlt: null, description: null, catalogLayout: 'staggered'},
 ]
 
 export async function getCategories(): Promise<Category[]> {

@@ -19,8 +19,6 @@ export interface FooterContactInfo {
 }
 
 export interface AboutCapellosSettings {
-  backgroundColorHex: string
-  textColorHex: string
   text: {_type: string; children: {text: string}[]}[] | null
 }
 
@@ -31,6 +29,24 @@ export interface MainHeroSettings {
   backgroundColorHex: string
   showShadowLogo: boolean
   enableHoverEffect: boolean
+}
+
+export interface NavSettings {
+  triggerBackgroundColor: string
+  triggerIconColor: string
+}
+
+export async function getNavSettings(): Promise<NavSettings> {
+  const row = await sanityClient.fetch<Partial<NavSettings> | null>(
+    `*[_id == "navSettings"][0]{
+      "triggerBackgroundColor": coalesce(triggerBackgroundColor.hex, "#1e293b"),
+      "triggerIconColor": coalesce(triggerIconColor.hex, "#FFFFFF")
+    }`,
+  )
+  return {
+    triggerBackgroundColor: row?.triggerBackgroundColor ?? '#1e293b',
+    triggerIconColor: row?.triggerIconColor ?? '#FFFFFF',
+  }
 }
 
 // ——— Defaults ———
@@ -87,24 +103,48 @@ export async function getFooterContactInfo(): Promise<FooterContactInfo> {
   }
 }
 
-const DEFAULT_ABOUT_BG = '#4BAF6E'
-const DEFAULT_ABOUT_TEXT = '#FFFFFF'
+export interface AanvragenSettings {
+  backgroundColorHex: string
+  textColorHex: string
+  heading: string
+  text: string | null
+  ctaLabel: string
+  images: {url: string; alt: string | null}[]
+}
 
-const aboutCapellosSettingsGroq = `*[_id == "homepage"][0]{
-  "backgroundColorHex": coalesce(about.backgroundColor.hex, $defaultBg),
-  "textColorHex": coalesce(about.textColor.hex, $defaultText),
-  "text": about.text
+const DEFAULT_AANVRAGEN_BG = '#4BAF6E'
+const DEFAULT_AANVRAGEN_TEXT = '#FFFFFF'
+
+const aanvragenSettingsGroq = `*[_id == "homepage"][0]{
+  "backgroundColorHex": coalesce(aanvragen.backgroundColor.hex, $defaultBg),
+  "textColorHex": coalesce(aanvragen.textColor.hex, $defaultText),
+  "heading": coalesce(aanvragen.heading, "Jij vraagt, ik maak"),
+  "text": aanvragen.text,
+  "ctaLabel": coalesce(aanvragen.ctaLabel, "Doe een aanvraag"),
+  "images": aanvragen.images[]{"url": asset->url, "alt": alt}
 }`
 
-export async function getAboutCapellosSettings(): Promise<AboutCapellosSettings> {
-  const row = await sanityClient.fetch<Partial<AboutCapellosSettings> | null>(
-    aboutCapellosSettingsGroq,
-    {defaultBg: DEFAULT_ABOUT_BG, defaultText: DEFAULT_ABOUT_TEXT},
+export async function getAanvragenSettings(): Promise<AanvragenSettings> {
+  const row = await sanityClient.fetch<Partial<AanvragenSettings> | null>(
+    aanvragenSettingsGroq,
+    {defaultBg: DEFAULT_AANVRAGEN_BG, defaultText: DEFAULT_AANVRAGEN_TEXT},
   )
 
   return {
-    backgroundColorHex: row?.backgroundColorHex ?? DEFAULT_ABOUT_BG,
-    textColorHex: row?.textColorHex ?? DEFAULT_ABOUT_TEXT,
+    backgroundColorHex: row?.backgroundColorHex ?? DEFAULT_AANVRAGEN_BG,
+    textColorHex: row?.textColorHex ?? DEFAULT_AANVRAGEN_TEXT,
+    heading: row?.heading ?? 'Jij vraagt, ik maak',
+    text: row?.text ?? null,
+    ctaLabel: row?.ctaLabel ?? 'Doe een aanvraag',
+    images: row?.images ?? [],
+  }
+}
+
+const aboutCapellosSettingsGroq = `*[_id == "homepage"][0]{ "text": about.text }`
+
+export async function getAboutCapellosSettings(): Promise<AboutCapellosSettings> {
+  const row = await sanityClient.fetch<Partial<AboutCapellosSettings> | null>(aboutCapellosSettingsGroq)
+  return {
     text: row?.text ?? null,
   }
 }

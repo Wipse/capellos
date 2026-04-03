@@ -18,7 +18,7 @@ const {title, price, size, imageUrl, imageAlt = title, href = '#', gridClass = '
     <!-- Image -->
     <div class="aspect-297/420 overflow-hidden bg-gray-100 mb-2">
       <img
-        src="https://placehold.co/300x400"
+        src={imageUrl}
         alt={imageAlt}
         class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
         transition:name={transitionName}

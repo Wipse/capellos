@@ -64,3 +64,16 @@ export async function getRelatedProducts(productId: string, categoryRef: string)
     {productId, categoryRef},
   )
 }
+
+export async function getAllProducts(): Promise<Product[]> {
+  return sanityClient.fetch<Product[]>(
+    `*[_type == "product"] | order(publishedAt desc){ ${productFields} }`,
+  )
+}
+
+export async function getProductsByCategorySlug(categorySlug: string): Promise<Product[]> {
+  return sanityClient.fetch<Product[]>(
+    `*[_type == "product" && category->slug.current == $categorySlug] | order(publishedAt desc){ ${productFields} }`,
+    {categorySlug},
+  )
+}

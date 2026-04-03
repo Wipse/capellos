@@ -3,6 +3,13 @@ import Logo from './Logo.astro'
 import {colorLetters} from '../utils/colorLetters'
 import {getCategories} from '../queries/categories'
 
+interface Props {
+  triggerBg?: string
+  triggerIcon?: string
+}
+
+const {triggerBg = '#1e293b', triggerIcon = '#FFFFFF'} = Astro.props
+
 const shopChars = colorLetters('Shop')
 const aanvragenChars = colorLetters('Aanvragen')
 const overChars = colorLetters('Over Capellos')
@@ -45,7 +52,11 @@ const shopItems = categories.map((cat) => ({
         aria-expanded="false"
       >
         <span>
-          {shopChars.map(({char, color}) => color ? <span style={`color: ${color};`}>{char}</span> : ' ')}
+          {
+            shopChars.map(({char, color}) =>
+              color ? <span style={`color: ${color};`}>{char}</span> : ' ',
+            )
+          }
         </span>
         <svg
           id="shop-chevron"
@@ -85,19 +96,31 @@ const shopItems = categories.map((cat) => ({
       href="/aanvragen"
       class="nav-sidebar-link font-heading text-3xl lg:text-4xl font-semibold uppercase text-slate-900 leading-tight py-2 cursor-pointer hover:pl-3 transition-all duration-200"
     >
-      {aanvragenChars.map(({char, color}) => color ? <span style={`color: ${color};`}>{char}</span> : ' ')}
+      {
+        aanvragenChars.map(({char, color}) =>
+          color ? <span style={`color: ${color};`}>{char}</span> : ' ',
+        )
+      }
     </a>
     <a
       href="/over"
       class="nav-sidebar-link font-heading text-3xl lg:text-4xl font-semibold uppercase text-slate-900 leading-tight py-2 cursor-pointer hover:pl-3 transition-all duration-200"
     >
-      {overChars.map(({char, color}) => color ? <span style={`color: ${color};`}>{char}</span> : ' ')}
+      {
+        overChars.map(({char, color}) =>
+          color ? <span style={`color: ${color};`}>{char}</span> : ' ',
+        )
+      }
     </a>
     <a
       href="/contact"
       class="nav-sidebar-link font-heading text-3xl lg:text-4xl font-semibold uppercase text-slate-900 leading-tight py-2 cursor-pointer hover:pl-3 transition-all duration-200"
     >
-      {contactChars.map(({char, color}) => color ? <span style={`color: ${color};`}>{char}</span> : ' ')}
+      {
+        contactChars.map(({char, color}) =>
+          color ? <span style={`color: ${color};`}>{char}</span> : ' ',
+        )
+      }
     </a>
   </nav>
 
@@ -110,7 +133,7 @@ const shopItems = categories.map((cat) => ({
     <a
       href="#"
       class="font-heading text-xs tracking-widest uppercase text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
-      >Contact</a
+      >Algemente Voorwaarden</a
     >
   </div>
 </aside>
@@ -121,18 +144,25 @@ const shopItems = categories.map((cat) => ({
   aria-label="Menu openen"
   aria-expanded="false"
   aria-controls="nav-sidebar"
-  class="fixed top-4 right-4 z-60 w-12 h-12 rounded-full bg-slate-900 flex items-center justify-center shadow-lg cursor-pointer"
+  class="fixed top-4 right-4 z-60 w-12 h-12 rounded-full flex items-center justify-center shadow-lg cursor-pointer"
+  style={`background-color: ${triggerBg};`}
   transition:persist
 >
   <div class="relative w-5 h-[13px] flex flex-col justify-between">
-    <span class="nav-line block w-full h-0.5 bg-white rounded-full"></span>
-    <span class="nav-line block w-full h-0.5 bg-white rounded-full"></span>
-    <span class="nav-line block w-full h-0.5 bg-white rounded-full"></span>
+    <span
+      class="nav-line block w-full h-0.5 rounded-full"
+      style={`background-color: ${triggerIcon};`}></span>
+    <span
+      class="nav-line block w-full h-0.5 rounded-full"
+      style={`background-color: ${triggerIcon};`}></span>
+    <span
+      class="nav-line block w-full h-0.5 rounded-full"
+      style={`background-color: ${triggerIcon};`}></span>
   </div>
 </button>
 
 <script>
   import {initSidebarNav} from '../lib/animations/sidebarNav'
 
-  initSidebarNav()
+  document.addEventListener('astro:page-load', initSidebarNav)
 </script>

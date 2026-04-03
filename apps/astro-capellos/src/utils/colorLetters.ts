@@ -1,12 +1,12 @@
 const palette = [
-  '#E91E63', // pink
-  '#9C27B0', // purple
-  '#673AB7', // deep purple
-  '#3F51B5', // indigo
-  '#2196F3', // blue
-  '#009688', // teal
-  '#F44336', // red
-  '#FF5722', // deep orange
+  '#6739CB', // deep purple
+  '#B581FF', // indigo
+  '#2C7FFB', // blue
+  '#009100', // forest green
+  '#02C97D', // green
+  '#00CFD6', // light-blue
+  '#D83A45', // red
+  '#FFB300', // deep orange
 ]
 
 export type ColoredChar = {char: string; color: string | null}

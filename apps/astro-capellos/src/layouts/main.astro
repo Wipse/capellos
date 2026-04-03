@@ -2,12 +2,14 @@
 import '../styles/global.css';
 import { ViewTransitions } from 'astro:transitions';
 import SidebarNav from '../components/SidebarNav.astro';
+import {getNavSettings} from '../queries/settings';
 
 interface Props {
 	title?: string;
 }
 
 const { title = 'Capellos' } = Astro.props;
+const navSettings = await getNavSettings();
 ---
 
 <html lang="en">
@@ -19,7 +21,7 @@ const { title = 'Capellos' } = Astro.props;
 		<ViewTransitions />
 	</head>
 	<body>
-		<SidebarNav />
+		<SidebarNav triggerBg={navSettings.triggerBackgroundColor} triggerIcon={navSettings.triggerIconColor} />
 		<slot />
 	</body>
 </html>
