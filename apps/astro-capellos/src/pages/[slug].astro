@@ -1,8 +1,11 @@
 ---
 import MainLayout from '../layouts/main.astro'
 import CategoryHero from '../components/sections/CategoryHero.astro'
+import StaggeredGrid from '../components/sections/catalogs/StaggeredGrid.astro'
+import ProductShelf from '../components/sections/catalogs/ProductShelf.astro'
 import Footer from '../components/sections/Footer.astro'
 import {getCategories} from '../queries/categories'
+import {getProductsByCategorySlug} from '../queries/products'
 
 export async function getStaticPaths() {
   const categories = await getCategories()
@@ -13,7 +16,12 @@ export async function getStaticPaths() {
 }
 
 const {category} = Astro.props
-const categories = await getCategories()
+const [categories, products] = await Promise.all([
+  getCategories(),
+  getProductsByCategorySlug(category.slug),
+])
+
+const displayProducts = products ?? []
 ---
 
 <MainLayout title={`${category.title} | Capellos`}>
@@ -24,5 +32,16 @@ const categories = await getCategories()
     backgroundColor={category.colorHex}
     textColor={category.textColorHex}
   />
+  {displayProducts.length > 0 ? (
+    category.catalogLayout === 'shelf'
+      ? <ProductShelf products={displayProducts} categorySlug={category.slug} />
+      : <StaggeredGrid products={displayProducts} categorySlug={category.slug} />
+  ) : (
+    <section class="py-section-lg">
+      <div class="container mx-auto px-6 lg:px-12 text-center">
+        <p class="font-body text-lg text-slate-500">Er zijn momenteel geen producten in deze categorie.</p>
+      </div>
+    </section>
+  )}
   <Footer categories={categories} />
 </MainLayout>
