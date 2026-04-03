@@ -1,23 +1,28 @@
 ---
-import Link from './Link.astro'
+import Icon from './Icon.astro'
 
 interface Props {
   href: string
   label: string
   color?: string
+  class?: string
 }
 
-const {href, label, color = 'currentColor'} = Astro.props
+const {href, label, color = 'currentColor', class: className} = Astro.props
 ---
 
-<Link
+<a
   href={href}
-  label={label}
-  prefix-icon="chevron-left"
-  size="lg"
-  hover="underline"
-  has-heading-font
-  underline-color={color}
-  class="mb-10 inline-flex opacity-80 hover:opacity-100"
+  class:list={[
+    'group mb-6 inline-flex items-center gap-2 font-heading text-sm font-semibold tracking-widest uppercase opacity-70 transition-opacity hover:opacity-100',
+    className,
+  ]}
   style={`color: ${color};`}
-/>
+>
+  <Icon
+    type="chevron-left"
+    size={18}
+    addedClasses="transition-transform duration-200 group-hover:-translate-x-1"
+  />
+  {label}
+</a>
