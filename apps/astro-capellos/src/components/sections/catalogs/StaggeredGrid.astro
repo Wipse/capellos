@@ -1,26 +1,19 @@
 ---
 import PrintItem from '../../PrintItem.astro'
-
-export interface Print {
-  id: string
-  title: string
-  price: number
-  size: string
-  imageUrl: string
-  slug?: string
-}
+import type {Product} from '../../../queries/products'
 
 interface Props {
-  prints: Print[]
+  products: Product[]
+  categorySlug?: string
 }
 
-const {prints} = Astro.props
+const {products, categorySlug} = Astro.props
 
 // Staggered grid — mobile: 10-col, col-span-5 (2 per rij); tablet: 10-col, col-span-5 (2 per rij, ruimer); desktop: 12-col, col-span-3 (3 per rij)
 const gridPositions = [
   // group 1
-  'col-span-5 col-start-2 row-start-1  row-span-4   md:col-span-5 md:col-start-1 md:row-start-1   lg:col-span-3 lg:col-start-1  lg:row-start-5',
-  'col-span-5 col-start-5 row-start-5  row-span-4   md:col-span-5 md:col-start-7 md:row-start-4   lg:col-span-3 lg:col-start-5  lg:row-start-1',
+  'col-span-5 col-start-2 row-start-1  row-span-4   md:col-span-5 md:col-start-1 md:row-start-1   lg:col-span-3 lg:col-start-5  lg:row-start-1',
+  'col-span-5 col-start-5 row-start-5  row-span-4   md:col-span-5 md:col-start-7 md:row-start-4   lg:col-span-3 lg:col-start-1  lg:row-start-5',
   'col-span-5 col-start-1 row-start-9  row-span-4   md:col-span-5 md:col-start-2 md:row-start-9   lg:col-span-3 lg:col-start-9  lg:row-start-3',
   // group 2
   'col-span-5 col-start-6 row-start-10 row-span-4   md:col-span-5 md:col-start-8 md:row-start-14   lg:col-span-3 lg:col-start-2  lg:row-start-11',
@@ -32,59 +25,39 @@ const gridPositions = [
   'col-span-5 col-start-2 row-start-28 row-span-4   md:col-span-5 md:col-start-5 md:row-start-37  lg:col-span-3 lg:col-start-9  lg:row-start-21',
 ]
 
-// 8 ghost background images — mobile, tablet and desktop positions
-const bgPositions: {mobile: string; tablet: string; desktop: string}[] = [
-  {
-    mobile: 'top: 20%;  left: 5%;   width: 40%;',
-    tablet: 'top: 19%;  left: 60%;   width: 30%;',
-    desktop: 'top: 24%;  left: 1%;   width: 20%;',
-  },
-  {
-    mobile: 'top: 28%;  right: -5%; width: 40%;',
-    tablet: 'top: 30%;  left: 18%; width: 30%;',
-    desktop: 'top: 32%;  left: 46%;  width: 20%;',
-  },
-  {
-    mobile: 'top: 35%;  left: -5%;  width: 40%;',
-    tablet: 'top: 38%;  left: 60%;  width: 30%;',
-    desktop: 'top: 45%;  left: 75%;  width: 20%;',
-  },
-  {
-    mobile: 'top: 46%;  right: -5%; width: 40%;',
-    tablet: 'top: 48%;  right: 50%;  width: 30%;',
-    desktop: 'top: 50%;  left: 2%;   width: 20%;',
-  },
-  {
-    mobile: 'top: 57%;  left: -5%;  width: 40%;',
-    tablet: 'top: 58%;  left: 30%;  width: 30%;',
-    desktop: 'top: 65%;  left: 40%;  width: 20%;',
-  },
-  {
-    mobile: 'top: 71%;  right: 5%;  width: 40%;',
-    tablet: 'top: 70%;  right: 40%;  width: 30%;',
-    desktop: 'top: 75%;  left: 5%;   width: 20%;',
-  },
-  {
-    mobile: 'top: 82%;  left: 30%;  width: 40%;',
-    tablet: 'top: 81%;  left: 10%;  width: 30%;',
-    desktop: 'top: 82%;  left: 70%;  width: 20%;',
-  },
-  {
-    mobile: 'top: 95%;  right: 10%; width: 40%;',
-    tablet: 'top: 93%;  right: 8%;  width: 30%;',
-    desktop: 'top: 95%;  left: 20%;  width: 20%;',
-  },
+// Chunk products into groups of 9 so the pattern repeats infinitely
+const CHUNK_SIZE = gridPositions.length
+const chunks: Product[][] = []
+for (let i = 0; i < products.length; i += CHUNK_SIZE) {
+  chunks.push(products.slice(i, i + CHUNK_SIZE))
+}
+
+// Background ghost positions (left/right/width per breakpoint, top is distributed evenly)
+const bgSides = [
+  {mobile: 'left: 5%;',   tablet: 'left: 60%;',  desktop: 'left: 1%;',  width: '40%', tabletW: '30%', desktopW: '20%'},
+  {mobile: 'right: -5%;', tablet: 'left: 18%;',  desktop: 'left: 46%;', width: '40%', tabletW: '30%', desktopW: '20%'},
+  {mobile: 'left: -5%;',  tablet: 'left: 60%;',  desktop: 'left: 75%;', width: '40%', tabletW: '30%', desktopW: '20%'},
+  {mobile: 'right: -5%;', tablet: 'right: 50%;', desktop: 'left: 2%;',  width: '40%', tabletW: '30%', desktopW: '20%'},
+  {mobile: 'left: -5%;',  tablet: 'left: 30%;',  desktop: 'left: 40%;', width: '40%', tabletW: '30%', desktopW: '20%'},
+  {mobile: 'right: 5%;',  tablet: 'right: 40%;', desktop: 'left: 5%;',  width: '40%', tabletW: '30%', desktopW: '20%'},
+  {mobile: 'left: 30%;',  tablet: 'left: 10%;',  desktop: 'left: 70%;', width: '40%', tabletW: '30%', desktopW: '20%'},
+  {mobile: 'right: 10%;', tablet: 'right: 8%;',  desktop: 'left: 20%;', width: '40%', tabletW: '30%', desktopW: '20%'},
 ]
 
-const bgItems = prints.length
-  ? bgPositions.map(({mobile, tablet, desktop}, i) => ({
-      mobile,
-      tablet,
-      desktop,
-      imageUrl: prints[i % prints.length].imageUrl,
-      index: i,
-    }))
-  : []
+// Distribute bg items evenly across the full section height (5% – 95%)
+const bgItems = products.map((product, i) => {
+  const side = bgSides[i % bgSides.length]
+  const topPercent = products.length > 1
+    ? (5 + (i / (products.length - 1)) * 90).toFixed(1)
+    : '50'
+  return {
+    mobile:  `top: ${topPercent}%; ${side.mobile}  width: ${side.width};`,
+    tablet:  `top: ${topPercent}%; ${side.tablet}  width: ${side.tabletW};`,
+    desktop: `top: ${topPercent}%; ${side.desktop} width: ${side.desktopW};`,
+    imageUrl: product.mainImageUrl ?? 'https://placehold.co/300x400',
+    index: i,
+  }
+})
 ---
 
 <section id="catalog-preview" class="relative z-10 overflow-hidden pt-section-md pb-section-xl">
@@ -104,25 +77,28 @@ const bgItems = prints.length
     }
   </div>
 
-  <!-- Foreground grid -->
-  <div class="container relative mx-auto px-4">
-    <div class="grid grid-cols-10 auto-rows-[80px] gap-x-4 gap-y-10 md:grid-cols-12">
-      {
-        prints
-          .slice(0, gridPositions.length)
-          .map((print, i) => (
-            <PrintItem
-              gridClass={gridPositions[i]}
-              title={print.title}
-              price={print.price}
-              imageUrl={print.imageUrl}
-              size={print.size}
-              href={print.slug ? `/prints/${print.slug}` : '#'}
-              transitionName={print.slug ? `print-img-${print.slug}` : undefined}
-            />
-          ))
-      }
-    </div>
+  <!-- Foreground grid — one grid per chunk of 9, pattern repeats -->
+  <div class="container relative mx-auto px-4 flex flex-col gap-16">
+    {
+      chunks.map((chunk) => (
+        <div class="grid grid-cols-10 auto-rows-[80px] gap-x-4 gap-y-10 md:grid-cols-12">
+          {chunk.map((product, i) => {
+            const size = (product.specifications?.find((s) => s._type === 'specChoice')?.options?.[0] ?? '') as string
+            return (
+              <PrintItem
+                gridClass={gridPositions[i]}
+                title={product.name}
+                price={product.price}
+                imageUrl={product.mainImageUrl ?? 'https://placehold.co/300x400'}
+                size={size}
+                href={`/${categorySlug ?? product.category?.slug}/${product.slug}`}
+                transitionName={`product-img-${product.slug}`}
+              />
+            )
+          })}
+        </div>
+      ))
+    }
   </div>
 </section>
 
