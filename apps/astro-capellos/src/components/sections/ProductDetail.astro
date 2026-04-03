@@ -14,7 +14,7 @@ interface Props {
 const {title, description, sizes, imageUrl, material, shipping, additionalInfo} = Astro.props
 ---
 
-<section id="print-detail" class="py-section-lg">
+<section id="product-detail" class="py-section-lg">
   <div class="container mx-auto px-6 lg:px-12">
     <div class="grid grid-cols-12 gap-8 items-start">
       <!-- textarea col 2–6 -->
@@ -78,10 +78,10 @@ const {title, description, sizes, imageUrl, material, shipping, additionalInfo} 
       <!-- image col 8–11 -->
       <div class="col-span-12 lg:col-start-8 lg:col-span-4 lg:sticky lg:self-start lg:top-[12vh]">
         <!-- Outer wrapper translates, inner clips the image -->
-        <div id="print-detail-travel-img" class="aspect-297/420 w-full">
+        <div id="product-detail-travel-img" class="aspect-297/420 w-full">
           <div class="h-full w-full overflow-hidden shadow-lg bg-gray-100">
             <img
-              src="https://placehold.co/300x400"
+              src={imageUrl ?? 'https://placehold.co/300x400'}
               alt={title}
               class="h-full w-full object-cover"
             />
@@ -99,7 +99,7 @@ const {title, description, sizes, imageUrl, material, shipping, additionalInfo} 
   gsap.registerPlugin(ScrollTrigger)
 
   document.addEventListener('astro:page-load', () => {
-    const detailImg = document.getElementById('print-detail-travel-img')
+    const detailImg = document.getElementById('product-detail-travel-img')
     if (!detailImg) return
 
     gsap.fromTo(

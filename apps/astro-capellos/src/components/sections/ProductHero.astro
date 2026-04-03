@@ -11,6 +11,7 @@ interface Props {
   sizes: string[]
   description: string
   category: string
+  imageUrl?: string
   backgroundColor?: string
   textColor?: string
   transitionName?: string
@@ -22,16 +23,17 @@ const {
   sizes,
   description,
   category,
+  imageUrl,
   backgroundColor = '#4BAF6E',
   textColor = '#FFFFFF',
   transitionName,
 } = Astro.props
 ---
 
-<BlobClip id="printDetailClip" edges="bottom" movement="normal" aplitude="lg" />
+<BlobClip id="productDetailClip" edges="bottom" movement="normal" aplitude="lg" />
 
 <section
-  id="print-detail-hero"
+  id="product-detail-hero"
   class="relative min-h-dvh pt-section-md pb-section-xl"
   style={`background-color: ${backgroundColor};`}
 >
@@ -43,7 +45,7 @@ const {
     <div class="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-20 lg:items-start">
       <!-- Image -->
       <div
-        id="print-hero-img"
+        id="product-hero-img"
         class="group col-start-2 col-span-4 relative mx-auto w-full max-w-sm lg:max-w-none"
       >
         <div
@@ -53,7 +55,7 @@ const {
         </div>
         <div class="relative aspect-297/420 w-full overflow-hidden shadow-2xl">
           <img
-            src="https://placehold.co/300x400"
+            src={imageUrl ?? 'https://placehold.co/300x400'}
             alt={title}
             class="h-full w-full object-cover"
             transition:name={transitionName}
@@ -134,7 +136,7 @@ const {
   gsap.registerPlugin(ScrollTrigger)
 
   document.addEventListener('astro:page-load', () => {
-    const heroImg = document.getElementById('print-hero-img')
+    const heroImg = document.getElementById('product-hero-img')
     if (!heroImg) return
 
     gsap.to(heroImg, {
@@ -156,18 +158,18 @@ const {
 </script>
 
 <style>
-  #print-detail-hero {
-    clip-path: url(#printDetailClip);
+  #product-detail-hero {
+    clip-path: url(#productDetailClip);
   }
 
   @media (max-width: 639px) {
-    #print-detail-hero {
-      clip-path: url(#printDetailClip-mobile);
+    #product-detail-hero {
+      clip-path: url(#productDetailClip-mobile);
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    #print-detail-hero {
+    #product-detail-hero {
       clip-path: polygon(0% 0%, 100% 0%, 100% 88%, 83% 96%, 50% 88%, 17% 80%, 0% 88%);
     }
   }
