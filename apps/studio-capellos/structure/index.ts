@@ -28,16 +28,19 @@ export const structure: StructureResolver = (S, {getClient}) => {
               S.list()
                 .title('Producten')
                 .items([
-                  // Eén tabje per categorie — gefilterd op slug als conventie
+                  // Eén tabje per categorie
                   ...categories.map((cat) =>
                     S.listItem()
                       .title(cat.title)
                       .id(cat._id)
                       .child(
                         S.documentList()
-                          .title(`${cat.title}`)
-                          .filter('_type in ["print", "clothing", "accessory"] && category._ref == $catId')
+                          .title(cat.title)
+                          .filter('_type == "product" && category._ref == $catId')
                           .params({catId: cat._id})
+                          .initialValueTemplates([
+                            S.initialValueTemplateItem('product-in-category', {catId: cat._id}),
+                          ])
                       )
                   ),
 

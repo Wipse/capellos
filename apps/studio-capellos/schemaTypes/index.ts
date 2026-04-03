@@ -2,9 +2,11 @@
 import {categoryType} from './categoryType'
 
 // Producten schema types
-import {clothingType} from './products/clothingType'
-import {accessoryType} from './products/accessoryType'
-import {printType} from './products/printType'
+import {productType} from './products/productType'
+import {specTextType} from './products/specifications/specTextType'
+import {specChoiceType} from './products/specifications/specChoiceType'
+import {specBooleanType} from './products/specifications/specBooleanType'
+import {specNumberType} from './products/specifications/specNumberType'
 
 // Pagina's schema types
 import {homepageType} from './pages/homepageType'
@@ -22,10 +24,12 @@ export const schemaTypes = [
   // Categorieën
   categoryType,
 
-  // Products
-  clothingType,
-  accessoryType,
-  printType,
+  // Producten
+  productType,
+  specTextType,
+  specChoiceType,
+  specBooleanType,
+  specNumberType,
 
   // Pages
   homepageType,

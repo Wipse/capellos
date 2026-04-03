@@ -1,0 +1,30 @@
+---
+interface Image {
+  url: string
+  alt: string | null
+}
+
+interface Props {
+  images: Image[]
+  productName: string
+}
+
+const {images, productName} = Astro.props
+---
+
+<section class="py-section-md">
+  <div class="container mx-auto px-6 lg:px-12">
+    <div class="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+      {images.map((image, i) => (
+        <div class="break-inside-avoid overflow-hidden rounded-xl shadow-sm">
+          <img
+            src={image.url}
+            alt={image.alt ?? `${productName} afbeelding ${i + 1}`}
+            class="w-full h-auto object-cover transition-transform duration-500 hover:scale-105"
+            loading="lazy"
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
