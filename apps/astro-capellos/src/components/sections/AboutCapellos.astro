@@ -1,8 +1,6 @@
 ---
-import BlobClip from '../BlobClip.astro'
 import Logo from '../Logo.astro'
 import CategoryNavItem from '../CategoryNavItem.astro'
-import DriftBackground from '../DriftBackground.astro'
 import Icon from '../Icon.astro'
 import type {Category} from '../../queries/categories'
 
@@ -12,24 +10,15 @@ interface Block {
 }
 
 interface Props {
-  backgroundColor?: string
-  textColor?: string
   categories: Category[]
   text?: Block[] | null
 }
 
-const {backgroundColor = '#4BAF6E', textColor = '#FFFFFF', categories, text} = Astro.props
+const {categories, text} = Astro.props
+const textColor = '#1E293B'
 ---
 
-<BlobClip id="aboutClip" edges="both" movement="slow" amplitude="sm" />
-
-<section
-  id="about-capellos"
-  class="relative -mt-20 pt-section-xl pb-section-2xl min-[550px]:pb-section-xl"
-  style={`background-color: ${backgroundColor}; --about-text: ${textColor}; --about-bg: ${backgroundColor};`}
->
-  <DriftBackground />
-
+<section id="about-capellos" class="relative py-section-xl bg-white">
   <!-- Content -->
   <div class="container relative mx-auto px-6 text-center lg:px-12 lg:text-left">
     <div class="grid grid-cols-1 gap-12 lg:grid-cols-[2fr_3fr] lg:gap-20">
@@ -63,7 +52,7 @@ const {backgroundColor = '#4BAF6E', textColor = '#FFFFFF', categories, text} = A
         </h2>
         {/* Logo is decoratief hier — de h2 hierboven communiceert al "Wat is Capellos" */}
         <div class="w-full max-w-md" aria-hidden="true">
-          <Logo color={textColor} addedClasses="w-full h-auto" />
+          <Logo color={textColor} has-colored addedClasses="w-full h-auto" />
         </div>
 
         {
@@ -126,32 +115,3 @@ const {backgroundColor = '#4BAF6E', textColor = '#FFFFFF', categories, text} = A
     ScrollTrigger.getAll().forEach((t) => t.kill())
   })
 </script>
-
-<style>
-  #about-capellos {
-    clip-path: url(#aboutClip);
-  }
-
-  @media (max-width: 639px) {
-    #about-capellos {
-      clip-path: url(#aboutClip-mobile);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    #about-capellos {
-      clip-path: polygon(
-        0% 6%,
-        17% -2%,
-        50% 6%,
-        83% 14%,
-        100% 6%,
-        100% 94%,
-        83% 102%,
-        50% 94%,
-        17% 86%,
-        0% 94%
-      );
-    }
-  }
-</style>
