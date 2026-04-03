@@ -4,28 +4,21 @@ import Logo from '../Logo.astro'
 import CategoryNavItem from '../CategoryNavItem.astro'
 import DriftBackground from '../DriftBackground.astro'
 import Icon from '../Icon.astro'
+import type {Category} from '../../queries/categories'
 
-interface Category {
-  label: string
-  title: string
-  href: string
-  imageUrl: string
+interface Block {
+  _type: string
+  children: {text: string; marks?: string[]}[]
 }
 
 interface Props {
   backgroundColor?: string
   textColor?: string
+  categories: Category[]
+  text?: Block[] | null
 }
 
-const {backgroundColor = '#4BAF6E', textColor = '#FFFFFF'} = Astro.props
-
-// Placeholder categories — will come from Sanity
-const categories: Category[] = [
-  {label: 'Shop', title: 'Kleding', href: '/', imageUrl: '/images/frutsel.png'},
-  {label: 'Shop', title: 'Prints', href: '/prints', imageUrl: '/images/frutsel.png'},
-  {label: 'Shop', title: 'Sieraden', href: '#', imageUrl: '/images/frutsel.png'},
-  {label: 'Jij vraagt ik maak!', title: 'Aanvragen', href: '#', imageUrl: '/images/frutsel.png'},
-]
+const {backgroundColor = '#4BAF6E', textColor = '#FFFFFF', categories, text} = Astro.props
 ---
 
 <BlobClip id="aboutClip" edges="both" movement="slow" amplitude="sm" />
@@ -48,10 +41,10 @@ const categories: Category[] = [
         {
           categories.map((cat) => (
             <CategoryNavItem
-              label={cat.label}
+              label="Shop"
               title={cat.title}
-              href={cat.href}
-              imageUrl={cat.imageUrl}
+              href={`/${cat.slug}`}
+              imageUrl={cat.imageUrl ?? 'https://placehold.co/300x400'}
               textColor={textColor}
             />
           ))
@@ -73,26 +66,24 @@ const categories: Category[] = [
           <Logo color={textColor} addedClasses="w-full h-auto" />
         </div>
 
-        <div
-          class="mt-6 flex max-w-xl flex-col gap-4 font-body text-base leading-relaxed opacity-90 lg:max-w-none"
-          style={`color: ${textColor};`}
-        >
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie,
-            dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem
-            sollicitudin lacus.
-          </p>
-          <p>
-            Risus. Maecenas eget condimentum velit, sit amet feugiat lectus. Class aptent taciti
-            sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
-          </p>
-          <p>
-            Risus. Maecenas eget condimentum velit, sit amet feugiat lectus. Class aptent taciti
-            sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Risus. Maecenas
-            eget condimentum velit, sit amet feugiat lectus. Class aptent taciti sociosqu ad litora
-            torquent per conubia nostra, per inceptos himenaeos.
-          </p>
-        </div>
+        {
+          text && text.length > 0 && (
+            <div
+              class="mt-6 flex max-w-xl flex-col gap-4 font-body text-base leading-relaxed opacity-90 lg:max-w-none"
+              style={`color: ${textColor};`}
+            >
+              {text.map((block) => (
+                <p>
+                  {block.children.map((span) => {
+                    if (span.marks?.includes('strong')) return <strong>{span.text}</strong>
+                    if (span.marks?.includes('em')) return <em>{span.text}</em>
+                    return span.text
+                  })}
+                </p>
+              ))}
+            </div>
+          )
+        }
 
         <a
           href="/over"

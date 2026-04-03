@@ -6,9 +6,11 @@ import DriftBackground from '../DriftBackground.astro'
 interface Props {
   textColor?: string
   backgroundColor?: string
+  showShadowLogo?: boolean
+  enableHoverEffect?: boolean
 }
 
-const {textColor, backgroundColor} = Astro.props
+const {textColor, backgroundColor, showShadowLogo = true, enableHoverEffect = true} = Astro.props
 ---
 
 <BlobClip id="heroClip" edges="bottom" movement="normal" aplitude="lg" />
@@ -31,11 +33,11 @@ const {textColor, backgroundColor} = Astro.props
       id="hero-logo-wrap"
       class="hero-anim-start relative aspect-859/286 w-full max-w-[min(92vw,52rem)] mb-30"
     >
-      <Logo color="#FFFFFF" addedClasses="absolute inset-0 h-full w-full" />
+      {showShadowLogo && <Logo color="#FFFFFF" addedClasses="absolute inset-0 h-full w-full" />}
       <Logo
         color={textColor}
         addedClasses="absolute inset-0 top-1 left-0.5 h-full w-full"
-        has-hover-colors
+        has-hover-colors={enableHoverEffect || undefined}
       />
     </div>
   </div>

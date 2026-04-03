@@ -1,62 +1,65 @@
-import type { StructureResolver } from 'sanity/structure'
+import type {StructureResolver} from 'sanity/structure'
 
-export const structure: StructureResolver = (S) =>
-  S.list()
+export const structure: StructureResolver = (S, {getClient}) => {
+  const client = getClient({apiVersion: '2024-01-01'})
+
+  return S.list()
     .title('Capellos Content Management System (CMS)')
     .items([
 
-      // Products folder
+      // Categorieën
       S.listItem()
-        .title('📦 Producten')
+        .title('🗂️ Categorieën')
         .child(
-          S.list()
-            .title('Producten')
-            .items([
-               // Kleding
-               S.listItem()
-               .title('Kleding')
-               .child(
-                 S.documentTypeList('clothing').title('Kleding')
-               ),
-              // Accessoires
-              S.listItem()
-                .title('Accessoires')
-                .child(
-                  S.documentTypeList('accessory').title('Accessoires')
-                ),
-              // Prints
-              S.listItem()
-                .title('Prints')
-                .child(
-                  S.documentTypeList('print').title('Prints')
-                ),
-              
-              S.divider(),
-
-              S.listItem()
-                .title('⚙️ Product Instellingen')
-                
-            ])
+          S.documentTypeList('category').title('Categorieën')
         ),
 
-      // Pages folder
+      S.divider(),
+
+      // Producten — dynamisch uitgebreid met een tabje per categorie
       S.listItem()
-        .title('📄 Pagina\'s')
+        .title('📦 Producten')
+        .child(() =>
+          client
+            .fetch<{_id: string; title: string}[]>(
+              `*[_type == "category"] | order(title asc) { _id, title }`
+            )
+            .then((categories) =>
+              S.list()
+                .title('Producten')
+                .items([
+                  // Eén tabje per categorie — gefilterd op slug als conventie
+                  ...categories.map((cat) =>
+                    S.listItem()
+                      .title(cat.title)
+                      .id(cat._id)
+                      .child(
+                        S.documentList()
+                          .title(`${cat.title}`)
+                          .filter('_type in ["print", "clothing", "accessory"] && category._ref == $catId')
+                          .params({catId: cat._id})
+                      )
+                  ),
+
+                ])
+            )
+        ),
+
+      // Pagina's
+      S.listItem()
+        .title("📄 Pagina's")
         .child(
           S.list()
-            .title('Pagina\'s')
+            .title("Pagina's")
             .items([
-              // Home
               S.listItem()
-                .title('Home')
+                .title('🏠 Homepage')
                 .child(
                   S.document()
-                    .documentId('homePage')
-                    .schemaType('standardPage')
-                    .title('Homepagina')
-                    .initialValueTemplate('homePage')
+                    .documentId('homepage')
+                    .schemaType('homepage')
+                    .title('Homepage')
                 ),
-              // About Capellos
               S.listItem()
                 .title('Over Capellos')
                 .child(
@@ -71,32 +74,31 @@ export const structure: StructureResolver = (S) =>
 
       S.divider(),
 
-      // Settings 
+      // Settings
       S.listItem()
-        .title( '⚙️ Settings')
+        .title('⚙️ Settings')
         .child(
           S.list()
             .title('Settings')
             .items([
-              // Main Hero Settings
               S.listItem()
-                .title('Beginscherm')
+                .title('🏢 Bedrijfsgegevens')
                 .child(
                   S.document()
-                    .documentId('mainHeroSettings')
-                    .schemaType('mainHeroSettings')
-                    .title('Beginscherm Instellingen')
-                    .initialValueTemplate('mainHeroSettings')
+                    .documentId('bedrijfsgegevens')
+                    .schemaType('bedrijfsgegevens')
+                    .title('Bedrijfsgegevens')
                 ),
-              // Footer Contact Info
+              S.divider(),
               S.listItem()
-                .title('Footer Contactgegevens')
+                .title('Footer')
                 .child(
                   S.document()
-                    .documentId('footerContactInfoSettings')
-                    .schemaType('footerContactInfoSettings')
-                    .title('Footer Contactgegevens')
+                    .documentId('footerSettings')
+                    .schemaType('footerSettings')
+                    .title('Footer Instellingen')
                 ),
             ])
         ),
     ])
+}

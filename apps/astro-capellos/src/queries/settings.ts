@@ -1,4 +1,5 @@
 import {sanityClient} from 'sanity:client'
+import {toPhoneHref} from '../utils/formatPhone'
 
 // ——— Types (Sanity settings) ———
 
@@ -11,7 +12,7 @@ export interface FooterContactInfo {
   sectionTitle: string
   email: string
   phone: string
-  phoneHref: string
+  phoneHref: string  // afgeleid via toPhoneHref(), niet uit Sanity
   address: string
   instagramUrl: string
   linkedinUrl: string
@@ -20,12 +21,16 @@ export interface FooterContactInfo {
 export interface AboutCapellosSettings {
   backgroundColorHex: string
   textColorHex: string
+  text: {_type: string; children: {text: string}[]}[] | null
 }
+
 
 export interface MainHeroSettings {
   textColorHex: string
   navigationTextColorHex: string
   backgroundColorHex: string
+  showShadowLogo: boolean
+  enableHoverEffect: boolean
 }
 
 // ——— Defaults ———
@@ -33,12 +38,9 @@ export interface MainHeroSettings {
 const DEFAULT_FOOTER_BG = '#5B6FE6'
 const DEFAULT_FOOTER_TEXT = '#FFFFFF'
 
-const footerSettingsGroq = `*[
-  _id == "footerSettings"
-  && _type == "footerSettings"
-][0]{
-  "backgroundColorHex": coalesce(backgroundColor.hex, backgroundColor, $defaultBg),
-  "textColorHex": coalesce(textColor.hex, textColor, $defaultText)
+const footerSettingsGroq = `*[_id == "footerSettings"][0]{
+  "backgroundColorHex": coalesce(backgroundColor.hex, $defaultBg),
+  "textColorHex": coalesce(textColor.hex, $defaultText)
 }`
 
 export async function getFooterSettings(): Promise<FooterSettings> {
@@ -53,52 +55,45 @@ export async function getFooterSettings(): Promise<FooterSettings> {
   }
 }
 
-const DEFAULT_FOOTER_CONTACT: FooterContactInfo = {
+const DEFAULT_FOOTER_CONTACT = {
   sectionTitle: 'Vragen?',
   email: 'info@capellos.nl',
   phone: '06 12345678',
-  phoneHref: '0612345678',
   address: 'Somewhere in Delft',
   instagramUrl: '#',
   linkedinUrl: '#',
 }
 
-const footerContactInfoGroq = `*[
-  _id == "footerContactInfoSettings"
-  && _type == "footerContactInfoSettings"
-][0]{
-  sectionTitle,
-  email,
-  phone,
-  phoneHref,
-  address,
-  instagramUrl,
-  linkedinUrl
+const footerContactInfoGroq = `{
+  "contact": *[_id == "bedrijfsgegevens"][0]{ email, phone, phoneHref, address, instagramUrl, linkedinUrl },
+  "footer": *[_id == "footerSettings"][0]{ contactSectionTitle }
 }`
 
 export async function getFooterContactInfo(): Promise<FooterContactInfo> {
-  const row = await sanityClient.fetch<Partial<FooterContactInfo> | null>(footerContactInfoGroq)
+  const row = await sanityClient.fetch<{
+    contact: Partial<FooterContactInfo> | null
+    footer: {contactSectionTitle?: string} | null
+  } | null>(footerContactInfoGroq)
 
+  const phone = row?.contact?.phone ?? DEFAULT_FOOTER_CONTACT.phone
   return {
-    sectionTitle: row?.sectionTitle ?? DEFAULT_FOOTER_CONTACT.sectionTitle,
-    email: row?.email ?? DEFAULT_FOOTER_CONTACT.email,
-    phone: row?.phone ?? DEFAULT_FOOTER_CONTACT.phone,
-    phoneHref: row?.phoneHref ?? DEFAULT_FOOTER_CONTACT.phoneHref,
-    address: row?.address ?? DEFAULT_FOOTER_CONTACT.address,
-    instagramUrl: row?.instagramUrl ?? DEFAULT_FOOTER_CONTACT.instagramUrl,
-    linkedinUrl: row?.linkedinUrl ?? DEFAULT_FOOTER_CONTACT.linkedinUrl,
+    sectionTitle: row?.footer?.contactSectionTitle ?? DEFAULT_FOOTER_CONTACT.sectionTitle,
+    email: row?.contact?.email ?? DEFAULT_FOOTER_CONTACT.email,
+    phone,
+    phoneHref: toPhoneHref(phone),
+    address: row?.contact?.address ?? DEFAULT_FOOTER_CONTACT.address,
+    instagramUrl: row?.contact?.instagramUrl ?? DEFAULT_FOOTER_CONTACT.instagramUrl,
+    linkedinUrl: row?.contact?.linkedinUrl ?? DEFAULT_FOOTER_CONTACT.linkedinUrl,
   }
 }
 
 const DEFAULT_ABOUT_BG = '#4BAF6E'
 const DEFAULT_ABOUT_TEXT = '#FFFFFF'
 
-const aboutCapellosSettingsGroq = `*[
-  _id == "aboutCapellosSettings"
-  && _type == "aboutCapellosSettings"
-][0]{
-  "backgroundColorHex": coalesce(backgroundColor.hex, backgroundColor, $defaultBg),
-  "textColorHex": coalesce(textColor.hex, textColor, $defaultText)
+const aboutCapellosSettingsGroq = `*[_id == "homepage"][0]{
+  "backgroundColorHex": coalesce(about.backgroundColor.hex, $defaultBg),
+  "textColorHex": coalesce(about.textColor.hex, $defaultText),
+  "text": about.text
 }`
 
 export async function getAboutCapellosSettings(): Promise<AboutCapellosSettings> {
@@ -110,37 +105,33 @@ export async function getAboutCapellosSettings(): Promise<AboutCapellosSettings>
   return {
     backgroundColorHex: row?.backgroundColorHex ?? DEFAULT_ABOUT_BG,
     textColorHex: row?.textColorHex ?? DEFAULT_ABOUT_TEXT,
+    text: row?.text ?? null,
   }
 }
 
 const DEFAULT_HERO_TEXT = '#FFDF94'
-const DEFAULT_HERO_NAV_TEXT = '#FFFFFF'
 const DEFAULT_HERO_BG = '#D83A45'
 
-// ——— Main hero (singleton `mainHeroSettings`) ———
+// ——— Main hero (uit homepage document) ———
 
-const mainHeroSettingsGroq = `*[
-  _id == "mainHeroSettings"
-  && _type == "mainHeroSettings"
-][0]{
-  "textColorHex": coalesce(textColor.hex, textColor, $defaultText),
-  "navigationTextColorHex": coalesce(navigationTextColor.hex, navigationTextColor, $defaultNavText),
-  "backgroundColorHex": coalesce(backgroundColor.hex, backgroundColor, $defaultBg)
+const mainHeroSettingsGroq = `*[_id == "homepage"][0]{
+  "textColorHex": coalesce(hero.textColor.hex, $defaultText),
+  "backgroundColorHex": coalesce(hero.backgroundColor.hex, $defaultBg),
+  "showShadowLogo": coalesce(hero.showShadowLogo, true),
+  "enableHoverEffect": coalesce(hero.enableHoverEffect, true)
 }`
 
 export async function getMainHeroSettings(): Promise<MainHeroSettings> {
   const row = await sanityClient.fetch<Partial<MainHeroSettings> | null>(
     mainHeroSettingsGroq,
-    {
-      defaultText: DEFAULT_HERO_TEXT,
-      defaultNavText: DEFAULT_HERO_NAV_TEXT,
-      defaultBg: DEFAULT_HERO_BG,
-    },
+    {defaultText: DEFAULT_HERO_TEXT, defaultBg: DEFAULT_HERO_BG},
   )
 
   return {
     textColorHex: row?.textColorHex ?? DEFAULT_HERO_TEXT,
-    navigationTextColorHex: row?.navigationTextColorHex ?? DEFAULT_HERO_NAV_TEXT,
+    navigationTextColorHex: '#FFFFFF',
     backgroundColorHex: row?.backgroundColorHex ?? DEFAULT_HERO_BG,
+    showShadowLogo: row?.showShadowLogo ?? true,
+    enableHoverEffect: row?.enableHoverEffect ?? true,
   }
 }

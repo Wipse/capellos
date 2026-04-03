@@ -4,12 +4,14 @@ import MainHero from '../components/sections/MainHero.astro'
 import CatalogPreview from '../components/sections/CatalogPreview.astro'
 import AboutCapellos from '../components/sections/AboutCapellos.astro'
 import {getMainHeroSettings, getAboutCapellosSettings} from '../queries/settings'
+import {getCategories} from '../queries/categories'
 import placeholderPrints from '../data/placeholder-prints.json'
 import Footer from '../components/sections/Footer.astro'
 
-const [heroSettings, aboutSettings] = await Promise.all([
+const [heroSettings, aboutSettings, categories] = await Promise.all([
   getMainHeroSettings(),
   getAboutCapellosSettings(),
+  getCategories(),
 ])
 ---
 
@@ -17,6 +19,8 @@ const [heroSettings, aboutSettings] = await Promise.all([
   <MainHero
     textColor={heroSettings.textColorHex}
     backgroundColor={heroSettings.backgroundColorHex}
+    showShadowLogo={heroSettings.showShadowLogo}
+    enableHoverEffect={heroSettings.enableHoverEffect}
   />
 
   <CatalogPreview prints={placeholderPrints} />
@@ -24,7 +28,9 @@ const [heroSettings, aboutSettings] = await Promise.all([
   <AboutCapellos
     backgroundColor={aboutSettings.backgroundColorHex}
     textColor={aboutSettings.textColorHex}
+    categories={categories}
+    text={aboutSettings.text}
   />
 
-  <Footer />
+  <Footer categories={categories} />
 </MainLayout>

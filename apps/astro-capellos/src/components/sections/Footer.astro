@@ -5,13 +5,15 @@ import FooterContactInfo from '../FooterContactInfo.astro'
 import FooterNav from '../FooterNav.astro'
 import DriftBackground from '../DriftBackground.astro'
 import Link from '../Link.astro'
+import type {Category} from '../../queries/categories'
 
 interface Props {
   backgroundColor?: string
   textColor?: string
+  categories?: Category[]
 }
 
-const {backgroundColor = '#5B6FE6', textColor = '#FFFFFF'} = Astro.props
+const {backgroundColor = '#5B6FE6', textColor = '#FFFFFF', categories = []} = Astro.props
 
 const navGroups = [
   {
@@ -25,9 +27,7 @@ const navGroups = [
   {
     title: 'Producten',
     links: [
-      {label: 'Prints', href: '/prints'},
-      {label: 'Kleding', href: '/kleding'},
-      {label: 'Sieraden', href: '/sieraden'},
+      ...categories.map((cat) => ({label: cat.title, href: `/${cat.slug}`})),
       {label: 'Aanvragen', href: '/aanvragen'},
     ],
   },
