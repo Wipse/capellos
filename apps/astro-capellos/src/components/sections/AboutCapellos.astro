@@ -3,6 +3,7 @@ import Logo from '../Logo.astro'
 import CategoryNavItem from '../CategoryNavItem.astro'
 import Icon from '../Icon.astro'
 import type {Category} from '../../queries/categories'
+import Button from '../Button.astro'
 
 interface Block {
   _type: string
@@ -73,15 +74,7 @@ const textColor = '#1E293B'
             </div>
           )
         }
-
-        <a
-          href="/over"
-          class="mt-8 inline-flex w-fit items-center justify-center gap-2 border px-6 py-3 font-heading text-sm font-semibold tracking-widest uppercase transition-colors hover:opacity-80"
-          style={`color: ${textColor}; border-color: ${textColor};`}
-        >
-          Lees meer
-          <Icon type="chevron-right" size={16} />
-        </a>
+        <Button> Lees meer... </Button>
       </div>
     </div>
   </div>

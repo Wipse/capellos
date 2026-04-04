@@ -1,0 +1,203 @@
+---
+import MainLayout from '../layouts/main.astro'
+import Footer from '../components/sections/Footer.astro'
+import DriftBackground from '../components/DriftBackground.astro'
+import BlobClip from '../components/BlobClip.astro'
+import AanvragenCTA from '../components/sections/AanvragenCTA.astro'
+import Button from '../components/Button.astro'
+import {getCategories} from '../queries/categories'
+import {getWinkelmandjeSettings, getWinkelmandjeAanvragenSettings} from '../queries/settings'
+
+const [categories, cartSettings, aanvragenSettings] = await Promise.all([
+  getCategories(),
+  getWinkelmandjeSettings(),
+  getWinkelmandjeAanvragenSettings(),
+])
+---
+
+<BlobClip id="cartClip" edges="bottom" movement="slow" amplitude="sm" />
+
+<MainLayout title="Winkelmandje | Capellos">
+  <section id="cart-section" class="relative min-h-screen pt-section-md pb-section-xl" style={`background-color: ${cartSettings.backgroundColorHex};`}>
+    <DriftBackground opacity={8} />
+
+    <div class="container relative mx-auto px-6 lg:px-12">
+      <div class="relative bg-white rounded-3xl px-8 py-12 lg:px-16 lg:py-16 max-w-4xl mx-auto shadow-sm">
+
+      <h1 class="font-heading text-4xl lg:text-5xl uppercase text-slate-900 mb-12">
+        {cartSettings.heading}
+      </h1>
+
+      <!-- Empty state -->
+      <div id="cart-empty" class="hidden flex-col items-center justify-center py-24 gap-6 text-center">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-slate-300" aria-hidden="true">
+          <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+          <path d="M3 6h18"/>
+          <path d="M16 10a4 4 0 01-8 0"/>
+        </svg>
+        <p class="font-heading text-xl uppercase text-slate-400">{cartSettings.emptyText}</p>
+      </div>
+
+      <!-- Cart items -->
+      <div id="cart-items" class="hidden flex-col divide-y divide-slate-100">
+      </div>
+
+      <!-- Summary -->
+      <div id="cart-summary" class="hidden mt-12 flex flex-col gap-6 border-t-2 border-slate-900 pt-8">
+        <div class="flex justify-between items-baseline">
+          <span class="font-heading text-lg uppercase tracking-wide text-slate-500">Subtotaal</span>
+          <span id="cart-total" class="font-heading text-3xl text-slate-900"></span>
+        </div>
+        <p class="font-body text-sm text-slate-400">Verzendkosten worden berekend bij afrekenen.</p>
+        <Button id="checkout-btn" color="#1e293b" addedClasses="w-fit lg:self-end">
+          {cartSettings.checkoutLabel}
+        </Button>
+      </div>
+
+      </div>
+    </div>
+  </section>
+
+  <AanvragenCTA
+    backgroundColor="#ffffff"
+    textColor="#1e293b"
+    heading={aanvragenSettings.heading}
+    text={aanvragenSettings.text}
+    ctaLabel={aanvragenSettings.ctaLabel}
+    images={aanvragenSettings.images}
+    showDrift={false}
+    showBlobClip={false}
+    sliderFadeColor="#ffffff"
+  />
+
+  <Footer categories={categories} />
+</MainLayout>
+
+<script>
+  import gsap from 'gsap'
+  import {getCart, removeFromCart, getCartTotal} from '../lib/cart'
+  import type {CartItem} from '../lib/cart'
+
+  function formatPrice(p: number) {
+    return `€${p.toFixed(2)}`
+  }
+
+  function updateSummary() {
+    const cart = getCart()
+    const emptyEl = document.getElementById('cart-empty')!
+    const itemsEl = document.getElementById('cart-items')!
+    const summaryEl = document.getElementById('cart-summary')!
+    const totalEl = document.getElementById('cart-total')!
+
+    if (cart.length === 0) {
+      // Pre-hide emptyEl with inline style before it becomes visible
+      emptyEl.style.opacity = '0'
+      emptyEl.style.transform = 'translateY(16px)'
+
+      gsap.to(summaryEl, {
+        opacity: 0,
+        y: 8,
+        duration: 0.25,
+        ease: 'power2.in',
+        onComplete: () => {
+          summaryEl.classList.add('hidden')
+          summaryEl.classList.remove('flex')
+          itemsEl.classList.add('hidden')
+          itemsEl.classList.remove('flex')
+          emptyEl.classList.remove('hidden')
+          emptyEl.classList.add('flex')
+          gsap.to(emptyEl, {opacity: 1, y: 0, duration: 0.45, ease: 'power3.out'})
+        },
+      })
+    } else {
+      totalEl.textContent = formatPrice(getCartTotal())
+    }
+  }
+
+  function bindRow(row: HTMLElement) {
+    const id = row.dataset.id!
+    row.querySelector('.remove-btn')?.addEventListener('click', () => {
+      gsap.to(row, {
+        x: 40,
+        opacity: 0,
+        height: 0,
+        paddingTop: 0,
+        paddingBottom: 0,
+        duration: 0.35,
+        ease: 'power2.in',
+        onComplete: () => {
+          row.remove()
+          removeFromCart(id)
+          updateSummary()
+        },
+      })
+    })
+  }
+
+  function renderCart() {
+    const cart = getCart()
+    const emptyEl = document.getElementById('cart-empty')!
+    const itemsEl = document.getElementById('cart-items')!
+    const summaryEl = document.getElementById('cart-summary')!
+    const totalEl = document.getElementById('cart-total')!
+
+    if (cart.length === 0) {
+      emptyEl.classList.remove('hidden')
+      emptyEl.classList.add('flex')
+      itemsEl.classList.add('hidden')
+      itemsEl.classList.remove('flex')
+      summaryEl.classList.add('hidden')
+      summaryEl.classList.remove('flex')
+      return
+    }
+
+    emptyEl.classList.add('hidden')
+    emptyEl.classList.remove('flex')
+    itemsEl.classList.remove('hidden')
+    itemsEl.classList.add('flex')
+    summaryEl.classList.remove('hidden')
+    summaryEl.classList.add('flex')
+
+    totalEl.textContent = formatPrice(getCartTotal())
+
+    itemsEl.innerHTML = cart.map((item: CartItem) => `
+      <div class="flex gap-5 py-6 items-start overflow-hidden" data-id="${item.id}" data-size="${item.size}">
+        <a href="/${item.categorySlug}/${item.slug}" class="flex-none w-20 aspect-297/420 overflow-hidden rounded-lg bg-slate-100">
+          <img src="${item.imageUrl}" alt="${item.title}" class="w-full h-full object-cover" />
+        </a>
+        <div class="flex-1 flex flex-col gap-1">
+          <a href="/${item.categorySlug}/${item.slug}" class="font-heading text-lg uppercase text-slate-900 hover:opacity-60 transition-opacity leading-tight">
+            ${item.title}
+          </a>
+          ${item.size ? `<p class="font-body text-sm text-slate-400 uppercase tracking-wider">${item.size}</p>` : ''}
+          <p class="font-heading text-base text-slate-700 mt-1">${formatPrice(item.price)}</p>
+        </div>
+        <button class="remove-btn font-body text-xs text-slate-300 hover:text-red-400 transition-colors cursor-pointer uppercase tracking-widest self-start mt-1">
+          Verwijder
+        </button>
+      </div>
+    `).join('')
+
+    itemsEl.querySelectorAll<HTMLElement>('[data-id]').forEach(bindRow)
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    renderCart()
+    // cart:updated alleen voor externe updates (bijv. andere tab), niet na animatie-remove
+    window.addEventListener('cart:updated', () => {
+      if (!document.querySelector('[data-id]')) renderCart()
+    })
+  })
+</script>
+
+<style>
+  #cart-section {
+    clip-path: url(#cartClip);
+  }
+
+  @media (max-width: 639px) {
+    #cart-section {
+      clip-path: url(#cartClip-mobile);
+    }
+  }
+</style>

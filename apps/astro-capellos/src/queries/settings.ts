@@ -36,6 +36,30 @@ export interface NavSettings {
   triggerIconColor: string
 }
 
+export interface WinkelmandjeSettings {
+  backgroundColorHex: string
+  heading: string
+  emptyText: string
+  checkoutLabel: string
+}
+
+export async function getWinkelmandjeSettings(): Promise<WinkelmandjeSettings> {
+  const row = await sanityClient.fetch<Partial<WinkelmandjeSettings> | null>(
+    `*[_id == "winkelmandje"][0]{
+      "backgroundColorHex": coalesce(cart.backgroundColor.hex, "#f1f5f9"),
+      "heading": coalesce(cart.heading, "Winkelmandje"),
+      "emptyText": coalesce(cart.emptyText, "Je mandje is leeg"),
+      "checkoutLabel": coalesce(cart.checkoutLabel, "Bestelling plaatsen")
+    }`,
+  )
+  return {
+    backgroundColorHex: row?.backgroundColorHex ?? '#f1f5f9',
+    heading: row?.heading ?? 'Winkelmandje',
+    emptyText: row?.emptyText ?? 'Je mandje is leeg',
+    checkoutLabel: row?.checkoutLabel ?? 'Bestelling plaatsen',
+  }
+}
+
 export async function getNavSettings(): Promise<NavSettings> {
   const row = await sanityClient.fetch<Partial<NavSettings> | null>(
     `*[_id == "navSettings"][0]{
@@ -127,6 +151,31 @@ const aanvragenSettingsGroq = `*[_id == "homepage"][0]{
 export async function getAanvragenSettings(): Promise<AanvragenSettings> {
   const row = await sanityClient.fetch<Partial<AanvragenSettings> | null>(
     aanvragenSettingsGroq,
+    {defaultBg: DEFAULT_AANVRAGEN_BG, defaultText: DEFAULT_AANVRAGEN_TEXT},
+  )
+
+  return {
+    backgroundColorHex: row?.backgroundColorHex ?? DEFAULT_AANVRAGEN_BG,
+    textColorHex: row?.textColorHex ?? DEFAULT_AANVRAGEN_TEXT,
+    heading: row?.heading ?? 'Jij vraagt, ik maak',
+    text: row?.text ?? null,
+    ctaLabel: row?.ctaLabel ?? 'Doe een aanvraag',
+    images: row?.images ?? [],
+  }
+}
+
+const winkelmandjeAanvragenGroq = `*[_id == "winkelmandje"][0]{
+  "backgroundColorHex": coalesce(aanvragen.backgroundColor.hex, $defaultBg),
+  "textColorHex": coalesce(aanvragen.textColor.hex, $defaultText),
+  "heading": coalesce(aanvragen.heading, "Jij vraagt, ik maak"),
+  "text": aanvragen.text,
+  "ctaLabel": coalesce(aanvragen.ctaLabel, "Doe een aanvraag"),
+  "images": aanvragen.images[]{"url": asset->url, "alt": alt}
+}`
+
+export async function getWinkelmandjeAanvragenSettings(): Promise<AanvragenSettings> {
+  const row = await sanityClient.fetch<Partial<AanvragenSettings> | null>(
+    winkelmandjeAanvragenGroq,
     {defaultBg: DEFAULT_AANVRAGEN_BG, defaultText: DEFAULT_AANVRAGEN_TEXT},
   )
 

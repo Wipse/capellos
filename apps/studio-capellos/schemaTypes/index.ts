@@ -10,6 +10,7 @@ import {specNumberType} from './products/specifications/specNumberType'
 
 // Pagina's schema types
 import {homepageType} from './pages/homepageType'
+import {winkelmandjeType} from './pages/winkelmandjeType'
 import {standardPageType} from './pages/standardPageType'
 import {pageType} from './pages/pageType'
 import {heroSectionType} from './pages/sections/heroSectionType'
@@ -35,6 +36,7 @@ export const schemaTypes = [
 
   // Pages
   homepageType,
+  winkelmandjeType,
   standardPageType,
   pageType,
 

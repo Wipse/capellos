@@ -1,8 +1,8 @@
 ---
 import BlobClip from '../BlobClip.astro'
 import DriftBackground from '../DriftBackground.astro'
-import Icon from '../Icon.astro'
 import Heading from '../Heading.astro'
+import Button from '../Button.astro'
 
 interface Props {
   backgroundColor?: string
@@ -11,6 +11,9 @@ interface Props {
   text?: string | null
   ctaLabel?: string
   images?: {url: string; alt: string | null}[]
+  showDrift?: boolean
+  showBlobClip?: boolean
+  sliderFadeColor?: string
 }
 
 const {
@@ -20,6 +23,9 @@ const {
   text = null,
   ctaLabel = 'Doe een aanvraag',
   images = [],
+  showDrift = true,
+  showBlobClip = true,
+  sliderFadeColor,
 } = Astro.props
 
 // Fallback placeholders als er nog geen afbeeldingen zijn
@@ -40,14 +46,14 @@ const colA = filledImages.slice(0, half)
 const colB = filledImages.slice(half)
 ---
 
-<BlobClip id="aanvragenClip" edges="both" movement="slow" amplitude="sm" />
+{showBlobClip && <BlobClip id="aanvragenClip" edges="both" movement="slow" amplitude="sm" />}
 
 <section
   id="aanvragen-cta"
-  class="relative h-[120vh] overflow-hidden flex items-center"
+  class={`relative h-[120vh] overflow-hidden flex items-center${showBlobClip ? ' has-blob-clip' : ''}`}
   style={`background-color: ${backgroundColor};`}
 >
-  <DriftBackground />
+  {showDrift && <DriftBackground />}
 
   <!-- Sliders: absolute, full height of section, right half -->
   <div
@@ -64,6 +70,12 @@ const colB = filledImages.slice(half)
           ))
         }
       </div>
+      {sliderFadeColor && (
+        <>
+          <div class="pointer-events-none absolute inset-x-0 top-0 h-32 z-10" style={`background: linear-gradient(to bottom, ${sliderFadeColor}, transparent);`}></div>
+          <div class="pointer-events-none absolute inset-x-0 bottom-0 h-32 z-10" style={`background: linear-gradient(to top, ${sliderFadeColor}, transparent);`}></div>
+        </>
+      )}
     </div>
 
     <!-- Column B: scrolls down -->
@@ -77,6 +89,12 @@ const colB = filledImages.slice(half)
           ))
         }
       </div>
+      {sliderFadeColor && (
+        <>
+          <div class="pointer-events-none absolute inset-x-0 top-0 h-32 z-10" style={`background: linear-gradient(to bottom, ${sliderFadeColor}, transparent);`}></div>
+          <div class="pointer-events-none absolute inset-x-0 bottom-0 h-32 z-10" style={`background: linear-gradient(to top, ${sliderFadeColor}, transparent);`}></div>
+        </>
+      )}
     </div>
   </div>
 
@@ -92,14 +110,9 @@ const colB = filledImages.slice(half)
           {text}
         </p>
       )}
-      <a
-        href="/aanvragen"
-        class="mt-2 inline-flex w-fit items-center justify-center gap-3 px-8 py-4 font-heading text-sm font-semibold tracking-widest uppercase transition-all hover:gap-5"
-        style={`background-color: ${textColor}; color: ${backgroundColor};`}
-      >
+      <Button href="/aanvragen" color={textColor} addedClasses="mt-2">
         {ctaLabel}
-        <Icon type="chevron-right" size={16} />
-      </a>
+      </Button>
     </div>
   </div>
 </section>
@@ -151,12 +164,12 @@ const colB = filledImages.slice(half)
 </script>
 
 <style>
-  #aanvragen-cta {
+  #aanvragen-cta.has-blob-clip {
     clip-path: url(#aanvragenClip);
   }
 
   @media (max-width: 639px) {
-    #aanvragen-cta {
+    #aanvragen-cta.has-blob-clip {
       clip-path: url(#aanvragenClip-mobile);
     }
   }

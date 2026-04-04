@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import { ViewTransitions } from 'astro:transitions';
 import SidebarNav from '../components/SidebarNav.astro';
+import CartIcon from '../components/CartIcon.astro';
 import {getNavSettings} from '../queries/settings';
 
 interface Props {
@@ -22,6 +23,7 @@ const navSettings = await getNavSettings();
 	</head>
 	<body>
 		<SidebarNav triggerBg={navSettings.triggerBackgroundColor} triggerIcon={navSettings.triggerIconColor} />
+		<CartIcon triggerBg={navSettings.triggerBackgroundColor} triggerIcon={navSettings.triggerIconColor} />
 		<slot />
 	</body>
 </html>

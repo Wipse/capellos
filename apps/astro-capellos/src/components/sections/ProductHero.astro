@@ -15,6 +15,9 @@ interface Props {
   backgroundColor?: string
   textColor?: string
   transitionName?: string
+  productId: string
+  productSlug: string
+  categorySlug: string
 }
 
 const {
@@ -27,6 +30,9 @@ const {
   backgroundColor = '#4BAF6E',
   textColor = '#FFFFFF',
   transitionName,
+  productId,
+  productSlug,
+  categorySlug,
 } = Astro.props
 ---
 
@@ -93,11 +99,8 @@ const {
             {
               sizes.map((size, i) => (
                 <button
-                  class={`font-heading text-sm font-semibold tracking-wider uppercase px-5 py-2 border transition-colors ${
-                    i === 0
-                      ? 'border-current bg-white/20'
-                      : 'border-white/30 hover:border-current hover:bg-white/10'
-                  }`}
+                  class="size-selector-btn font-heading text-sm font-semibold tracking-wider uppercase px-5 py-2 border transition-colors border-white/30 hover:border-current hover:bg-white/10 cursor-pointer"
+                  data-selected={i === 0 ? 'true' : 'false'}
                   style={`color: ${textColor};`}
                 >
                   {size}
@@ -116,14 +119,20 @@ const {
         </p>
 
         <!-- CTA -->
-        <a
-          href="#"
-          class="mt-8 inline-flex w-fit items-center justify-center gap-3 px-8 py-4 font-heading text-sm font-semibold tracking-widest uppercase transition-all hover:gap-5"
+        <button
+          id="add-to-cart-btn"
+          data-product-id={productId}
+          data-product-slug={productSlug}
+          data-product-title={title}
+          data-product-price={price}
+          data-product-image={imageUrl ?? ''}
+          data-category-slug={categorySlug}
+          class="mt-8 inline-flex w-fit items-center justify-center gap-3 px-8 py-4 font-heading text-sm font-semibold tracking-widest uppercase transition-all hover:gap-5 cursor-pointer active:scale-95 transition-transform"
           style={`background-color: ${textColor}; color: ${backgroundColor};`}
         >
-          Bestel nu
-          <Icon type="chevron-right" size={16} />
-        </a>
+          <span id="add-to-cart-label">Bestel nu</span>
+          <span id="add-to-cart-icon"><Icon type="chevron-right" size={16} /></span>
+        </button>
       </div>
     </div>
   </div>
@@ -132,6 +141,8 @@ const {
 <script>
   import gsap from 'gsap'
   import {ScrollTrigger} from 'gsap/ScrollTrigger'
+  import {addToCart, isInCart} from '../../lib/cart'
+  import {flyToCart} from '../../lib/animations/flyToCart'
 
   gsap.registerPlugin(ScrollTrigger)
 
@@ -150,6 +161,62 @@ const {
         scrub: true,
       },
     })
+
+    // Add to cart
+    const btn = document.getElementById('add-to-cart-btn') as HTMLButtonElement | null
+    const label = document.getElementById('add-to-cart-label')
+    if (!btn || !label) return
+
+    const icon = document.getElementById('add-to-cart-icon')
+
+    const setInCartState = () => {
+      label.textContent = 'Al in winkelmandje ✓'
+      if (icon) icon.style.display = 'none'
+      btn.disabled = true
+      btn.style.opacity = '0.6'
+      btn.style.cursor = 'default'
+    }
+
+    // Check on load if already in cart
+    if (isInCart(btn.dataset.productId!)) {
+      setInCartState()
+    }
+
+    // Read active selected size
+    const getSizeButtons = () =>
+      document.querySelectorAll<HTMLButtonElement>('.size-selector-btn')
+
+    // Size selector interactivity
+    getSizeButtons().forEach((sizeBtn) => {
+      sizeBtn.addEventListener('click', () => {
+        getSizeButtons().forEach((b) => b.setAttribute('data-selected', 'false'))
+        sizeBtn.setAttribute('data-selected', 'true')
+      })
+    })
+
+    btn.addEventListener('click', () => {
+      if (btn.disabled) return
+
+      const selectedSize =
+        Array.from(getSizeButtons()).find((b) => b.getAttribute('data-selected') === 'true')
+          ?.textContent?.trim() ?? ''
+
+      const imgEl = heroImg.querySelector('img') as HTMLImageElement
+
+      addToCart({
+        id: btn.dataset.productId!,
+        slug: btn.dataset.productSlug!,
+        title: btn.dataset.productTitle!,
+        price: parseFloat(btn.dataset.productPrice!),
+        imageUrl: btn.dataset.productImage!,
+        categorySlug: btn.dataset.categorySlug!,
+        size: selectedSize,
+      })
+
+      flyToCart(imgEl ?? btn, () => {
+        setInCartState()
+      })
+    })
   })
 
   document.addEventListener('astro:before-swap', () => {
@@ -160,6 +227,11 @@ const {
 <style>
   #product-detail-hero {
     clip-path: url(#productDetailClip);
+  }
+
+  .size-selector-btn[data-selected='true'] {
+    border-color: currentColor;
+    background-color: rgba(255, 255, 255, 0.2);
   }
 
   @media (max-width: 639px) {

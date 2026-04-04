@@ -66,6 +66,9 @@ const relatedItems = related.map((p) => ({
     backgroundColor={backgroundColor}
     textColor={textColor}
     transitionName={`product-img-${slug}`}
+    productId={product._id}
+    productSlug={product.slug}
+    categorySlug={categorySlug}
   />
   <ProductDetail
     title={product.name}

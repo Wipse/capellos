@@ -7,3 +7,4 @@ export type IconType =
   | 'chevron-left'
   | 'chevron-right'
   | 'chevron-down'
+  | 'shopping-cart'

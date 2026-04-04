@@ -72,6 +72,14 @@ export const structure: StructureResolver = (S, {getClient}) => {
                     .title('Over ons pagina')
                     .initialValueTemplate('aboutPage')
                 ),
+              S.listItem()
+                .title('🛒 Winkelmandje')
+                .child(
+                  S.document()
+                    .documentId('winkelmandje')
+                    .schemaType('winkelmandje')
+                    .title('Winkelmandje')
+                ),
             ])
         ),
 
