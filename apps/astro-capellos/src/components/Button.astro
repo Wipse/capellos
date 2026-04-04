@@ -1,31 +1,38 @@
 ---
-// Button component with hover effect
-
 interface Props {
+  color?: string
   addedClasses?: string
+  href?: string
+  id?: string
 }
 
-const {addedClasses = ''} = Astro.props
+const {color = '#1e293b', addedClasses = '', href, id} = Astro.props
+
+const Tag = href ? 'a' : 'button'
 ---
 
-<button
-  class={`
-    relative px-8 py-2 rounded-md bg-purple-200 text-[#3D245F] z-10 border-2 border-purple-400
-    overflow-hidden group
-    active:scale-98 transition-transform cursor-pointer
-    ${addedClasses}
-  `}
+<Tag
+  href={href}
+  id={id}
+  style={`--btn-color: ${color};`}
+  class={`btn-offset group relative inline-flex w-fit items-center gap-3 px-7 py-3 font-heading text-base uppercase tracking-wide cursor-pointer select-none ${addedClasses}`}
 >
-  <!-- Background circle that grows on hover -->
-  <span
-    class="absolute -right-full top-1/2 -translate-y-1/2
-      w-full aspect-square rounded-full bg-purple-400 -z-10
-      transition-all duration-700 ease-in-out
-      group-hover:right-0 group-hover:scale-150"
-  >
-  </span>
+  <span class="relative z-10"><slot /></span>
+</Tag>
 
-  <span class="relative z-10 transition-colors duration-500 group-hover:text-white">
-    <slot />
-  </span>
-</button>
+<style>
+  .btn-offset {
+    border: 2.5px solid var(--btn-color);
+    color: var(--btn-color);
+    box-shadow: 4px 4px 0 var(--btn-color);
+    transition: box-shadow 150ms ease, transform 150ms ease;
+  }
+  .btn-offset:hover {
+    box-shadow: 1px 1px 0 var(--btn-color);
+    transform: translate(3px, 3px);
+  }
+  .btn-offset:active {
+    box-shadow: 0 0 0 var(--btn-color);
+    transform: translate(4px, 4px);
+  }
+</style>
