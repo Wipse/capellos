@@ -187,6 +187,10 @@ const [categories, cartSettings, aanvragenSettings] = await Promise.all([
     window.addEventListener('cart:updated', () => {
       if (!document.querySelector('[data-id]')) renderCart()
     })
+
+    document.getElementById('checkout-btn')?.addEventListener('click', () => {
+      alert('Bestelling plaatsen is nog niet mogelijk.')
+    })
   })
 </script>
 
