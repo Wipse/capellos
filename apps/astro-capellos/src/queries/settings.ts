@@ -34,6 +34,11 @@ export interface MainHeroSettings {
 export interface NavSettings {
   triggerBackgroundColor: string
   triggerIconColor: string
+  cartBackgroundColor: string
+  cartIconColor: string
+  homeBackgroundColor: string
+  homeIconColor: string
+  sidebarLogoColor: string
 }
 
 export interface WinkelmandjeSettings {
@@ -64,12 +69,22 @@ export async function getNavSettings(): Promise<NavSettings> {
   const row = await sanityClient.fetch<Partial<NavSettings> | null>(
     `*[_id == "navSettings"][0]{
       "triggerBackgroundColor": coalesce(triggerBackgroundColor.hex, "#1e293b"),
-      "triggerIconColor": coalesce(triggerIconColor.hex, "#FFFFFF")
+      "triggerIconColor": coalesce(triggerIconColor.hex, "#FFFFFF"),
+      "cartBackgroundColor": coalesce(cartBackgroundColor.hex, "#1e293b"),
+      "cartIconColor": coalesce(cartIconColor.hex, "#FFFFFF"),
+      "homeBackgroundColor": coalesce(homeBackgroundColor.hex, "#1e293b"),
+      "homeIconColor": coalesce(homeIconColor.hex, "#FFFFFF"),
+      "sidebarLogoColor": coalesce(sidebarLogoColor.hex, "#1e293b")
     }`,
   )
   return {
     triggerBackgroundColor: row?.triggerBackgroundColor ?? '#1e293b',
     triggerIconColor: row?.triggerIconColor ?? '#FFFFFF',
+    cartBackgroundColor: row?.cartBackgroundColor ?? '#1e293b',
+    cartIconColor: row?.cartIconColor ?? '#FFFFFF',
+    homeBackgroundColor: row?.homeBackgroundColor ?? '#1e293b',
+    homeIconColor: row?.homeIconColor ?? '#FFFFFF',
+    sidebarLogoColor: row?.sidebarLogoColor ?? '#1e293b',
   }
 }
 

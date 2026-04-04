@@ -6,9 +6,10 @@ import {getCategories} from '../queries/categories'
 interface Props {
   triggerBg?: string
   triggerIcon?: string
+  logoColor?: string
 }
 
-const {triggerBg = '#1e293b', triggerIcon = '#FFFFFF'} = Astro.props
+const {triggerBg = '#1e293b', triggerIcon = '#FFFFFF', logoColor = '#1e293b'} = Astro.props
 
 const shopChars = colorLetters('Shop')
 const aanvragenChars = colorLetters('Aanvragen')
@@ -41,7 +42,7 @@ const shopItems = categories.map((cat) => ({
   aria-hidden="true"
   transition:persist
 >
-  <Logo width={180} height={60} color="#1e293b" addedClasses="mb-14 flex-none opacity-60" />
+  <Logo width={180} height={60} color={logoColor} addedClasses="mb-14 flex-none opacity-60" />
 
   <nav class="flex flex-col gap-1">
     <!-- Shop (uitvouwbaar) -->
