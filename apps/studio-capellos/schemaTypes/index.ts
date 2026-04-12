@@ -14,6 +14,7 @@ import {cartPageType} from './pages/cartPageType'
 import {standardPageType} from './pages/standardPageType'
 import {aboutPageType} from './pages/aboutPageType'
 import {contactPageType} from './pages/contactPageType'
+import {richTextPageType} from './pages/richTextPageType'
 import {pageType} from './pages/pageType'
 import {heroSectionType} from './pages/sections/heroSectionType'
 import {aboutSectionType} from './pages/sections/aboutSectionType'
@@ -42,6 +43,7 @@ export const schemaTypes = [
   standardPageType,
   aboutPageType,
   contactPageType,
+  richTextPageType,
   pageType,
 
   // Embedded secties (objects op een pagina)

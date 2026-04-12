@@ -1,0 +1,72 @@
+---
+import MainLayout from '../layouts/main.astro'
+import Footer from '../components/sections/Footer.astro'
+import { PortableText } from 'astro-portabletext'
+import { getRichTextPage } from '../queries/pages'
+
+const page = await getRichTextPage('cookies')
+---
+
+<MainLayout title={`${page?.title ?? 'Cookie Policy'} | Capellos`}>
+  <main class="container mx-auto px-6 py-section-lg lg:px-12 max-w-3xl">
+    <h1 class="font-heading text-5xl font-semibold uppercase text-slate-900 mb-12">
+      {page?.title ?? 'Cookie Policy'}
+    </h1>
+
+    {page?.body ? (
+      <div class="richtext">
+        <PortableText value={page.body} />
+      </div>
+    ) : (
+      <p class="font-body text-base text-slate-500">Deze pagina is nog niet ingevuld.</p>
+    )}
+  </main>
+  <Footer />
+</MainLayout>
+
+<style>
+  .richtext :global(h2) {
+    font-family: var(--font-heading);
+    font-size: 1.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #0f172a;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .richtext :global(h3) {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #0f172a;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  .richtext :global(p) {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: #475569;
+    margin-bottom: 1rem;
+  }
+  .richtext :global(strong) {
+    font-weight: 600;
+    color: #1e293b;
+  }
+  .richtext :global(a) {
+    color: #1e293b;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .richtext :global(ul), .richtext :global(ol) {
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+    color: #475569;
+  }
+  .richtext :global(ul) { list-style-type: disc; }
+  .richtext :global(ol) { list-style-type: decimal; }
+  .richtext :global(li) {
+    margin-bottom: 0.25rem;
+    line-height: 1.75;
+  }
+</style>

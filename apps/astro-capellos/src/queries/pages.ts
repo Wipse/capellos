@@ -70,3 +70,26 @@ export async function getContactPage(): Promise<ContactPage | null> {
     }`
   )
 }
+
+export interface RichTextPage {
+  title: string
+  slug: string
+  body: { _type: string; _key: string; [key: string]: unknown }[] | null
+}
+
+export async function getRichTextPageSlugs(): Promise<{ slug: string }[]> {
+  return sanityClient.fetch(
+    `*[_type == "richTextPage" && defined(slug.current)]{ "slug": slug.current }`
+  )
+}
+
+export async function getRichTextPage(slug: string): Promise<RichTextPage | null> {
+  return sanityClient.fetch(
+    `*[_type == "richTextPage" && slug.current == $slug][0]{
+      title,
+      "slug": slug.current,
+      body
+    }`,
+    { slug }
+  )
+}

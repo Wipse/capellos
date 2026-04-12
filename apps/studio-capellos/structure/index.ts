@@ -87,6 +87,44 @@ export const structure: StructureResolver = (S, {getClient}) => {
                     .schemaType('winkelmandje')
                     .title('Winkelmandje')
                 ),
+
+              S.divider(),
+
+              S.listItem()
+                .title('Boring pagina\'s')
+                .child(
+                  S.list()
+                    .title("Boring pagina's")
+                    .items([
+                      S.listItem()
+                        .title('🍪 Cookie Policy')
+                        .child(
+                          S.document()
+                            .documentId('cookies')
+                            .schemaType('richTextPage')
+                            .title('Cookie Policy')
+                            .initialValueTemplate('cookie-policy')
+                        ),
+                      S.listItem()
+                        .title('📄 Privacy Policy')
+                        .child(
+                          S.document()
+                            .documentId('privacy')
+                            .schemaType('richTextPage')
+                            .title('Privacy Policy')
+                            .initialValueTemplate('privacy-policy')
+                        ),
+                      S.listItem()
+                        .title('🧩 Algemene Voorwaarden')
+                        .child(
+                          S.document()
+                            .documentId('voorwaarden')
+                            .schemaType('richTextPage')
+                            .title('Algemene Voorwaarden')
+                            .initialValueTemplate('algemene-voorwaarden')
+                        ),
+                    ])
+                ),
             ])
         ),
 
