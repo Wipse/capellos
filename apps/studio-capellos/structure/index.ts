@@ -64,13 +64,12 @@ export const structure: StructureResolver = (S, {getClient}) => {
                     .title('Homepage')
                 ),
               S.listItem()
-                .title('Over Capellos')
+                .title('👩🏼‍🎨 Over Capellos')
                 .child(
                   S.document()
                     .documentId('aboutPage')
-                    .schemaType('standardPage')
-                    .title('Over ons pagina')
-                    .initialValueTemplate('aboutPage')
+                    .schemaType('aboutPage')
+                    .title('Over Capellos')
                 ),
               S.listItem()
                 .title('🛒 Winkelmandje')

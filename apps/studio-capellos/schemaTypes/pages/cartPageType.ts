@@ -1,7 +1,7 @@
 import {defineField, defineType} from 'sanity'
 import {BasketIcon} from '@sanity/icons'
 
-export const winkelmandjeType = defineType({
+export const cartPageType = defineType({
   name: 'winkelmandje',
   title: 'Winkelmandje',
   type: 'document',

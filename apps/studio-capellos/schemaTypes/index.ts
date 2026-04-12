@@ -9,9 +9,10 @@ import {specBooleanType} from './products/specifications/specBooleanType'
 import {specNumberType} from './products/specifications/specNumberType'
 
 // Pagina's schema types
-import {homepageType} from './pages/homepageType'
-import {winkelmandjeType} from './pages/winkelmandjeType'
+import {homePageType} from './pages/homePageType'
+import {cartPageType} from './pages/cartPageType'
 import {standardPageType} from './pages/standardPageType'
+import {aboutPageType} from './pages/aboutPageType'
 import {pageType} from './pages/pageType'
 import {heroSectionType} from './pages/sections/heroSectionType'
 import {aboutSectionType} from './pages/sections/aboutSectionType'
@@ -35,9 +36,10 @@ export const schemaTypes = [
   specNumberType,
 
   // Pages
-  homepageType,
-  winkelmandjeType,
+  homePageType,
+  cartPageType,
   standardPageType,
+  aboutPageType,
   pageType,
 
   // Embedded secties (objects op een pagina)

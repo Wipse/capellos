@@ -2,7 +2,7 @@ import { sanityClient } from 'sanity:client'
 import type { Page } from '../types/page'
 
 /**
- * Fetch the slugs corresponding page 
+ * Fetch the slugs corresponding page
  */
 export async function getPageContent(slug: string): Promise<Page | null> {
   const query = `*[
@@ -41,4 +41,10 @@ export async function getPageContent(slug: string): Promise<Page | null> {
 
   const page = await sanityClient.fetch<Page | null>(query, { slug })
   return page
+}
+
+export async function getAboutPage(): Promise<{ title: string; comingSoonText: string } | null> {
+  return sanityClient.fetch(
+    `*[_type == "aboutPage" && _id == "aboutPage"][0]{ title, comingSoonText }`
+  )
 }

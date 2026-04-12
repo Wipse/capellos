@@ -1,12 +1,17 @@
 ---
 import MainLayout from '../layouts/main.astro'
 import Footer from '../components/sections/Footer.astro'
+import { getAboutPage } from '../queries/pages'
+
+const page = await getAboutPage()
+const title = page?.title ?? 'Over Capellos'
+const comingSoonText = page?.comingSoonText ?? 'Deze pagina is in aanmaak — kom later terug.'
 ---
 
 <MainLayout title="Over Capellos | Capellos">
   <main class="container mx-auto px-6 py-section-lg lg:px-12">
-    <h1 class="font-heading text-5xl font-semibold uppercase text-slate-900 mb-8">Over Capellos</h1>
-    <p class="font-body text-base text-slate-600">Pagina in opbouw.</p>
+    <h1 class="font-heading text-5xl font-semibold uppercase text-slate-900 mb-8">{title}</h1>
+    <p class="font-body text-base text-slate-600">{comingSoonText}</p>
   </main>
   <Footer />
 </MainLayout>

@@ -3,7 +3,7 @@ import {HomeIcon} from '@sanity/icons'
 import {aboutSectionType} from './sections/aboutSectionType'
 import {aanvragenSectionType} from './sections/aanvragenSectionType'
 
-export const homepageType = defineType({
+export const homePageType = defineType({
   name: 'homepage',
   title: 'Homepage',
   type: 'document',
