@@ -46,13 +46,13 @@ const {
   <DriftBackground />
 
   <div class="container relative mx-auto px-6 lg:px-12">
-    <BackLink href="/prints" label="Terug naar prints" color={textColor} />
+    <BackLink href={`/${categorySlug}`} label={`Terug naar ${category}`} color={textColor} />
 
-    <div class="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-20 lg:items-start">
+    <div class="grid grid-cols-1 gap-10 justify-items-center lg:justify-items-start lg:grid-cols-12 lg:gap-20 lg:items-start">
       <!-- Image -->
       <div
         id="product-hero-img"
-        class="group col-start-2 col-span-4 relative mx-auto w-full max-w-sm lg:max-w-none"
+        class="group lg:col-start-2 lg:col-span-4 relative mx-auto w-full max-w-[260px] sm:max-w-sm lg:max-w-none"
       >
         <div
           class="absolute -inset-3 rounded-3xl opacity-20 blur-xl"
@@ -70,7 +70,7 @@ const {
       </div>
 
       <!-- Product info -->
-      <div class="flex flex-col col-start-6 col-span-6 lg:pt-4">
+      <div class="flex flex-col items-center text-center lg:items-start lg:text-left lg:col-start-6 lg:col-span-6 lg:pt-4">
         <!-- Label -->
         <p class="font-heading tracking-widest uppercase opacity-70" style={`color: ${textColor};`}>
           {category}
@@ -95,7 +95,7 @@ const {
           >
             Formaat
           </p>
-          <div class="flex flex-wrap gap-3">
+          <div class="flex flex-wrap gap-3 justify-center lg:justify-start">
             {
               sizes.map((size, i) => (
                 <button
@@ -150,17 +150,19 @@ const {
     const heroImg = document.getElementById('product-hero-img')
     if (!heroImg) return
 
-    gsap.to(heroImg, {
-      x: -120,
-      opacity: 0,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: heroImg,
-        start: 'center center',
-        end: 'bottom top',
-        scrub: true,
-      },
-    })
+    if (window.innerWidth >= 1024) {
+      gsap.to(heroImg, {
+        x: -120,
+        opacity: 0,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: heroImg,
+          start: 'center center',
+          end: 'bottom top',
+          scrub: true,
+        },
+      })
+    }
 
     // Add to cart
     const btn = document.getElementById('add-to-cart-btn') as HTMLButtonElement | null

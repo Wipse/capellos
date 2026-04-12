@@ -18,7 +18,7 @@ const {title, description, sizes, imageUrl, material, shipping, additionalInfo} 
   <div class="container mx-auto px-6 lg:px-12">
     <div class="grid grid-cols-12 gap-8 items-start">
       <!-- textarea col 2–6 -->
-      <div class="col-span-12 lg:col-start-2 lg:col-span-5 flex flex-col gap-10">
+      <div class="col-span-12 lg:col-start-2 lg:col-span-5 flex flex-col gap-10 items-center text-center lg:items-start lg:text-left">
         <div>
           <Heading as="h2" size="md" class="mb-4 text-slate-900">Over deze print</Heading>
           <p class="font-body text-base leading-relaxed text-slate-700">
@@ -37,7 +37,7 @@ const {title, description, sizes, imageUrl, material, shipping, additionalInfo} 
 
         <div>
           <Heading as="h3" size="none" class="text-sm tracking-widest opacity-60 mb-3 text-slate-900">Beschikbare formaten</Heading>
-          <ul class="flex flex-col gap-1">
+          <ul class="flex flex-col gap-1 items-center lg:items-start">
             {
               sizes.map((size) => (
                 <li class="font-body text-base text-gray-700 flex items-center gap-2">
@@ -62,7 +62,7 @@ const {title, description, sizes, imageUrl, material, shipping, additionalInfo} 
           additionalInfo && additionalInfo.length > 0 && (
             <div>
               <Heading as="h3" size="none" class="text-sm tracking-widest opacity-60 mb-3 text-slate-900">Aanvullende informatie</Heading>
-              <ul class="flex flex-col gap-1">
+              <ul class="flex flex-col gap-1 items-center lg:items-start">
                 {additionalInfo.map((item) => (
                   <li class="font-body text-base text-gray-700 flex items-center gap-2">
                     <span class="inline-block w-1.5 h-1.5 rounded-full bg-slate-900 opacity-60" />
@@ -102,21 +102,23 @@ const {title, description, sizes, imageUrl, material, shipping, additionalInfo} 
     const detailImg = document.getElementById('product-detail-travel-img')
     if (!detailImg) return
 
-    gsap.fromTo(
-      detailImg,
-      {x: 120, opacity: 0},
-      {
-        x: 0,
-        opacity: 1,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: detailImg,
-          start: 'top bottom',
-          end: 'center center',
-          scrub: true,
+    if (window.innerWidth >= 1024) {
+      gsap.fromTo(
+        detailImg,
+        {x: 120, opacity: 0},
+        {
+          x: 0,
+          opacity: 1,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: detailImg,
+            start: 'top bottom',
+            end: 'center center',
+            scrub: true,
+          },
         },
-      },
-    )
+      )
+    }
   })
 
   document.addEventListener('astro:before-swap', () => {
