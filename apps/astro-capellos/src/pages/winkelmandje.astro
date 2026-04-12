@@ -18,47 +18,72 @@ const [categories, cartSettings, aanvragenSettings] = await Promise.all([
 <BlobClip id="cartClip" edges="bottom" movement="slow" amplitude="sm" />
 
 <MainLayout title="Winkelmandje | Capellos">
-  <section id="cart-section" class="relative min-h-screen pt-section-md pb-section-xl" style={`background-color: ${cartSettings.backgroundColorHex};`}>
+  <section
+    id="cart-section"
+    class="relative min-h-screen pt-section-md pb-section-xl"
+    style={`background-color: ${cartSettings.backgroundColorHex};`}
+  >
     <DriftBackground opacity={8} />
 
     <div class="container relative mx-auto px-6 lg:px-12">
-      <div class="relative bg-white rounded-3xl px-8 py-12 lg:px-16 lg:py-16 max-w-4xl mx-auto shadow-sm">
+      <div
+        class="relative bg-white rounded-3xl px-8 py-12 lg:px-16 lg:py-16 max-w-4xl mx-auto shadow-sm"
+      >
+        <h1 class="font-heading text-4xl lg:text-5xl uppercase text-slate-900 mb-12">
+          {cartSettings.heading}
+        </h1>
 
-      <h1 class="font-heading text-4xl lg:text-5xl uppercase text-slate-900 mb-12">
-        {cartSettings.heading}
-      </h1>
-
-      <!-- Empty state -->
-      <div id="cart-empty" class="hidden flex-col items-center justify-center py-24 gap-6 text-center">
-        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-slate-300" aria-hidden="true">
-          <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
-          <path d="M3 6h18"/>
-          <path d="M16 10a4 4 0 01-8 0"/>
-        </svg>
-        <p class="font-heading text-xl uppercase text-slate-400">{cartSettings.emptyText}</p>
-      </div>
-
-      <!-- Cart items -->
-      <div id="cart-items" class="hidden flex-col divide-y divide-slate-100">
-      </div>
-
-      <!-- Summary -->
-      <div id="cart-summary" class="hidden mt-12 flex flex-col gap-6 border-t-2 border-slate-900 pt-8">
-        <div class="flex justify-between items-baseline">
-          <span class="font-heading text-lg uppercase tracking-wide text-slate-500">Subtotaal</span>
-          <span id="cart-total" class="font-heading text-3xl text-slate-900"></span>
+        <!-- Empty state -->
+        <div
+          id="cart-empty"
+          class="hidden flex-col items-center justify-center py-24 gap-6 text-center"
+        >
+          <svg
+            width="64"
+            height="64"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="text-slate-300"
+            aria-hidden="true"
+          >
+            <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"></path>
+            <path d="M3 6h18"></path>
+            <path d="M16 10a4 4 0 01-8 0"></path>
+          </svg>
+          <p class="font-heading text-xl uppercase text-slate-400">{cartSettings.emptyText}</p>
         </div>
-        <p class="font-body text-sm text-slate-400">Verzendkosten worden berekend bij afrekenen.</p>
-        <Button id="checkout-btn" color="#1e293b" addedClasses="w-fit lg:self-end">
-          {cartSettings.checkoutLabel}
-        </Button>
-      </div>
 
+        <!-- Cart items -->
+        <div id="cart-items" class="hidden flex-col divide-y divide-slate-100"></div>
+
+        <!-- Summary -->
+        <div
+          id="cart-summary"
+          class="hidden mt-12 flex flex-col gap-6 border-t-2 border-slate-900 pt-8"
+        >
+          <div class="flex justify-between items-baseline">
+            <span class="font-heading text-lg uppercase tracking-wide text-slate-500"
+              >Subtotaal</span
+            >
+            <span id="cart-total" class="font-heading text-3xl text-slate-900"></span>
+          </div>
+          <p class="font-body text-sm text-slate-400">
+            Verzendkosten worden berekend bij afrekenen.
+          </p>
+          <Button id="checkout-btn" color="#1e293b" addedClasses="w-fit lg:self-end">
+            {cartSettings.checkoutLabel}
+          </Button>
+        </div>
       </div>
     </div>
   </section>
 
   <AanvragenCTA
+    sliderFadeColor="#ffffff"
     backgroundColor="#ffffff"
     textColor="#1e293b"
     heading={aanvragenSettings.heading}
@@ -67,7 +92,6 @@ const [categories, cartSettings, aanvragenSettings] = await Promise.all([
     images={aanvragenSettings.images}
     showDrift={false}
     showBlobClip={false}
-    sliderFadeColor="#ffffff"
   />
 
   <Footer categories={categories} />
@@ -160,7 +184,9 @@ const [categories, cartSettings, aanvragenSettings] = await Promise.all([
 
     totalEl.textContent = formatPrice(getCartTotal())
 
-    itemsEl.innerHTML = cart.map((item: CartItem) => `
+    itemsEl.innerHTML = cart
+      .map(
+        (item: CartItem) => `
       <div class="flex gap-5 py-6 items-start overflow-hidden" data-id="${item.id}" data-size="${item.size}">
         <a href="/${item.categorySlug}/${item.slug}" class="flex-none w-20 aspect-297/420 overflow-hidden rounded-lg bg-slate-100">
           <img src="${item.imageUrl}" alt="${item.title}" class="w-full h-full object-cover" />
@@ -176,7 +202,9 @@ const [categories, cartSettings, aanvragenSettings] = await Promise.all([
           Verwijder
         </button>
       </div>
-    `).join('')
+    `,
+      )
+      .join('')
 
     itemsEl.querySelectorAll<HTMLElement>('[data-id]').forEach(bindRow)
   }

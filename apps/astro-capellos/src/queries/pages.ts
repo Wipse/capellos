@@ -48,3 +48,25 @@ export async function getAboutPage(): Promise<{ title: string; comingSoonText: s
     `*[_type == "aboutPage" && _id == "aboutPage"][0]{ title, comingSoonText }`
   )
 }
+
+export interface ContactPage {
+  heroHeading: string
+  heroSubtext: string | null
+  heroBackgroundColor: string | null
+  ctaHeading: string | null
+  ctaText: string | null
+  ctaLabel: string | null
+}
+
+export async function getContactPage(): Promise<ContactPage | null> {
+  return sanityClient.fetch(
+    `*[_type == "contactPage" && _id == "contactPage"][0]{
+      heroHeading,
+      heroSubtext,
+      "heroBackgroundColor": heroBackgroundColor.hex,
+      ctaHeading,
+      ctaText,
+      ctaLabel
+    }`
+  )
+}

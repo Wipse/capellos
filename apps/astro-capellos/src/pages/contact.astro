@@ -1,12 +1,152 @@
 ---
 import MainLayout from '../layouts/main.astro'
 import Footer from '../components/sections/Footer.astro'
+import BlobClip from '../components/BlobClip.astro'
+import DriftBackground from '../components/DriftBackground.astro'
+import Icon from '../components/Icon.astro'
+import AanvragenCTA from '../components/sections/AanvragenCTA.astro'
+
+import {getFooterContactInfo, getAanvragenSettings} from '../queries/settings'
+import {getContactPage} from '../queries/pages'
+import Heading from '../components/Heading.astro'
+
+const [contact, aanvragen, page] = await Promise.all([
+  getFooterContactInfo(),
+  getAanvragenSettings(),
+  getContactPage(),
+])
+
+const heroHeading = page?.heroHeading ?? 'Contact'
+const heroSubtext =
+  page?.heroSubtext ?? 'Een vraag, opmerking of gewoon even hallo zeggen? Noa hoort graag van je.'
+const heroBg = page?.heroBackgroundColor ?? '#1e293b'
+const ctaHeading = page?.ctaHeading ?? 'Wil je iets laten maken?'
+const ctaText =
+  page?.ctaText ??
+  'Voor aanvragen ben je niet hier, maar op de aanvragen-pagina. Daar kun je Noa precies vertellen wat je in gedachten hebt.'
+const ctaLabel = page?.ctaLabel ?? 'Naar aanvragen'
 ---
 
 <MainLayout title="Contact | Capellos">
-  <main class="container mx-auto px-6 py-section-lg lg:px-12">
-    <h1 class="font-heading text-5xl font-semibold uppercase text-slate-900 mb-8">Contact</h1>
-    <p class="font-body text-base text-slate-600">Pagina in opbouw.</p>
+  <main>
+    <!-- Hero -->
+    <BlobClip id="contactHeroClip" edges="bottom" movement="slow" amplitude="md" />
+
+    <section
+      id="contact-hero"
+      class="relative pb-section-xl pt-section-lg"
+      style={`background-color: ${heroBg};`}
+    >
+      <DriftBackground />
+
+      <div class="container relative mx-auto px-6 lg:px-12">
+        <div class="grid grid-cols-1 gap-12 lg:gap-20 lg:grid-cols-2 lg:items-center">
+          <!-- Links: titel + ondertekst -->
+          <div>
+            <Heading
+              as="h1"
+              class="font-heading text-6xl font-semibold uppercase text-white lg:text-7xl"
+            >
+              {heroHeading}
+            </Heading>
+            <p class="font-body text-lg text-slate-200 w-full">
+              {heroSubtext}
+            </p>
+          </div>
+
+          <!-- Rechts: contactopties -->
+          <div class="flex flex-col gap-4">
+            <a
+              href={`mailto:${contact.email}`}
+              class="contact-card group flex items-center gap-5 border-2 border-white/20 bg-white/5 p-6 transition-colors hover:bg-white/10"
+            >
+              <span
+                class="flex size-12 shrink-0 items-center justify-center rounded-full bg-white/15 text-white"
+              >
+                <Icon type="email" size={22} />
+              </span>
+              <div>
+                <p class="font-heading text-xs uppercase tracking-widest text-slate-300 mb-0.5">
+                  E-mail
+                </p>
+                <p class="font-heading text-lg font-semibold text-white">{contact.email}</p>
+              </div>
+            </a>
+
+            {
+              contact.phone && (
+                <a
+                  href={`tel:${contact.phoneHref}`}
+                  class="contact-card group flex items-center gap-5 border-2 border-white/20 bg-white/5 p-6 transition-colors hover:bg-white/10"
+                >
+                  <span class="flex size-12 shrink-0 items-center justify-center rounded-full bg-white/15 text-white">
+                    <Icon type="phone" size={22} />
+                  </span>
+                  <div>
+                    <p class="font-heading text-xs uppercase tracking-widest text-slate-300 mb-0.5">
+                      Telefoon
+                    </p>
+                    <p class="font-heading text-lg font-semibold text-white">{contact.phone}</p>
+                  </div>
+                </a>
+              )
+            }
+
+            {
+              contact.instagramUrl && (
+                <a
+                  href={contact.instagramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="contact-card group flex items-center gap-5 border-2 border-white/20 bg-white/5 p-6 transition-colors hover:bg-white/10"
+                >
+                  <span class="flex size-12 shrink-0 items-center justify-center rounded-full bg-white/15 text-white">
+                    <Icon type="instagram" size={22} />
+                  </span>
+                  <div>
+                    <p class="font-heading text-xs uppercase tracking-widest text-slate-300 mb-0.5">
+                      Instagram
+                    </p>
+                    <p class="font-heading text-lg font-semibold text-white">@capellos</p>
+                  </div>
+                </a>
+              )
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA aanvragen -->
+    <AanvragenCTA
+      sliderFadeColor="#ffffff"
+      backgroundColor="#FFFFFF"
+      textColor="#000000"
+      heading={ctaHeading}
+      text={ctaText}
+      ctaLabel={ctaLabel}
+      showDrift={false}
+      showBlobClip={false}
+      images={aanvragen.images}
+    />
   </main>
   <Footer />
 </MainLayout>
+
+<style>
+  #contact-hero {
+    clip-path: url(#contactHeroClip);
+  }
+
+  @media (max-width: 639px) {
+    #contact-hero {
+      clip-path: url(#contactHeroClip-mobile);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #contact-hero {
+      clip-path: polygon(0% 0%, 100% 0%, 100% 88%, 83% 96%, 50% 88%, 17% 80%, 0% 88%);
+    }
+  }
+</style>
