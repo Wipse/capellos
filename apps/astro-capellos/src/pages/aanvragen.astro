@@ -1,12 +1,67 @@
 ---
 import MainLayout from '../layouts/main.astro'
 import Footer from '../components/sections/Footer.astro'
+import BlobClip from '../components/BlobClip.astro'
+import DriftBackground from '../components/DriftBackground.astro'
+import Heading from '../components/Heading.astro'
+import {getCategories} from '../queries/categories'
+
+const categories = await getCategories()
 ---
 
+<BlobClip id="aanvragenHeroClip" edges="bottom" movement="slow" amplitude="md" />
+
 <MainLayout title="Aanvragen | Capellos">
-  <main class="container mx-auto px-6 py-section-lg lg:px-12">
-    <h1 class="font-heading text-5xl font-semibold uppercase text-slate-900 mb-8">Aanvragen</h1>
-    <p class="font-body text-base text-slate-600">Pagina in opbouw.</p>
-  </main>
-  <Footer />
+  <section
+    id="aanvragen-hero"
+    class="relative pb-section-xl pt-section-lg"
+    style="background-color: #1e293b;"
+  >
+    <DriftBackground />
+
+    <div class="container relative mx-auto px-6 lg:px-12">
+      <div class="max-w-2xl">
+        <span
+          class="inline-block font-heading text-xs uppercase tracking-widest text-slate-400 mb-6 border border-white/20 px-4 py-1.5"
+        >
+          Komt eraan
+        </span>
+        <Heading as="h1" class="text-white mb-6">
+          Aanvragen
+        </Heading>
+        <p class="font-body text-lg text-slate-300 leading-relaxed">
+          Wil je een uniek handgeschilderd kledingstuk laten maken door Noa? Dit formulier is binnenkort beschikbaar. Neem in de tussentijd gerust contact op.
+        </p>
+        <a
+          href="/contact"
+          class="mt-10 inline-flex items-center gap-2 font-heading text-sm uppercase tracking-widest text-white border-b border-white/40 pb-0.5 hover:border-white transition-colors"
+        >
+          Naar contact
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <Footer categories={categories} />
 </MainLayout>
+
+<style>
+  #aanvragen-hero {
+    clip-path: url(#aanvragenHeroClip);
+  }
+
+  @media (max-width: 639px) {
+    #aanvragen-hero {
+      clip-path: url(#aanvragenHeroClip-mobile);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #aanvragen-hero {
+      clip-path: polygon(0% 0%, 100% 0%, 100% 88%, 83% 96%, 50% 88%, 17% 80%, 0% 88%);
+    }
+  }
+</style>
