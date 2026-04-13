@@ -3,7 +3,9 @@ import { defineConfig } from 'astro/config';
 import { loadEnv } from 'vite';
 import sanity from '@sanity/astro';
 
-const env = loadEnv('production', process.cwd(), '');
+// loadEnv reads .env files (local dev); process.env is used on Netlify/CI
+const fileEnv = loadEnv('production', process.cwd(), '');
+const get = (key) => fileEnv[key] || process.env[key] || '';
 
 // https://astro.build/config
 export default defineConfig({
@@ -13,12 +15,12 @@ export default defineConfig({
 
   integrations: [
     sanity({
-      projectId: env.SANITY_STUDIO_PROJECT_ID,
-      dataset: env.SANITY_STUDIO_DATASET,
+      projectId: get('SANITY_STUDIO_PROJECT_ID'),
+      dataset: get('SANITY_STUDIO_DATASET'),
       useCdn: false, // for static builds
       visualEditing: {
-        token: env.SANITY_STUDIO_VIEWER_TOKEN,
-        studioUrl: env.SANITY_STUDIO_URL,
+        token: get('SANITY_STUDIO_VIEWER_TOKEN'),
+        studioUrl: get('SANITY_STUDIO_URL'),
         stega: true
       }
     }),
