@@ -21,7 +21,7 @@ export const categoryType = defineType({
       title: 'URL-pad',
       type: 'slug',
       description:
-        'Dit bepaalt het webadres van de categoriepagina. Klik op "Genereren" om automatisch een URL te maken op basis van de naam. Gebruik alleen kleine letters, cijfers en koppeltekens, maar geen spaties.',
+        'Dit bepaalt het webadres van de categoriepagina. Gebruik alleen kleine letters, cijfers en koppeltekens, maar geen spaties. (Of klik gewoon op "Genereren" om automatisch een URL te maken op basis van de naam)',
       options: {source: 'title'},
       validation: (rule) => rule.required(),
     }),
@@ -30,7 +30,7 @@ export const categoryType = defineType({
       title: 'Themakleur',
       type: 'color',
       description:
-        'De achtergrondkleur van de hero-sectie op de categoriepagina. Kies een kleur die past bij het gevoel van deze categorie.',
+        'De achtergrondkleur van de hero-sectie op de categoriepagina. Kies een kleur die past bij deze categorie ofzoiets.',
       options: {
         disableAlpha: true,
       },
@@ -41,7 +41,7 @@ export const categoryType = defineType({
       title: 'Tekstkleur',
       type: 'color',
       description:
-        'De kleur van de titel en het pijltje op de categoriepagina. Kies wit (#ffffff) op een donkere achtergrond, of zwart (#000000) op een lichte achtergrond.',
+        'De kleur van de titel en het pijltje op de categoriepagina. Hou rekening met de achtergrondkleur, want het moet wel een beetje leesbaar zijn :))',
       options: {
         disableAlpha: true,
       },
@@ -53,7 +53,7 @@ export const categoryType = defineType({
       title: 'Hoofdafbeelding',
       type: 'image',
       description:
-        'De sfeervolle afbeelding die bovenaan de categoriepagina wordt getoond. Gebruik een mooie foto die het karakter van deze categorie uitstraalt. Liggend formaat werkt het best.',
+        'De leuke afbeelding die in de categorie-navigatie wordt getoond. Gebruik een mooie foto die deze categorie een beetje samenvat. Liggend formaat werkt het best!!',
       options: {
         hotspot: true,
       },
@@ -78,7 +78,7 @@ export const categoryType = defineType({
     defineField({
       name: 'catalogLayout',
       title: 'Catalogus layout',
-      description: 'Kies hoe de producten op de categoriepagina worden getoond.',
+      description: 'Kies de layout van hoe de producten op de categoriepagina worden getoond.',
       type: 'string',
       options: {
         list: [

@@ -61,12 +61,12 @@ export interface ContactPage {
 export async function getContactPage(): Promise<ContactPage | null> {
   return sanityClient.fetch(
     `*[_type == "contactPage" && _id == "contactPage"][0]{
-      heroHeading,
-      heroSubtext,
-      "heroBackgroundColor": heroBackgroundColor.hex,
-      ctaHeading,
-      ctaText,
-      ctaLabel
+      "heroHeading": hero.heading,
+      "heroSubtext": hero.subtext,
+      "heroBackgroundColor": hero.backgroundColor.hex,
+      "ctaHeading": cta.heading,
+      "ctaText": cta.text,
+      "ctaLabel": cta.label
     }`
   )
 }

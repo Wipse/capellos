@@ -15,7 +15,7 @@ const categoriesGroq = `*[_type == "category"] | order(title asc) {
   title,
   "slug": slug.current,
   "colorHex": coalesce(color.hex, "#4BAF6E"),
-  "textColorHex": coalesce(textColor.hex, "#FFFFFF"),
+  "textColorHex": coalesce(textColor.hex, textColor, "#FFFFFF"),
   "imageUrl": image.asset->url,
   "imageAlt": image.alt,
   description,

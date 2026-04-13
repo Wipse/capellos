@@ -8,7 +8,7 @@ export const heroSectionType = defineType({
     defineField({
       name: 'backgroundColor',
       title: 'Achtergrondkleur',
-      description: 'De achtergrondkleur van het beginscherm — de eerste indruk van de website.',
+      description: 'De achtergrondkleur van het beginscherm, ofwel de eerste indruk van de website.',
       type: 'color',
       options: {
         disableAlpha: true,
@@ -20,7 +20,7 @@ export const heroSectionType = defineType({
       name: 'textColor',
       title: 'Logo- & accentkleur',
       description:
-        'Kleur van het logo en de scroll-pijl. Kies een kleur die goed afsteekt tegen de achtergrond.',
+        'Kleur van het logo en de scroll-pijlen die tonen wanneer een gebruiker niet gaat scrollen. Kies een kleur die goed afsteekt tegen de achtergrond.',
       type: 'color',
       options: {
         disableAlpha: true,

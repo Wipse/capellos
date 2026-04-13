@@ -27,12 +27,14 @@ export const cartPageType = defineType({
         defineField({
           name: 'emptyText',
           title: 'Lege mandje tekst',
+          description: 'Deze tekst verschijnt in het winkelmandje wanneer er niks in zit',
           type: 'string',
           initialValue: 'Je mandje is leeg',
         }),
         defineField({
           name: 'checkoutLabel',
           title: 'Bestellen knoptekst',
+          description: 'De tekst die in de bestel-knop staat',
           type: 'string',
           initialValue: 'Bestelling plaatsen',
         }),

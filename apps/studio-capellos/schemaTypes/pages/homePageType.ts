@@ -13,7 +13,7 @@ export const homePageType = defineType({
       name: 'hero',
       title: 'Hero Sectie',
       description:
-        'Het grote beginscherm dat bezoekers als eerste zien. Stel hier de kleuren in die passen bij het seizoen of je huisstijl.',
+        'Het grote beginscherm dat bezoekers als eerste zien. Stel hier de kleuren in die passen bij... uhh wat jij wil, zoals het seizoen ofzo of gewoon je huisstijl.',
       type: 'heroSection',
     }),
     defineField({

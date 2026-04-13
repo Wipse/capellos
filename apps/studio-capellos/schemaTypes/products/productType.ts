@@ -7,7 +7,6 @@ export const productType = defineType({
   type: 'document',
   icon: BasketIcon,
   fields: [
-    // ——— Basisinformatie ———
     defineField({
       name: 'name',
       title: 'Naam',
@@ -40,7 +39,6 @@ export const productType = defineType({
       validation: (rule) => rule.required(),
     }),
 
-    // ——— Prijs ———
     defineField({
       name: 'price',
       title: 'Prijs (in euro)',
@@ -49,7 +47,6 @@ export const productType = defineType({
       validation: (rule) => rule.required().positive(),
     }),
 
-    // ——— Afbeeldingen ———
     defineField({
       name: 'mainImage',
       title: 'Hoofdafbeelding',
@@ -60,7 +57,7 @@ export const productType = defineType({
         defineField({
           name: 'alt',
           title: 'Alternatieve tekst',
-          description: 'Korte omschrijving van de afbeelding voor zoekmachines en slechtzienden, bijvoorbeeld "Handgesigneerde print van een botanische tekening".',
+          description: 'Korte omschrijving van de afbeelding voor zoekmachines en slechtzienden, bijvoorbeeld "Custom print voor een tuinfeest van Caecilia".',
           type: 'string',
         }),
       ],
@@ -69,7 +66,7 @@ export const productType = defineType({
     defineField({
       name: 'images',
       title: 'Extra afbeeldingen',
-      description: 'Optionele extra productfoto\'s, bijvoorbeeld een detailopname of achterkant.',
+      description: 'Optionele extra productfoto\'s, bijvoorbeeld een print opgehangen of een kledingstuk gedragen of iets in die richting.',
       type: 'array',
       of: [
         {
@@ -86,11 +83,10 @@ export const productType = defineType({
       ],
     }),
 
-    // ——— Beschrijving ———
     defineField({
       name: 'description',
       title: 'Beschrijving',
-      description: 'Een uitgebreide omschrijving van het product. Vertel wat het bijzonder maakt.',
+      description: 'Een uitgebreide omschrijving van het product. Vertel wat het bijzonder maakt !!',
       type: 'array',
       of: [{
         type: 'block',
@@ -106,7 +102,6 @@ export const productType = defineType({
       }],
     }),
 
-    // ——— Specificaties ———
     defineField({
       name: 'specifications',
       title: 'Specificaties',
@@ -120,7 +115,6 @@ export const productType = defineType({
       ],
     }),
 
-    // ——— Verzending ———
     defineField({
       name: 'shipping',
       title: 'Verzending',
