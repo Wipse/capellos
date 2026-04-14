@@ -7,6 +7,10 @@ import sanity from '@sanity/astro';
 const fileEnv = loadEnv('production', process.cwd(), '');
 const get = (key) => fileEnv[key] || process.env[key] || '';
 
+// Debug: log which values are resolved (visible in Netlify deploy log)
+console.log('[capellos] SANITY_STUDIO_PROJECT_ID =', get('SANITY_STUDIO_PROJECT_ID') || '(LEEG!)');
+console.log('[capellos] SANITY_STUDIO_DATASET    =', get('SANITY_STUDIO_DATASET') || '(LEEG!)');
+
 // https://astro.build/config
 export default defineConfig({
   vite: {
